@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace = "com.famboard.app"
-    compileSdk = flutter.compileSdkVersion
+    // permission_handler and receive_sharing_intent require compile SDK 37.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
