@@ -51,3 +51,6 @@ app.*.map.json
 /android/local.properties
 /android/key.properties
 *.jks
+
+# Kotlin build cache
+/android/.kotlin/
