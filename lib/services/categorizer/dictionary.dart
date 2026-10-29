@@ -1,0 +1,211 @@
+/// Bundled keyword dictionary for the categorizer (spec section 6, layer 3).
+///
+/// Terms are in English, romanised Hindi (common Hinglish spellings) and
+/// Devanagari. Multi-word terms are matched as phrases. Keep terms lower-case.
+const Map<String, List<String>> categoryTerms = {
+  'groceries.staples': [
+    'atta', 'aata', 'aatta', 'flour', 'wheat', 'gehu', 'gehun', 'maida',
+    'besan', 'sooji', 'suji', 'rava', 'rice', 'chawal', 'chaawal', 'basmati',
+    'poha', 'dal', 'daal', 'dhal', 'lentil', 'lentils', 'toor', 'tur', 'arhar',
+    'moong', 'masoor', 'urad', 'chana', 'rajma', 'chole', 'oil', 'tel',
+    'mustard oil', 'sarson', 'refined', 'sunflower oil', 'ghee', 'sugar',
+    'cheeni', 'chini', 'shakkar', 'jaggery', 'gud', 'salt', 'namak', 'bread',
+    'pav', 'sabudana', 'oats', 'pasta', 'noodles', 'maggi', 'vermicelli',
+    'sevai', 'jowar', 'bajra', 'ragi', 'nachni', 'peanuts', 'moongfali',
+    'dry fruits', 'almonds', 'badam', 'cashew', 'kaju', 'raisins', 'kishmish',
+    'आटा', 'चावल', 'दाल', 'तेल', 'चीनी', 'नमक', 'घी', 'बेसन', 'मैदा',
+  ],
+  'groceries.dairy': [
+    'milk', 'doodh', 'dudh', 'curd', 'dahi', 'yogurt', 'paneer', 'butter',
+    'makhan', 'cheese', 'cream', 'malai', 'buttermilk', 'chaas', 'lassi',
+    'eggs', 'egg', 'anda', 'ande', 'दूध', 'दही', 'पनीर', 'मक्खन', 'अंडे',
+  ],
+  'groceries.produce': [
+    'vegetables', 'veggies', 'sabzi', 'sabji', 'subzi', 'potato', 'potatoes',
+    'aloo', 'alu', 'onion', 'onions', 'pyaz', 'pyaaz', 'kanda', 'tomato',
+    'tomatoes', 'tamatar', 'garlic', 'lehsun', 'lasun', 'ginger', 'adrak',
+    'chilli', 'chillies', 'mirchi', 'coriander', 'dhaniya', 'kothimbir',
+    'methi', 'palak', 'spinach', 'cabbage', 'patta gobhi', 'cauliflower',
+    'gobhi', 'gobi', 'brinjal', 'baingan', 'vangi', 'bhindi', 'okra', 'lady finger',
+    'carrot', 'gajar', 'cucumber', 'kheera', 'peas', 'matar', 'beans',
+    'capsicum', 'shimla mirch', 'lemon', 'lemons', 'nimbu', 'limbu', 'curry leaves',
+    'kadipatta', 'fruit', 'fruits', 'phal', 'banana', 'bananas', 'kela', 'kele',
+    'apple', 'apples', 'seb', 'mango', 'aam', 'orange', 'santra', 'grapes',
+    'angoor', 'papaya', 'papita', 'watermelon', 'tarbooz', 'pomegranate', 'anaar',
+    'coconut', 'nariyal', 'सब्ज़ी', 'सब्जी', 'आलू', 'प्याज़', 'प्याज', 'टमाटर',
+    'फल', 'केले', 'नींबू',
+  ],
+  'groceries.spices': [
+    'spices', 'masala', 'haldi', 'turmeric', 'jeera', 'cumin', 'rai', 'mustard seeds',
+    'hing', 'asafoetida', 'garam masala', 'chilli powder', 'lal mirch',
+    'dhaniya powder', 'elaichi', 'cardamom', 'laung', 'cloves', 'dalchini',
+    'cinnamon', 'kali mirch', 'pepper', 'ajwain', 'saunf', 'tej patta',
+    'sambar masala', 'pav bhaji masala', 'हल्दी', 'मसाला', 'जीरा',
+  ],
+  'groceries.snacks': [
+    'snacks', 'biscuits', 'biscuit', 'cookies', 'chips', 'namkeen', 'bhujia',
+    'chakli', 'chivda', 'farsan', 'chocolate', 'chocolates', 'sweets', 'mithai',
+    'cake', 'rusk', 'toast', 'khari', 'popcorn', 'jam', 'ketchup', 'sauce',
+    'pickle', 'achar', 'papad', 'बिस्किट', 'नमकीन', 'मिठाई',
+  ],
+  'groceries.beverages': [
+    'tea', 'chai', 'chai patti', 'tea leaves', 'coffee', 'juice', 'cold drink',
+    'soft drink', 'soda', 'water bottle', 'mineral water', 'bisleri', 'horlicks',
+    'bournvita', 'boost', 'complan', 'green tea', 'चाय', 'कॉफ़ी',
+  ],
+  'household.cleaning': [
+    'detergent', 'surf', 'washing powder', 'tide', 'ariel', 'rin', 'vim',
+    'dishwash', 'dish wash', 'dish soap', 'pril', 'phenyl', 'floor cleaner',
+    'lizol', 'harpic', 'toilet cleaner', 'colin', 'glass cleaner', 'broom',
+    'jhadu', 'jhaadu', 'mop', 'pocha', 'scrubber', 'scotch brite', 'sponge',
+    'garbage bags', 'garbage bag', 'dustbin bags', 'bin bags', 'naphthalene',
+    'mosquito', 'good knight', 'all out', 'hit', 'odomos', 'fabric softener',
+    'comfort', 'bleach', 'झाड़ू', 'पोछा', 'साबुन पाउडर',
+  ],
+  'household.toiletries': [
+    'soap', 'sabun', 'shampoo', 'conditioner', 'toothpaste', 'colgate',
+    'toothbrush', 'brush', 'face wash', 'facewash', 'handwash', 'hand wash',
+    'body lotion', 'lotion', 'moisturizer', 'cream', 'deodorant', 'deo',
+    'perfume', 'razor', 'shaving', 'blade', 'sanitary', 'pads', 'whisper',
+    'diapers', 'diaper', 'tissue', 'tissues', 'toilet paper', 'hair oil',
+    'coconut oil', 'parachute', 'comb', 'sunscreen', 'talc', 'powder',
+    'साबुन', 'शैम्पू', 'टूथपेस्ट',
+  ],
+  'household.kitchen': [
+    'foil', 'aluminium foil', 'cling wrap', 'zip lock', 'matchbox', 'match box',
+    'maachis', 'lighter', 'gas lighter', 'candles', 'agarbatti', 'incense',
+    'camphor', 'kapoor', 'paper napkins', 'napkins', 'kitchen towel',
+    'water filter', 'filter candle', 'माचिस', 'अगरबत्ती',
+  ],
+  'repairs.plumbing': [
+    'tap', 'taps', 'nal', 'faucet', 'leak', 'leaking', 'leakage', 'pipe',
+    'pipes', 'drain', 'blocked drain', 'clogged', 'flush', 'commode',
+    'toilet', 'shower', 'geyser leak', 'water tank', 'tanki', 'motor',
+    'water motor', 'pump', 'plumber', 'नल', 'पाइप', 'प्लंबर',
+  ],
+  'repairs.electrical': [
+    'fan', 'pankha', 'light', 'lights', 'bulb', 'tubelight', 'tube light',
+    'switch', 'switchboard', 'socket', 'plug', 'wiring', 'mcb', 'fuse',
+    'inverter', 'electrician', 'short circuit', 'doorbell', 'bell', 'led',
+    'पंखा', 'बल्ब', 'लाइट', 'स्विच', 'इलेक्ट्रीशियन',
+  ],
+  'repairs.appliances': [
+    'fridge', 'refrigerator', 'washing machine', 'microwave', 'oven', 'mixer',
+    'grinder', 'mixie', 'ac', 'air conditioner', 'cooler', 'geyser',
+    'water heater', 'iron', 'chimney', 'purifier', 'ro', 'aquaguard', 'tv',
+    'television', 'remote', 'gas stove', 'stove', 'burner', 'induction',
+    'फ्रिज', 'वॉशिंग मशीन', 'मिक्सर', 'गीज़र',
+  ],
+  'repairs.carpentry': [
+    'door', 'darwaza', 'window', 'khidki', 'cupboard', 'almirah', 'wardrobe',
+    'drawer', 'hinge', 'handle', 'lock', 'tala', 'latch', 'chair', 'table',
+    'bed', 'carpenter', 'furniture repair', 'दरवाज़ा', 'खिड़की', 'अलमारी',
+  ],
+  'repairs.vehicle': [
+    'car', 'bike', 'scooter', 'scooty', 'activa', 'cycle', 'bicycle',
+    'puncture', 'tyre', 'tire', 'battery', 'car service', 'bike service',
+    'servicing', 'oil change', 'puc', 'pollution', 'brake', 'clutch',
+    'गाड़ी', 'बाइक', 'स्कूटर',
+  ],
+  'upgrades.electronics': [
+    'phone', 'mobile', 'smartphone', 'laptop', 'tablet', 'ipad', 'charger',
+    'cable', 'earphones', 'headphones', 'earbuds', 'speaker', 'router',
+    'wifi router', 'printer', 'ink', 'cartridge', 'toner', 'mouse', 'keyboard',
+    'monitor', 'hard disk', 'pendrive', 'smartwatch', 'power bank', 'camera',
+    'मोबाइल', 'लैपटॉप', 'चार्जर',
+  ],
+  'upgrades.furniture': [
+    'sofa', 'mattress', 'gadda', 'pillow', 'takiya', 'bedsheet', 'curtains',
+    'parde', 'carpet', 'rug', 'shelf', 'bookshelf', 'study table', 'dining table',
+    'shoe rack', 'गद्दा', 'तकिया', 'पर्दे',
+  ],
+  'upgrades.appliances': [
+    'new fridge', 'new ac', 'new tv', 'air purifier', 'dishwasher', 'vacuum',
+    'vacuum cleaner', 'air fryer', 'kettle', 'toaster', 'water purifier',
+  ],
+  'upgrades.clothing': [
+    'clothes', 'kapde', 'shirt', 'shirts', 't shirt', 'tshirt', 'jeans',
+    'pants', 'trousers', 'kurta', 'saree', 'sari', 'dress', 'jacket',
+    'sweater', 'shoes', 'joote', 'chappal', 'slippers', 'sandals', 'socks',
+    'innerwear', 'raincoat', 'umbrella', 'chhata', 'कपड़े', 'जूते', 'चप्पल',
+  ],
+  'bills.electricity': [
+    'electricity', 'electricity bill', 'light bill', 'bijli', 'bijli bill',
+    'power bill', 'msedcl', 'mahavitaran', 'bescom', 'tata power', 'adani',
+    'bses', 'tneb', 'cesc', 'बिजली', 'बिजली बिल',
+  ],
+  'bills.water': [
+    'water bill', 'paani bill', 'pani bill', 'water tax', 'municipal water',
+    'पानी बिल',
+  ],
+  'bills.gas': [
+    'gas bill', 'gas cylinder', 'cylinder', 'lpg', 'indane', 'hp gas',
+    'bharat gas', 'png', 'piped gas', 'mgl', 'igl', 'गैस', 'सिलेंडर',
+  ],
+  'bills.internet': [
+    'internet', 'broadband', 'wifi bill', 'wi fi bill', 'fiber', 'jio',
+    'jiofiber', 'airtel', 'vi', 'vodafone', 'bsnl', 'act fibernet', 'recharge',
+    'mobile recharge', 'postpaid', 'prepaid', 'dth', 'tata play', 'dish tv',
+    'cable tv', 'रिचार्ज', 'इंटरनेट',
+  ],
+  'bills.rent': [
+    'rent', 'kiraya', 'house rent', 'emi', 'home loan', 'car loan', 'loan',
+    'maintenance', 'society maintenance', 'society bill', 'किराया',
+  ],
+  'bills.insurance': [
+    'insurance', 'premium', 'lic', 'policy', 'health insurance', 'mediclaim',
+    'car insurance', 'bike insurance', 'term insurance', 'बीमा',
+  ],
+  'bills.fees': [
+    'school fees', 'school fee', 'fees', 'fee', 'tuition fees', 'tuition',
+    'coaching', 'college fees', 'exam fees', 'van fees', 'bus fees', 'फ़ीस', 'फीस',
+  ],
+  'bills.subscriptions': [
+    'subscription', 'netflix', 'prime', 'amazon prime', 'hotstar', 'disney',
+    'spotify', 'youtube premium', 'newspaper', 'akhbar', 'magazine', 'gym',
+    'icloud', 'google one', 'अख़बार',
+  ],
+  'bills.card': [
+    'credit card', 'card bill', 'credit card bill', 'card payment',
+  ],
+  'health.medicines': [
+    'medicine', 'medicines', 'dawai', 'dawa', 'davai', 'tablets', 'tablet strip',
+    'syrup', 'crocin', 'dolo', 'paracetamol', 'vicks', 'bandage', 'band aid',
+    'dettol', 'savlon', 'ointment', 'vitamins', 'first aid', 'thermometer',
+    'inhaler', 'drops', 'दवाई', 'दवा',
+  ],
+  'health.appointments': [
+    'doctor', 'dentist', 'checkup', 'check up', 'appointment', 'clinic',
+    'hospital', 'blood test', 'lab test', 'vaccination', 'vaccine', 'eye test',
+    'डॉक्टर',
+  ],
+  'kids.stationery': [
+    'notebook', 'notebooks', 'copy', 'copies', 'pen', 'pens', 'pencil',
+    'pencils', 'eraser', 'rubber', 'sharpener', 'scale', 'geometry box',
+    'crayons', 'colours', 'colors', 'sketch pens', 'glue', 'fevicol', 'tape',
+    'chart paper', 'school bag', 'bag', 'lunch box', 'tiffin', 'water bottle',
+    'books', 'textbooks', 'कॉपी', 'पेन', 'पेंसिल',
+  ],
+  'kids.uniform': [
+    'uniform', 'school uniform', 'school shoes', 'tie', 'belt', 'school socks',
+    'pt uniform', 'यूनिफ़ॉर्म',
+  ],
+  'kids.activities': [
+    'football', 'cricket bat', 'swimming', 'dance class', 'music class',
+    'karate', 'skating', 'project', 'school project', 'birthday gift',
+    'return gifts', 'toys', 'toy',
+  ],
+  'chores.errands': [
+    'call', 'pick up', 'pickup', 'drop', 'courier', 'post office', 'bank',
+    'atm', 'visit', 'book', 'booking', 'tickets', 'return', 'exchange',
+  ],
+  'chores.paperwork': [
+    'aadhaar', 'aadhar', 'pan card', 'passport', 'license', 'licence',
+    'documents', 'form', 'kyc', 'tax', 'itr', 'income tax', 'property tax',
+    'certificate', 'renew license', 'आधार',
+  ],
+  'chores.cleaning': [
+    'deep cleaning', 'clean fan', 'clean kitchen', 'pest control', 'diwali cleaning',
+    'water tank cleaning', 'sofa cleaning', 'safai',
+  ],
+};
