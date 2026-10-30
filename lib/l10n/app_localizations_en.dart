@@ -910,4 +910,69 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get syncFixTitle => 'Sync can\'t find other phones yet';
+
+  @override
+  String get problemNearbyPermission =>
+      'Allow “Nearby devices” so phones can find each other over Bluetooth.';
+
+  @override
+  String get problemLocationPermission =>
+      'Allow Location. Android needs it to scan for nearby phones.';
+
+  @override
+  String get problemLocationOff =>
+      'Turn on Location in quick settings. Bluetooth scanning finds nothing while it\'s off.';
+
+  @override
+  String get problemBluetoothOff => 'Turn on Bluetooth.';
+
+  @override
+  String get problemNoWifi =>
+      'Connect both phones to the same Wi‑Fi, or use Bluetooth.';
+
+  @override
+  String get allowPermissions => 'Allow';
+
+  @override
+  String get openSettings => 'Open settings';
+
+  @override
+  String get checkAgain => 'Check again';
+
+  @override
+  String get syncDiagnostics => 'Sync details';
+
+  @override
+  String get diagThisPhone => 'This phone';
+
+  @override
+  String get diagMethods => 'Connection methods';
+
+  @override
+  String get diagRunning => 'Running';
+
+  @override
+  String get diagNotRunning => 'Not running';
+
+  @override
+  String get diagPhonesSeen => 'Phones seen now';
+
+  @override
+  String get diagNone => 'None';
+
+  @override
+  String get diagRecent => 'Recent activity';
+
+  @override
+  String get diagLastError => 'Last error';
+
+  @override
+  String get diagCopy => 'Copy details';
+
+  @override
+  String get diagHint =>
+      'Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on.';
 }

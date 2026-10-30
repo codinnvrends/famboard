@@ -61,8 +61,10 @@ class SyncStatus {
     this.running = false,
     this.syncing = false,
     this.transports = const {},
+    this.transportErrors = const {},
     this.peers = const [],
     this.lastError,
+    this.log = const [],
   });
 
   final bool running;
@@ -70,24 +72,41 @@ class SyncStatus {
 
   /// Transports that started successfully.
   final Set<String> transports;
+
+  /// Transports that failed to start, with the reason. Retried on resume,
+  /// every minute, and when permissions change.
+  final Map<String, String> transportErrors;
   final List<LivePeer> peers;
   final String? lastError;
+
+  /// Recent sync events, newest first, for the diagnostics view.
+  final List<SyncLogLine> log;
 
   SyncStatus copyWith({
     bool? running,
     bool? syncing,
     Set<String>? transports,
+    Map<String, String>? transportErrors,
     List<LivePeer>? peers,
     String? lastError,
     bool clearError = false,
+    List<SyncLogLine>? log,
   }) =>
       SyncStatus(
         running: running ?? this.running,
         syncing: syncing ?? this.syncing,
         transports: transports ?? this.transports,
+        transportErrors: transportErrors ?? this.transportErrors,
         peers: peers ?? this.peers,
         lastError: clearError ? null : lastError ?? this.lastError,
+        log: log ?? this.log,
       );
+}
+
+class SyncLogLine {
+  const SyncLogLine(this.at, this.message);
+  final DateTime at;
+  final String message;
 }
 
 /// Runs peer-to-peer sync while the app is open (spec FR-50–53):
@@ -117,6 +136,7 @@ class SyncManager {
   final Map<String, LivePeer> _livePeers = {};
   final Map<String, DiscoveredPeer> _routes = {};
   final Map<String, DateTime> _lastAttempt = {};
+  final Map<String, DateTime> _lastSuccess = {};
   final Set<String> _busy = {};
   final _results = StreamController<SyncResult>.broadcast();
   StreamSubscription<String>? _localSub;
@@ -151,24 +171,9 @@ class SyncManager {
     final deviceName = await settings.get(SettingsStore.kDeviceName) ?? 'Phone';
     _identity = LocalIdentity(deviceId: deviceId, deviceName: deviceName);
     await _loadFamilies();
-    final started = <String>{};
-    String? error;
-    for (final t in transports) {
-      try {
-        await t.start(
-          deviceId: deviceId,
-          tags: _families.keys.toSet(),
-          onPeer: _onPeer,
-          onPeerLost: _onPeerLost,
-          onIncoming: _onIncoming,
-        );
-        started.add(t.name);
-      } catch (e) {
-        debugPrint('Transport ${t.name} failed to start: $e');
-        error = '${t.name}: $e';
-      }
-    }
-    _emit(_current.copyWith(running: true, transports: started, lastError: error));
+    _emit(_current.copyWith(running: true, transports: {}, transportErrors: {}));
+    _log('Sync started on ${_shortId(deviceId)} for ${_families.length} family(ies)');
+    await retryTransports();
     _localSub = store.localChanges.listen((_) {
       _debounce?.cancel();
       _debounce = Timer(const Duration(seconds: 2), () => syncAll(force: true));
@@ -177,11 +182,56 @@ class SyncManager {
       await _loadFamilies();
       for (final t in transports) {
         if (_current.transports.contains(t.name)) {
-          await t.updateTags(_families.keys.toSet());
+          try {
+            await t.updateTags(_families.keys.toSet());
+          } catch (e) {
+            _transportFailed(t, e);
+          }
         }
       }
     });
-    _periodic = Timer.periodic(_period, (_) => syncAll());
+    _periodic = Timer.periodic(_period, (_) async {
+      await retryTransports();
+      await syncAll();
+    });
+  }
+
+  /// Starts any transport that isn't running (e.g. Bluetooth before its
+  /// permission was granted). Safe to call any time.
+  Future<void> retryTransports() async {
+    if (!_current.running) return;
+    for (final t in transports) {
+      if (_current.transports.contains(t.name)) continue;
+      try {
+        // Clear half-started state (e.g. advertising up, discovery failed).
+        await t.stop().catchError((Object _) {});
+        await t.start(
+          deviceId: _identity.deviceId,
+          tags: _families.keys.toSet(),
+          onPeer: _onPeer,
+          onPeerLost: _onPeerLost,
+          onIncoming: _onIncoming,
+        );
+        final errors = Map.of(_current.transportErrors)..remove(t.name);
+        _emit(_current.copyWith(
+          transports: {..._current.transports, t.name},
+          transportErrors: errors,
+        ));
+        _log('${t.name} started');
+      } catch (e) {
+        _transportFailed(t, e);
+      }
+    }
+  }
+
+  void _transportFailed(SyncTransport t, Object e) {
+    final reason = _describe(e);
+    debugPrint('Transport ${t.name} failed: $reason');
+    _emit(_current.copyWith(
+      transports: {..._current.transports}..remove(t.name),
+      transportErrors: {..._current.transportErrors, t.name: reason},
+    ));
+    _log('${t.name} could not start: $reason');
   }
 
   Future<void> stop() async {
@@ -204,7 +254,7 @@ class SyncManager {
     }
     _livePeers.clear();
     _routes.clear();
-    _emit(const SyncStatus());
+    _emit(SyncStatus(log: _current.log));
   }
 
   Future<void> _loadFamilies() async {
@@ -233,13 +283,23 @@ class SyncManager {
       name: peer.name,
     );
     _emit(_current.copyWith(peers: _livePeers.values.toList()));
-    // The device with the lower id connects, so both don't dial at once.
+    _log('Found ${_shortId(peer.deviceId)} via ${peer.transport}');
+    // The device with the lower id dials first so both don't dial at once;
+    // the other follows up shortly in case that phone can't reach us.
     if (_identity.deviceId.compareTo(peer.deviceId) < 0) {
       unawaited(_syncWith(peer.deviceId));
+    } else {
+      Timer(const Duration(seconds: 8), () {
+        final last = _lastSuccess[peer.deviceId];
+        if (last == null || DateTime.now().difference(last) > const Duration(seconds: 30)) {
+          unawaited(_syncWith(peer.deviceId, force: true));
+        }
+      });
     }
   }
 
   void _onPeerLost(String deviceId) {
+    _log('Lost ${_shortId(deviceId)}');
     _livePeers.remove(deviceId);
     _routes.remove(deviceId);
     _emit(_current.copyWith(peers: _livePeers.values.toList()));
@@ -255,7 +315,8 @@ class SyncManager {
       await _recordResult(result);
     } catch (e) {
       debugPrint('Incoming sync failed: $e');
-      _emit(_current.copyWith(lastError: e.toString()));
+      _log('Incoming sync failed: ${_describe(e)}');
+      _emit(_current.copyWith(lastError: _describe(e)));
       await channel.close();
     } finally {
       _emit(_current.copyWith(syncing: _busy.isNotEmpty));
@@ -291,7 +352,8 @@ class SyncManager {
       _emit(_current.copyWith(clearError: true));
     } catch (e) {
       debugPrint('Sync with $deviceId failed: $e');
-      _emit(_current.copyWith(lastError: e.toString()));
+      _log('Sync with ${_shortId(deviceId)} failed: ${_describe(e)}');
+      _emit(_current.copyWith(lastError: _describe(e)));
     } finally {
       _busy.remove(deviceId);
       _emit(_current.copyWith(syncing: _busy.isNotEmpty));
@@ -316,6 +378,8 @@ class SyncManager {
 
   Future<void> _recordResult(SyncResult r) async {
     final peerName = r.peerName.isEmpty ? 'Phone' : r.peerName;
+    _lastSuccess[r.peerDeviceId] = DateTime.now();
+    _log('Synced with $peerName via ${r.transport}: sent ${r.sent}, got ${r.received}');
     await settings.recordPeer(
       deviceId: r.peerDeviceId,
       familyId: r.familyId,
@@ -338,6 +402,20 @@ class SyncManager {
       _emit(_current.copyWith(peers: _livePeers.values.toList()));
     }
     if (!_results.isClosed) _results.add(r);
+  }
+
+  void _log(String message) {
+    final log = [SyncLogLine(DateTime.now(), message), ..._current.log];
+    _emit(_current.copyWith(log: log.length > 60 ? log.sublist(0, 60) : log));
+  }
+
+  static String _shortId(String id) => id.length > 6 ? id.substring(0, 6) : id;
+
+  static String _describe(Object e) {
+    final text = e.toString();
+    // PlatformException(Failure, 8034: MISSING_PERMISSION_..., null, null)
+    final m = RegExp(r'PlatformException\([^,]*,\s*([^,]+)').firstMatch(text);
+    return (m?.group(1) ?? text).trim();
   }
 
   Future<void> dispose() async {

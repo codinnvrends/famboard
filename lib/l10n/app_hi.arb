@@ -1,12 +1,10 @@
 {
   "@@locale": "hi",
   "appTitle": "FamBoard",
-
   "navToday": "आज",
   "navLists": "सूचियाँ",
   "navBills": "बिल",
   "navFamily": "परिवार",
-
   "save": "सहेजें",
   "cancel": "रद्द करें",
   "delete": "हटाएँ",
@@ -22,7 +20,6 @@
   "remove": "हटाएँ",
   "rename": "नाम बदलें",
   "change": "बदलें",
-
   "welcomeTitle": "आपके घर का साझा बोर्ड",
   "welcomeBody": "क्या चाहिए, क्या ख़राब है और क्या भरना है, सब यहाँ लिखें। FamBoard परिवार के फ़ोनों के बीच Wi‑Fi या Bluetooth से सिंक होता है, इंटरनेट की ज़रूरत नहीं।",
   "createFamily": "नया परिवार बनाएँ",
@@ -42,25 +39,21 @@
   "joiningFamily": "{name} से जुड़ रहे हैं",
   "joinedWaitingSync": "आप जुड़ गए! परिवार का बोर्ड पाने के लिए दोनों फ़ोन पास में खुले रखें।",
   "cameraUnavailable": "कैमरा उपलब्ध नहीं है। आमंत्रण कोड पेस्ट करें।",
-
   "typeNeedToBuy": "ख़रीदना है",
   "typeOutOfStock": "ख़त्म हो गया",
   "typeRepair": "मरम्मत",
   "typeUpgrade": "नया लेना है",
   "typeBill": "बिल",
   "typeTask": "काम",
-
   "statusProposed": "प्रस्तावित",
   "statusOpen": "बाक़ी",
   "statusInProgress": "चल रहा है",
   "statusDone": "हो गया",
   "statusCancelled": "रद्द",
-
   "priorityLow": "कम",
   "priorityNormal": "सामान्य",
   "priorityHigh": "ज़्यादा",
   "priorityUrgent": "तुरंत",
-
   "roleAdmin": "एडमिन",
   "roleMember": "सदस्य",
   "roleChild": "बच्चा",
@@ -69,7 +62,6 @@
   "roleMemberDesc": "आइटम जोड़ते, बदलते और पूरे करते हैं; बिल की रक़म देखते हैं",
   "roleChildDesc": "आइटम जोड़ते और अपने पूरे करते हैं; रक़म छिपी रहती है",
   "roleViewerDesc": "सूचियाँ देखते और ख़रीदारी पर टिक लगाते हैं, जैसे घर में मदद करने वाले",
-
   "todayOverdue": "देर हो चुकी",
   "todayDueToday": "आज करना है",
   "todayUrgentRepairs": "ज़रूरी मरम्मत",
@@ -80,7 +72,6 @@
   "todayAllClearBody": "आज कुछ भी बाक़ी या देर से नहीं है। कुछ जोड़ने के लिए + दबाएँ।",
   "shoppingCount": "{count, plural, =1{1 चीज़ ख़रीदनी है} other{{count} चीज़ें ख़रीदनी हैं}}",
   "startShopping": "ख़रीदारी शुरू करें",
-
   "quickAddTitle": "बोर्ड पर जोड़ें",
   "quickAddHint": "क्या चाहिए? जैसे आटा 10kg, नल टपक रहा है",
   "moreDetails": "और जानकारी",
@@ -124,7 +115,6 @@
   "voiceEnglish": "English",
   "voiceHindi": "हिन्दी",
   "learnedCategory": "ठीक है। FamBoard यह श्रेणी याद रखेगा।",
-
   "markDone": "पूरा हुआ",
   "markBought": "ख़रीद लिया",
   "markPaid": "भर दिया",
@@ -156,7 +146,6 @@
   "someone": "कोई",
   "deletedBadge": "हटाया गया",
   "notFound": "यह आइटम अब बोर्ड पर नहीं है।",
-
   "listsAllOpen": "सभी बाक़ी",
   "listsDaily": "रोज़ाना",
   "listsWeekly": "साप्ताहिक",
@@ -171,7 +160,6 @@
   "clearFilters": "फ़िल्टर हटाएँ",
   "searchHint": "बोर्ड में खोजें",
   "noResults": "कुछ नहीं मिला",
-
   "billsStillToPay": "इस महीने भरना बाक़ी",
   "billsPaidThisMonth": "इस महीने भरा",
   "billsUpcoming": "आने वाले बिल",
@@ -181,12 +169,10 @@
   "billsAmountsHidden": "बिल की रक़म सिर्फ़ बड़ों को दिखती है।",
   "addFromSms": "बिल SMS से जोड़ें",
   "amountHidden": "छिपा है",
-
   "shoppingTitle": "ख़रीदारी",
   "shoppingEmpty": "कुछ नहीं ख़रीदना। बढ़िया!",
   "shoppingHelp": "कार्ट में डालते ही आइटम पर टैप करें।",
   "shoppingBought": "{title} ख़रीद लिया",
-
   "familyMembers": "सदस्य",
   "inviteSomeone": "किसी को आमंत्रित करें",
   "inviteTitle": "{family} में आमंत्रित करें",
@@ -223,7 +209,6 @@
   "renameFamily": "परिवार का नाम बदलें",
   "switchFamily": "परिवार बदलें",
   "addAnotherFamily": "दूसरा परिवार बनाएँ या जुड़ें",
-
   "settingsLanguage": "भाषा",
   "languageSystem": "फ़ोन की भाषा",
   "languageEnglish": "English",
@@ -250,27 +235,43 @@
   "settingsAbout": "FamBoard के बारे में",
   "aboutBody": "संस्करण {version}। आपका बोर्ड परिवार के फ़ोनों पर रहता है और सीधे उनके बीच सिंक होता है। कोई विज्ञापन नहीं, कोई ट्रैकिंग नहीं।",
   "settingsNeedsRestart": "लागू करने के लिए सिंक फिर से शुरू करें",
-
   "notifChannel": "रिमाइंडर",
   "notifDueToday": "आज तक: {title}",
   "notifDueIn": "{title}: {days} दिन में",
   "notifDigestTitle": "FamBoard आज",
   "notifDigestBody": "देखें आज क्या भरना है और क्या चाहिए।",
-
   "pasteSmsTitle": "मैसेज से बिल जोड़ें",
   "pasteSmsHint": "बिल का SMS यहाँ पेस्ट करें",
   "smsFoundBill": "बिल मिला",
   "noBillFound": "इस मैसेज में बिल नहीं मिला। आप फिर भी इसे आइटम की तरह जोड़ सकते हैं।",
   "continueAction": "आगे बढ़ें",
-
   "categoryAdd": "नई श्रेणी",
   "categoryNameLabel": "श्रेणी का नाम",
   "categoryParentLabel": "समूह",
   "permissionsNeeded": "बिना Wi‑Fi सिंक के लिए Bluetooth और पास के डिवाइस की अनुमति दें।",
   "genericError": "कुछ ग़लत हो गया। फिर से कोशिश करें।",
-
   "justNow": "अभी",
   "minutesAgo": "{n} मिनट पहले",
   "hoursAgo": "{n, plural, =1{1 घंटा पहले} other{{n} घंटे पहले}}",
-  "daysAgo": "{n, plural, =1{कल} other{{n} दिन पहले}}"
+  "daysAgo": "{n, plural, =1{कल} other{{n} दिन पहले}}",
+  "syncFixTitle": "सिंक अभी दूसरे फ़ोन नहीं ढूँढ पा रहा",
+  "problemNearbyPermission": "“आस-पास के डिवाइस” की अनुमति दें ताकि फ़ोन Bluetooth से एक-दूसरे को ढूँढ सकें।",
+  "problemLocationPermission": "लोकेशन की अनुमति दें। पास के फ़ोन ढूँढने के लिए Android को इसकी ज़रूरत है।",
+  "problemLocationOff": "क्विक सेटिंग्स में लोकेशन चालू करें। इसके बंद रहने पर Bluetooth से कुछ नहीं मिलता।",
+  "problemBluetoothOff": "Bluetooth चालू करें।",
+  "problemNoWifi": "दोनों फ़ोन एक ही Wi‑Fi से जोड़ें, या Bluetooth इस्तेमाल करें।",
+  "allowPermissions": "अनुमति दें",
+  "openSettings": "सेटिंग्स खोलें",
+  "checkAgain": "फिर से जाँचें",
+  "syncDiagnostics": "सिंक का विवरण",
+  "diagThisPhone": "यह फ़ोन",
+  "diagMethods": "जुड़ने के तरीके",
+  "diagRunning": "चालू",
+  "diagNotRunning": "बंद",
+  "diagPhonesSeen": "अभी दिख रहे फ़ोन",
+  "diagNone": "कोई नहीं",
+  "diagRecent": "हाल की गतिविधि",
+  "diagLastError": "आख़िरी त्रुटि",
+  "diagCopy": "विवरण कॉपी करें",
+  "diagHint": "दोनों फ़ोन पर FamBoard एक साथ खुला होना चाहिए। एक ही Wi‑Fi सबसे अच्छा है; नहीं तो Bluetooth और लोकेशन चालू रखें।"
 }

@@ -1621,6 +1621,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{n, plural, =1{yesterday} other{{n} days ago}}'**
   String daysAgo(int n);
+
+  /// No description provided for @syncFixTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync can\'t find other phones yet'**
+  String get syncFixTitle;
+
+  /// No description provided for @problemNearbyPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow “Nearby devices” so phones can find each other over Bluetooth.'**
+  String get problemNearbyPermission;
+
+  /// No description provided for @problemLocationPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Location. Android needs it to scan for nearby phones.'**
+  String get problemLocationPermission;
+
+  /// No description provided for @problemLocationOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Location in quick settings. Bluetooth scanning finds nothing while it\'s off.'**
+  String get problemLocationOff;
+
+  /// No description provided for @problemBluetoothOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Bluetooth.'**
+  String get problemBluetoothOff;
+
+  /// No description provided for @problemNoWifi.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect both phones to the same Wi‑Fi, or use Bluetooth.'**
+  String get problemNoWifi;
+
+  /// No description provided for @allowPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allowPermissions;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
+
+  /// No description provided for @checkAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get checkAgain;
+
+  /// No description provided for @syncDiagnostics.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync details'**
+  String get syncDiagnostics;
+
+  /// No description provided for @diagThisPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone'**
+  String get diagThisPhone;
+
+  /// No description provided for @diagMethods.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection methods'**
+  String get diagMethods;
+
+  /// No description provided for @diagRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get diagRunning;
+
+  /// No description provided for @diagNotRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Not running'**
+  String get diagNotRunning;
+
+  /// No description provided for @diagPhonesSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Phones seen now'**
+  String get diagPhonesSeen;
+
+  /// No description provided for @diagNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get diagNone;
+
+  /// No description provided for @diagRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activity'**
+  String get diagRecent;
+
+  /// No description provided for @diagLastError.
+  ///
+  /// In en, this message translates to:
+  /// **'Last error'**
+  String get diagLastError;
+
+  /// No description provided for @diagCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy details'**
+  String get diagCopy;
+
+  /// No description provided for @diagHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on.'**
+  String get diagHint;
 }
 
 class _AppLocalizationsDelegate

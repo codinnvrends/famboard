@@ -20,6 +20,7 @@ import '../services/text_extractor.dart';
 import '../services/voice.dart';
 import '../sync/lan_transport.dart';
 import '../sync/nearby_transport.dart';
+import '../sync/sync_health.dart';
 import '../sync/sync_manager.dart';
 import '../sync/transport.dart';
 
@@ -38,6 +39,7 @@ class AppServices {
     required this.backup,
     required this.families,
     required this.deviceId,
+    required this.health,
   });
 
   final AppDatabase db;
@@ -52,6 +54,7 @@ class AppServices {
   final BackupService backup;
   final FamiliesNotifier families;
   final String deviceId;
+  final SyncHealthMonitor health;
   final Categorizer categorizer = Categorizer();
   final TextExtractor extractor = TextExtractor();
   final SmsBillParser smsParser = SmsBillParser();
@@ -71,6 +74,7 @@ class AppServices {
         if (!kIsWeb && Platform.isAndroid) NearbyTransport(),
       ],
       notifications: NotificationService(),
+      healthChecker: AndroidSyncHealthChecker(),
     );
   }
 
@@ -80,6 +84,7 @@ class AppServices {
     required KeyVault vault,
     required List<SyncTransport> transports,
     required NotificationService notifications,
+    SyncHealthChecker? healthChecker,
     String? defaultDeviceName,
   }) async {
     final settings = SettingsStore(db);
@@ -122,6 +127,11 @@ class AppServices {
       backup: BackupService(store: store, repo: repo, settings: settings, vault: vault),
       families: families,
       deviceId: deviceId,
+      health: SyncHealthMonitor(
+        healthChecker ?? NoopSyncHealthChecker(),
+        nearbyEnabled: () async =>
+            await settings.get(SettingsStore.kNearby) != 'false' && transports.any((t) => t.name == 'nearby'),
+      ),
     );
   }
 

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../app/providers.dart';
@@ -16,7 +15,7 @@ import '../../services/backup.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
 
-const appVersion = '0.2.0';
+const appVersion = '0.2.1';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -125,7 +124,7 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: Text(l.settingsNearbyBody),
               value: nearby,
               onChanged: (val) async {
-                if (val) await requestNearbyPermissions();
+                if (val) await ref.read(servicesProvider).health.checker.requestPermissions();
                 await settings.set(SettingsStore.kNearby, '$val');
                 if (context.mounted) showSnack(context, l.settingsNeedsRestart);
               },
@@ -243,17 +242,4 @@ class SettingsScreen extends ConsumerWidget {
       }
     }
   }
-}
-
-/// Asks for the permissions Nearby Connections needs on this Android version.
-Future<bool> requestNearbyPermissions() async {
-  if (!Platform.isAndroid) return false;
-  final statuses = await [
-    Permission.bluetoothScan,
-    Permission.bluetoothAdvertise,
-    Permission.bluetoothConnect,
-    Permission.nearbyWifiDevices,
-    Permission.locationWhenInUse,
-  ].request();
-  return statuses.values.any((s) => s.isGranted);
 }

@@ -1,12 +1,10 @@
 {
   "@@locale": "en",
   "appTitle": "FamBoard",
-
   "navToday": "Today",
   "navLists": "Lists",
   "navBills": "Bills",
   "navFamily": "Family",
-
   "save": "Save",
   "cancel": "Cancel",
   "delete": "Delete",
@@ -22,7 +20,6 @@
   "remove": "Remove",
   "rename": "Rename",
   "change": "Change",
-
   "welcomeTitle": "Your home's shared board",
   "welcomeBody": "Note what's needed, what's broken and what's due. FamBoard syncs between family phones over Wi‑Fi or Bluetooth, with no internet needed.",
   "createFamily": "Create a family",
@@ -40,28 +37,30 @@
   "inviteExpired": "This invite has expired. Ask for a new QR code.",
   "inviteInvalid": "That is not a FamBoard invite.",
   "joiningFamily": "Joining {name}",
-  "@joiningFamily": {"placeholders": {"name": {"type": "String"}}},
+  "@joiningFamily": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "joinedWaitingSync": "You're in! Keep both phones open nearby to get the family's board.",
   "cameraUnavailable": "Camera not available. Paste the invite code instead.",
-
   "typeNeedToBuy": "Need to buy",
   "typeOutOfStock": "Out of stock",
   "typeRepair": "Repair",
   "typeUpgrade": "Upgrade",
   "typeBill": "Bill",
   "typeTask": "Task",
-
   "statusProposed": "Proposed",
   "statusOpen": "Open",
   "statusInProgress": "In progress",
   "statusDone": "Done",
   "statusCancelled": "Cancelled",
-
   "priorityLow": "Low",
   "priorityNormal": "Normal",
   "priorityHigh": "High",
   "priorityUrgent": "Urgent",
-
   "roleAdmin": "Admin",
   "roleMember": "Member",
   "roleChild": "Child",
@@ -70,7 +69,6 @@
   "roleMemberDesc": "Adds, edits and completes items; sees bill amounts",
   "roleChildDesc": "Adds items and completes their own; amounts hidden",
   "roleViewerDesc": "Sees lists and ticks off shopping, e.g. a helper",
-
   "todayOverdue": "Overdue",
   "todayDueToday": "Due today",
   "todayUrgentRepairs": "Urgent repairs",
@@ -80,9 +78,14 @@
   "todayAllClear": "All clear for today",
   "todayAllClearBody": "Nothing is overdue or due today. Tap + to add something.",
   "shoppingCount": "{count, plural, =1{1 item to buy} other{{count} items to buy}}",
-  "@shoppingCount": {"placeholders": {"count": {"type": "int"}}},
+  "@shoppingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "startShopping": "Start shopping",
-
   "quickAddTitle": "Add to the board",
   "quickAddHint": "What's needed? e.g. atta 10kg, tap leaking",
   "moreDetails": "More details",
@@ -106,23 +109,65 @@
   "repeatYearly": "Every year",
   "repeatEveryNDays": "Every few days",
   "everyNDays": "Every {n} days",
-  "@everyNDays": {"placeholders": {"n": {"type": "int"}}},
+  "@everyNDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "everyNMonths": "Every {n} months",
-  "@everyNMonths": {"placeholders": {"n": {"type": "int"}}},
+  "@everyNMonths": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "everyNWeeks": "Every {n} weeks",
-  "@everyNWeeks": {"placeholders": {"n": {"type": "int"}}},
+  "@everyNWeeks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "monthlyOnDay": "Monthly on day {day}",
-  "@monthlyOnDay": {"placeholders": {"day": {"type": "int"}}},
+  "@monthlyOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
   "weeklyOn": "Weekly on {day}",
-  "@weeklyOn": {"placeholders": {"day": {"type": "String"}}},
+  "@weeklyOn": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
   "daysLabel": "Days",
   "reminderLabel": "Remind early",
   "reminderNone": "Only on the due date",
   "reminderDaysBefore": "{n, plural, =1{1 day before} other{{n} days before}}",
-  "@reminderDaysBefore": {"placeholders": {"n": {"type": "int"}}},
+  "@reminderDaysBefore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "noteLabel": "Note",
   "duplicateWarning": "Already on the board: “{title}”",
-  "@duplicateWarning": {"placeholders": {"title": {"type": "String"}}},
+  "@duplicateWarning": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "viewExisting": "View",
   "entryAdded": "Added to the board",
   "voiceListening": "Listening…",
@@ -133,7 +178,6 @@
   "voiceEnglish": "English",
   "voiceHindi": "हिन्दी",
   "learnedCategory": "Got it. FamBoard will remember this category.",
-
   "markDone": "Mark done",
   "markBought": "Bought",
   "markPaid": "Mark paid",
@@ -143,43 +187,129 @@
   "claim": "I'll do it",
   "unclaim": "Let go",
   "claimedBy": "{name} is on it",
-  "@claimedBy": {"placeholders": {"name": {"type": "String"}}},
+  "@claimedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "historyTitle": "History",
   "activityCreated": "{name} added this",
-  "@activityCreated": {"placeholders": {"name": {"type": "String"}}},
+  "@activityCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "activityCreatedRecurring": "{name} completed the last one; this is the next",
-  "@activityCreatedRecurring": {"placeholders": {"name": {"type": "String"}}},
+  "@activityCreatedRecurring": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "activityEdited": "{name} edited it",
-  "@activityEdited": {"placeholders": {"name": {"type": "String"}}},
+  "@activityEdited": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "activityClaimed": "{name} took it on",
-  "@activityClaimed": {"placeholders": {"name": {"type": "String"}}},
+  "@activityClaimed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "activityUnclaimed": "{name} let it go",
-  "@activityUnclaimed": {"placeholders": {"name": {"type": "String"}}},
+  "@activityUnclaimed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "activityStatus": "{name} marked it {status}",
-  "@activityStatus": {"placeholders": {"name": {"type": "String"}, "status": {"type": "String"}}},
+  "@activityStatus": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
   "activityDeleted": "{name} deleted it",
-  "@activityDeleted": {"placeholders": {"name": {"type": "String"}}},
+  "@activityDeleted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "activityRestored": "{name} restored it",
-  "@activityRestored": {"placeholders": {"name": {"type": "String"}}},
+  "@activityRestored": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "activityBought": "{name} bought it",
-  "@activityBought": {"placeholders": {"name": {"type": "String"}}},
+  "@activityBought": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "deleteConfirmTitle": "Delete this item?",
   "deleteConfirmBody": "You can restore it from Lists → Deleted.",
   "entryDeleted": "Deleted",
   "nextOccurrence": "Next one added for {date}",
-  "@nextOccurrence": {"placeholders": {"date": {"type": "String"}}},
+  "@nextOccurrence": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "dueOn": "Due {date}",
-  "@dueOn": {"placeholders": {"date": {"type": "String"}}},
+  "@dueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "overdueBy": "{days, plural, =1{1 day overdue} other{{days} days overdue}}",
-  "@overdueBy": {"placeholders": {"days": {"type": "int"}}},
+  "@overdueBy": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "dueTodayShort": "Due today",
   "dueTomorrow": "Due tomorrow",
   "addedBy": "Added by {name}",
-  "@addedBy": {"placeholders": {"name": {"type": "String"}}},
+  "@addedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "someone": "Someone",
   "deletedBadge": "Deleted",
   "notFound": "This item is no longer on the board.",
-
   "listsAllOpen": "All open",
   "listsDaily": "Daily",
   "listsWeekly": "Weekly",
@@ -194,7 +324,6 @@
   "clearFilters": "Clear filters",
   "searchHint": "Search the board",
   "noResults": "No matches",
-
   "billsStillToPay": "Still to pay this month",
   "billsPaidThisMonth": "Paid this month",
   "billsUpcoming": "Upcoming bills",
@@ -204,27 +333,49 @@
   "billsAmountsHidden": "Bill amounts are visible to adults only.",
   "addFromSms": "Add from a bill SMS",
   "amountHidden": "Hidden",
-
   "shoppingTitle": "Shopping",
   "shoppingEmpty": "Nothing to buy. Nice!",
   "shoppingHelp": "Tap an item once it's in your cart.",
   "shoppingBought": "Bought {title}",
-  "@shoppingBought": {"placeholders": {"title": {"type": "String"}}},
-
+  "@shoppingBought": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "familyMembers": "Members",
   "inviteSomeone": "Invite someone",
   "inviteTitle": "Invite to {family}",
-  "@inviteTitle": {"placeholders": {"family": {"type": "String"}}},
+  "@inviteTitle": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
   "inviteJoinAs": "They join as",
   "inviteInstructions": "On the other phone, open FamBoard, choose “Join a family” and scan this code. Show it only in person: anyone with it can join.",
   "inviteExpiresIn": "Expires in {time}",
-  "@inviteExpiresIn": {"placeholders": {"time": {"type": "String"}}},
+  "@inviteExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "inviteExpiredTitle": "This code has expired",
   "inviteNewCode": "New code",
   "inviteCopyCode": "Copy code",
   "removeMember": "Remove from family",
   "removeMemberConfirm": "Remove {name}? Their phones will stop syncing with yours.",
-  "@removeMemberConfirm": {"placeholders": {"name": {"type": "String"}}},
+  "@removeMemberConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "changeRole": "Change role",
   "youLabel": "You",
   "removedLabel": "Removed",
@@ -232,31 +383,75 @@
   "familyPhones": "Family phones",
   "noPhonesYet": "No family phones seen yet. Keep FamBoard open on both phones, on the same Wi‑Fi or with Bluetooth on.",
   "phoneLastSynced": "Synced {time} via {via}",
-  "@phoneLastSynced": {"placeholders": {"time": {"type": "String"}, "via": {"type": "String"}}},
+  "@phoneLastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "via": {
+        "type": "String"
+      }
+    }
+  },
   "phoneSeen": "Seen {time}",
-  "@phoneSeen": {"placeholders": {"time": {"type": "String"}}},
+  "@phoneSeen": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "nearbyNow": "Nearby now",
   "syncNow": "Sync now",
   "syncing": "Syncing…",
   "syncNever": "Not synced yet",
   "syncedWith": "Synced with {name} · {time}",
-  "@syncedWith": {"placeholders": {"name": {"type": "String"}, "time": {"type": "String"}}},
+  "@syncedWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "syncStale": "Not synced for {days} days",
-  "@syncStale": {"placeholders": {"days": {"type": "int"}}},
+  "@syncStale": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "syncSearching": "Looking for family phones…",
   "syncPeersNearby": "{count, plural, =1{1 family phone nearby} other{{count} family phones nearby}}",
-  "@syncPeersNearby": {"placeholders": {"count": {"type": "int"}}},
+  "@syncPeersNearby": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "syncOff": "Sync is off",
   "viaWifi": "Wi‑Fi",
   "viaNearby": "Bluetooth",
   "viaOther": "direct",
   "syncReceived": "{count, plural, =1{1 update from {name}} other{{count} updates from {name}}}",
-  "@syncReceived": {"placeholders": {"count": {"type": "int"}, "name": {"type": "String"}}},
+  "@syncReceived": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "syncNoPeersToSync": "No family phones nearby right now.",
   "renameFamily": "Rename family",
   "switchFamily": "Switch family",
   "addAnotherFamily": "Create or join another family",
-
   "settingsLanguage": "Language",
   "languageSystem": "Phone default",
   "languageEnglish": "English",
@@ -280,37 +475,98 @@
   "backupPassphraseHint": "At least 6 characters. You'll need it to restore.",
   "backupWrongPassphrase": "Wrong passphrase.",
   "backupRestored": "Restored {name}",
-  "@backupRestored": {"placeholders": {"name": {"type": "String"}}},
+  "@backupRestored": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "settingsAbout": "About FamBoard",
   "aboutBody": "Version {version}. Your board lives on your family's phones and syncs between them directly. No ads, no tracking.",
-  "@aboutBody": {"placeholders": {"version": {"type": "String"}}},
+  "@aboutBody": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "settingsNeedsRestart": "Restart sync to apply",
-
   "notifChannel": "Reminders",
   "notifDueToday": "Due today: {title}",
-  "@notifDueToday": {"placeholders": {"title": {"type": "String"}}},
+  "@notifDueToday": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "notifDueIn": "{title}: due in {days} days",
-  "@notifDueIn": {"placeholders": {"title": {"type": "String"}, "days": {"type": "int"}}},
+  "@notifDueIn": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "notifDigestTitle": "FamBoard today",
   "notifDigestBody": "See what's due and what's needed today.",
-
   "pasteSmsTitle": "Add a bill from a message",
   "pasteSmsHint": "Paste the bill SMS here",
   "smsFoundBill": "Found a bill",
   "noBillFound": "No bill found in that text. You can still add it as an item.",
   "continueAction": "Continue",
-
   "categoryAdd": "New category",
   "categoryNameLabel": "Category name",
   "categoryParentLabel": "Group",
   "permissionsNeeded": "Allow Bluetooth and nearby-devices access to sync without Wi‑Fi.",
   "genericError": "Something went wrong. Please try again.",
-
   "justNow": "just now",
   "minutesAgo": "{n} min ago",
-  "@minutesAgo": {"placeholders": {"n": {"type": "int"}}},
+  "@minutesAgo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "hoursAgo": "{n, plural, =1{1 hour ago} other{{n} hours ago}}",
-  "@hoursAgo": {"placeholders": {"n": {"type": "int"}}},
+  "@hoursAgo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "daysAgo": "{n, plural, =1{yesterday} other{{n} days ago}}",
-  "@daysAgo": {"placeholders": {"n": {"type": "int"}}}
+  "@daysAgo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "syncFixTitle": "Sync can't find other phones yet",
+  "problemNearbyPermission": "Allow “Nearby devices” so phones can find each other over Bluetooth.",
+  "problemLocationPermission": "Allow Location. Android needs it to scan for nearby phones.",
+  "problemLocationOff": "Turn on Location in quick settings. Bluetooth scanning finds nothing while it's off.",
+  "problemBluetoothOff": "Turn on Bluetooth.",
+  "problemNoWifi": "Connect both phones to the same Wi‑Fi, or use Bluetooth.",
+  "allowPermissions": "Allow",
+  "openSettings": "Open settings",
+  "checkAgain": "Check again",
+  "syncDiagnostics": "Sync details",
+  "diagThisPhone": "This phone",
+  "diagMethods": "Connection methods",
+  "diagRunning": "Running",
+  "diagNotRunning": "Not running",
+  "diagPhonesSeen": "Phones seen now",
+  "diagNone": "None",
+  "diagRecent": "Recent activity",
+  "diagLastError": "Last error",
+  "diagCopy": "Copy details",
+  "diagHint": "Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on."
 }

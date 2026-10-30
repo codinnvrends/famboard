@@ -912,4 +912,69 @@ class AppLocalizationsHi extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get syncFixTitle => 'सिंक अभी दूसरे फ़ोन नहीं ढूँढ पा रहा';
+
+  @override
+  String get problemNearbyPermission =>
+      '“आस-पास के डिवाइस” की अनुमति दें ताकि फ़ोन Bluetooth से एक-दूसरे को ढूँढ सकें।';
+
+  @override
+  String get problemLocationPermission =>
+      'लोकेशन की अनुमति दें। पास के फ़ोन ढूँढने के लिए Android को इसकी ज़रूरत है।';
+
+  @override
+  String get problemLocationOff =>
+      'क्विक सेटिंग्स में लोकेशन चालू करें। इसके बंद रहने पर Bluetooth से कुछ नहीं मिलता।';
+
+  @override
+  String get problemBluetoothOff => 'Bluetooth चालू करें।';
+
+  @override
+  String get problemNoWifi =>
+      'दोनों फ़ोन एक ही Wi‑Fi से जोड़ें, या Bluetooth इस्तेमाल करें।';
+
+  @override
+  String get allowPermissions => 'अनुमति दें';
+
+  @override
+  String get openSettings => 'सेटिंग्स खोलें';
+
+  @override
+  String get checkAgain => 'फिर से जाँचें';
+
+  @override
+  String get syncDiagnostics => 'सिंक का विवरण';
+
+  @override
+  String get diagThisPhone => 'यह फ़ोन';
+
+  @override
+  String get diagMethods => 'जुड़ने के तरीके';
+
+  @override
+  String get diagRunning => 'चालू';
+
+  @override
+  String get diagNotRunning => 'बंद';
+
+  @override
+  String get diagPhonesSeen => 'अभी दिख रहे फ़ोन';
+
+  @override
+  String get diagNone => 'कोई नहीं';
+
+  @override
+  String get diagRecent => 'हाल की गतिविधि';
+
+  @override
+  String get diagLastError => 'आख़िरी त्रुटि';
+
+  @override
+  String get diagCopy => 'विवरण कॉपी करें';
+
+  @override
+  String get diagHint =>
+      'दोनों फ़ोन पर FamBoard एक साथ खुला होना चाहिए। एक ही Wi‑Fi सबसे अच्छा है; नहीं तो Bluetooth और लोकेशन चालू रखें।';
 }
