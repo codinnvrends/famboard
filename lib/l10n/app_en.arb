@@ -613,5 +613,122 @@
         "type": "String"
       }
     }
-  }
+  },
+  "scanBill": "Scan a bill",
+  "scanBillBody": "FamBoard reads the bill on your phone, without internet. You can fix anything before saving.",
+  "scanBillCamera": "Take photos",
+  "scanBillCameraBody": "Crops the bill for you. For a long bill, take several photos top to bottom with a little overlap.",
+  "scanBillGallery": "Choose photos",
+  "scanBillGalleryBody": "Pick one or more bill photos from your gallery",
+  "scanBillHindi": "Bill has Hindi text",
+  "scanReading": "{count, plural, =1{Reading the bill…} other{Reading {count} photos…}}",
+  "@scanReading": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanNothingFound": "No items found. Try a sharper photo in good light, or add items by hand.",
+  "scanFailed": "Couldn't read that photo. Please try again.",
+  "billReviewTitle": "Check items",
+  "billReviewHint": "Tap an item to fix it. Items marked ⚠ need a look. Swipe left to remove.",
+  "billStore": "Shop",
+  "billDate": "Bill date",
+  "billUntitled": "Bill",
+  "billSelectAll": "Select all",
+  "billSelectNone": "Select none",
+  "billCheckThis": "Please check this item",
+  "billLineRemoved": "Item removed",
+  "billItemsTotal": "Items total {total}",
+  "@billItemsTotal": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "billTotalMatches": "Adds up to the bill total of {total}",
+  "@billTotalMatches": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "billTotalMismatch": "Items add up to {items} but the bill says {printed}. Check items marked ⚠ or add a missing one.",
+  "@billTotalMismatch": {
+    "placeholders": {
+      "items": {
+        "type": "String"
+      },
+      "printed": {
+        "type": "String"
+      }
+    }
+  },
+  "billSelectedTotal": "Selected items: {items} (bill total {printed})",
+  "@billSelectedTotal": {
+    "placeholders": {
+      "items": {
+        "type": "String"
+      },
+      "printed": {
+        "type": "String"
+      }
+    }
+  },
+  "billSaveList": "Save list",
+  "billAddToBoard": "Add to board",
+  "billAddedToBoard": "{count, plural, =0{Everything is already on the board} =1{1 item added to the board} other{{count} items added to the board}}",
+  "@billAddedToBoard": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listName": "List name",
+  "listKindGrocery": "Grocery",
+  "listKindGeneral": "General",
+  "listItemName": "Item",
+  "listItemRate": "Rate",
+  "listAddItem": "Add item",
+  "listSavedForNextTime": "Saved. Find it under Saved lists next time.",
+  "savedListsTitle": "Saved lists",
+  "savedListsEmpty": "No saved lists yet",
+  "savedListsEmptyBody": "Scan a bill to keep what you bought as a list for next time, or make a list by hand.",
+  "listNew": "New list",
+  "listEmpty": "Nothing on this list yet",
+  "listQuickAddHint": "Add an item",
+  "listItemCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@listItemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listBoughtCount": "{count} bought",
+  "@listBoughtCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listAddRemainingToBoard": "Add unticked items to board",
+  "listUntickAll": "Untick all",
+  "listDeleteTitle": "Delete this list?",
+  "listDeleteBody": "It will be removed from every phone in the family.",
+  "listShareTitle": "Share or download",
+  "listSharePrices": "Include prices",
+  "listShareOnlyRemaining": "Only items not yet bought",
+  "listShareText": "Send as message",
+  "listShareTextBody": "A checklist for WhatsApp or SMS",
+  "listSharePdf": "PDF",
+  "listShareCsv": "Spreadsheet (CSV)",
+  "listSaveToPhone": "Save to phone",
+  "listSaved": "Saved to your phone",
+  "scanCameraUnavailable": "The camera scanner isn't ready on this phone yet (it needs internet once). Choose a photo instead."
 }

@@ -462,6 +462,121 @@ class FamBoardRepository {
     return id;
   }
 
+  // Saved lists ---------------------------------------------------------------
+
+  Stream<List<SavedList>> watchLists(String familyId) => store
+      .watch(familyId, Entities.list)
+      .map((l) => l.map(SavedList.fromRecord).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
+
+  Stream<SavedList?> watchList(String familyId, String id) => store
+      .watch(familyId, Entities.list)
+      .map((l) => l.where((r) => r.id == id).map(SavedList.fromRecord).firstOrNull);
+
+  Stream<List<ListItem>> watchListItems(String familyId, String listId) => store
+      .watch(familyId, Entities.listItem)
+      .map((l) => l.map(ListItem.fromRecord).where((i) => i.listId == listId).toList()
+        ..sort((a, b) => a.position.compareTo(b.position)));
+
+  Future<List<ListItem>> listItems(String familyId, String listId) async =>
+      (await store.list(familyId, Entities.listItem))
+          .map(ListItem.fromRecord)
+          .where((i) => i.listId == listId)
+          .toList()
+        ..sort((a, b) => a.position.compareTo(b.position));
+
+  /// Saves a list with its items in one go (one write batch, so a peer never
+  /// sees half a list).
+  Future<String> createList({
+    required String familyId,
+    required String memberId,
+    required String name,
+    required ListKind kind,
+    required List<ListItem> items,
+    String? storeName,
+    DateTime? billDate,
+    double? billTotal,
+    bool fromBill = false,
+  }) async {
+    final listId = newId();
+    await store.writeAll([
+      RecordWrite(
+        familyId: familyId,
+        entity: Entities.list,
+        id: listId,
+        fields: {
+          'name': name.trim(),
+          'kind': kind.code,
+          'store': storeName,
+          'billDate': billDate?.toIso8601String(),
+          'billTotal': billTotal,
+          'fromBill': fromBill,
+          'createdBy': memberId,
+          'createdAt': _now().toIso8601String(),
+        },
+      ),
+      for (var i = 0; i < items.length; i++)
+        RecordWrite(
+          familyId: familyId,
+          entity: Entities.listItem,
+          id: newId(),
+          fields: {...items[i].toFields(), 'listId': listId, 'position': i.toDouble()},
+        ),
+    ]);
+    return listId;
+  }
+
+  Future<void> renameList(String familyId, String listId, String name) => store.write(RecordWrite(
+        familyId: familyId,
+        entity: Entities.list,
+        id: listId,
+        fields: {'name': name.trim()},
+      ));
+
+  Future<String> addListItem(String familyId, String listId, String name, {String? categoryId, double? position}) async {
+    final id = newId();
+    final items = await listItems(familyId, listId);
+    final pos = position ?? (items.isEmpty ? 0 : items.last.position + 1);
+    await store.write(RecordWrite(
+      familyId: familyId,
+      entity: Entities.listItem,
+      id: id,
+      fields: {'listId': listId, 'name': name.trim(), 'categoryId': categoryId, 'checked': false, 'position': pos},
+    ));
+    return id;
+  }
+
+  /// Writes only the fields that changed.
+  Future<void> updateListItem(String familyId, ListItem before, Map<String, Object?> changes) async {
+    final current = before.toFields();
+    final changed = {
+      for (final e in changes.entries)
+        if (current[e.key] != e.value) e.key: e.value,
+    };
+    if (changed.isEmpty) return;
+    await store.write(RecordWrite(familyId: familyId, entity: Entities.listItem, id: before.id, fields: changed));
+  }
+
+  Future<void> deleteListItem(String familyId, String itemId) =>
+      store.delete(familyId, Entities.listItem, itemId);
+
+  Future<void> deleteList(String familyId, String listId) async {
+    final items = await listItems(familyId, listId);
+    await store.writeAll([
+      RecordWrite(familyId: familyId, entity: Entities.list, id: listId, fields: {RecordState.deletedField: true}),
+      for (final i in items)
+        RecordWrite(familyId: familyId, entity: Entities.listItem, id: i.id, fields: {RecordState.deletedField: true}),
+    ]);
+  }
+
+  /// Unticks every item so the list can be used again.
+  Future<void> resetList(String familyId, String listId) async {
+    final items = await listItems(familyId, listId);
+    await store.writeAll([
+      for (final i in items.where((i) => i.checked))
+        RecordWrite(familyId: familyId, entity: Entities.listItem, id: i.id, fields: {'checked': false}),
+    ]);
+  }
+
   // Helpers -------------------------------------------------------------------
 
   RecordWrite _activity(

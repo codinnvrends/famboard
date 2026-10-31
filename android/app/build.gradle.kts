@@ -37,6 +37,7 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }
@@ -53,4 +54,6 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    // On-device model for Hindi (Devanagari) bills; Latin ships with the plugin.
+    implementation("com.google.mlkit:text-recognition-devanagari:16.0.1")
 }

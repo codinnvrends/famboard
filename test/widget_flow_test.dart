@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:famboard/app/app.dart';
 import 'package:famboard/app/providers.dart';
@@ -6,9 +10,11 @@ import 'package:famboard/data/db/connection.dart';
 import 'package:famboard/data/key_vault.dart';
 import 'package:famboard/data/settings_store.dart';
 import 'package:famboard/domain/models.dart';
+import 'package:famboard/services/receipt/ocr_types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'end_to_end_sync_test.dart' show FakeNetwork, FakeTransport, NoopNotifications;
@@ -117,5 +123,53 @@ void main() {
     await tester.runAsync(() => s.sync.dispose());
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(seconds: 5));
+  });
+
+  testWidgets('review a scanned bill, fix a line, save it as a list', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2200);
+    tester.view.devicePixelRatio = 2.6;
+    addTearDown(tester.view.reset);
+
+    final s = await tester.runAsync(services);
+    final fam = (await tester.runAsync(() => s!.repo.createFamily(familyName: 'Home', myName: 'Priya')))!;
+    final page = OcrPage.fromJson(
+        jsonDecode(File('test/fixtures/bills/varnamm_tailor.json').readAsStringSync()) as Map<String, Object?>);
+    final bill = s!.billScanner.parser.parse(page);
+
+    await tester.pumpWidget(ProviderScope(
+      overrides: [servicesProvider.overrideWithValue(s)],
+      child: const FamBoardApp(),
+    ));
+    await settle(tester);
+    await pumpUntil(tester, () => find.byIcon(Icons.document_scanner_outlined).evaluate().isNotEmpty);
+
+    unawaited(GoRouter.of(tester.element(find.byType(NavigationBar))).push('/bill-review', extra: bill));
+    await settle(tester);
+    expect(find.text('Check items'), findsOneWidget);
+    expect(find.textContaining('Adds up to the bill total'), findsOneWidget);
+
+    // Fix the first line's name.
+    await tester.tap(find.text(bill.items.first.name));
+    await settle(tester);
+    await tester.enterText(find.widgetWithText(TextField, 'Item'), 'Blouse stitching');
+    await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+    await settle(tester);
+    expect(find.text('Blouse stitching'), findsOneWidget);
+
+    await tester.tap(find.text('Save list'));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 300)));
+    await settle(tester);
+
+    final lists = (await tester.runAsync(() => s.repo.watchLists(fam.id).first))!;
+    expect(lists.single.fromBill, isTrue);
+    final items = (await tester.runAsync(() => s.repo.listItems(fam.id, lists.single.id)))!;
+    expect(items.length, bill.items.length);
+    expect(items.first.name, 'Blouse stitching');
+    // Now on the saved list itself.
+    await pumpUntil(tester, () => find.byType(CheckboxListTile).evaluate().length == items.length);
+
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 5));
+    await tester.runAsync(() => s.sync.dispose().timeout(const Duration(seconds: 2), onTimeout: () {}));
   });
 }

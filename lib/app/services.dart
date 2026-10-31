@@ -14,6 +14,8 @@ import '../data/record_store.dart';
 import '../data/settings_store.dart';
 import '../services/backup.dart';
 import '../services/categorizer/categorizer.dart';
+import '../services/receipt/bill_scanner.dart';
+import '../services/receipt/receipt_parser.dart';
 import '../services/notifications.dart';
 import '../services/share_intake.dart';
 import '../services/text_extractor.dart';
@@ -58,6 +60,7 @@ class AppServices {
   final Categorizer categorizer = Categorizer();
   final TextExtractor extractor = TextExtractor();
   final SmsBillParser smsParser = SmsBillParser();
+  late final BillScanner billScanner = BillScanner(parser: ReceiptParser(categorizer: categorizer));
 
   static Future<AppServices> create() async {
     final vault = SecureKeyVault();

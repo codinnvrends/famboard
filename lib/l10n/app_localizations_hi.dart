@@ -1041,4 +1041,211 @@ class AppLocalizationsHi extends AppLocalizations {
   String backupLast(String date) {
     return 'आख़िरी बैकअप $date';
   }
+
+  @override
+  String get scanBill => 'बिल स्कैन करें';
+
+  @override
+  String get scanBillBody =>
+      'FamBoard बिल को आपके फ़ोन पर ही पढ़ता है, इंटरनेट के बिना। सेव करने से पहले आप कुछ भी ठीक कर सकते हैं।';
+
+  @override
+  String get scanBillCamera => 'फ़ोटो लें';
+
+  @override
+  String get scanBillCameraBody =>
+      'बिल अपने आप काटकर सीधा करता है। लंबा बिल हो तो ऊपर से नीचे कई फ़ोटो लें, थोड़ा हिस्सा दोहराते हुए।';
+
+  @override
+  String get scanBillGallery => 'फ़ोटो चुनें';
+
+  @override
+  String get scanBillGalleryBody => 'गैलरी से बिल की एक या ज़्यादा फ़ोटो चुनें';
+
+  @override
+  String get scanBillHindi => 'बिल में हिंदी लिखा है';
+
+  @override
+  String scanReading(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count फ़ोटो पढ़ी जा रही हैं…',
+      one: 'बिल पढ़ा जा रहा है…',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scanNothingFound =>
+      'कोई सामान नहीं मिला। अच्छी रोशनी में साफ़ फ़ोटो लें, या सामान ख़ुद जोड़ें।';
+
+  @override
+  String get scanFailed => 'फ़ोटो पढ़ी नहीं जा सकी। फिर कोशिश करें।';
+
+  @override
+  String get billReviewTitle => 'सामान जाँचें';
+
+  @override
+  String get billReviewHint =>
+      'ठीक करने के लिए सामान पर टैप करें। ⚠ वाले सामान ज़रूर देखें। हटाने के लिए बाएँ स्वाइप करें।';
+
+  @override
+  String get billStore => 'दुकान';
+
+  @override
+  String get billDate => 'बिल की तारीख़';
+
+  @override
+  String get billUntitled => 'बिल';
+
+  @override
+  String get billSelectAll => 'सब चुनें';
+
+  @override
+  String get billSelectNone => 'कोई नहीं';
+
+  @override
+  String get billCheckThis => 'कृपया यह सामान जाँचें';
+
+  @override
+  String get billLineRemoved => 'सामान हटाया गया';
+
+  @override
+  String billItemsTotal(String total) {
+    return 'सामान का कुल $total';
+  }
+
+  @override
+  String billTotalMatches(String total) {
+    return 'बिल के कुल $total से मेल खाता है';
+  }
+
+  @override
+  String billTotalMismatch(String items, String printed) {
+    return 'सामान का जोड़ $items है पर बिल में $printed लिखा है। ⚠ वाले सामान जाँचें या छूटा सामान जोड़ें।';
+  }
+
+  @override
+  String billSelectedTotal(String items, String printed) {
+    return 'चुना गया सामान: $items (बिल का कुल $printed)';
+  }
+
+  @override
+  String get billSaveList => 'सूची सेव करें';
+
+  @override
+  String get billAddToBoard => 'बोर्ड पर जोड़ें';
+
+  @override
+  String billAddedToBoard(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count सामान बोर्ड पर जोड़े गए',
+      one: '1 सामान बोर्ड पर जोड़ा गया',
+      zero: 'सब कुछ पहले से बोर्ड पर है',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get listName => 'सूची का नाम';
+
+  @override
+  String get listKindGrocery => 'किराना';
+
+  @override
+  String get listKindGeneral => 'सामान्य';
+
+  @override
+  String get listItemName => 'सामान';
+
+  @override
+  String get listItemRate => 'दर';
+
+  @override
+  String get listAddItem => 'सामान जोड़ें';
+
+  @override
+  String get listSavedForNextTime =>
+      'सेव हो गई। अगली बार \'सेव की गई सूचियाँ\' में मिलेगी।';
+
+  @override
+  String get savedListsTitle => 'सेव की गई सूचियाँ';
+
+  @override
+  String get savedListsEmpty => 'अभी कोई सूची सेव नहीं है';
+
+  @override
+  String get savedListsEmptyBody =>
+      'बिल स्कैन करें ताकि ख़रीदा हुआ सामान अगली बार के लिए सूची बन जाए, या ख़ुद सूची बनाएँ।';
+
+  @override
+  String get listNew => 'नई सूची';
+
+  @override
+  String get listEmpty => 'इस सूची में अभी कुछ नहीं है';
+
+  @override
+  String get listQuickAddHint => 'सामान जोड़ें';
+
+  @override
+  String listItemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count सामान',
+      one: '1 सामान',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String listBoughtCount(int count) {
+    return '$count ख़रीदे';
+  }
+
+  @override
+  String get listAddRemainingToBoard => 'बिना टिक वाले सामान बोर्ड पर जोड़ें';
+
+  @override
+  String get listUntickAll => 'सारे टिक हटाएँ';
+
+  @override
+  String get listDeleteTitle => 'यह सूची हटाएँ?';
+
+  @override
+  String get listDeleteBody => 'यह परिवार के हर फ़ोन से हट जाएगी।';
+
+  @override
+  String get listShareTitle => 'शेयर या डाउनलोड करें';
+
+  @override
+  String get listSharePrices => 'दाम भी दिखाएँ';
+
+  @override
+  String get listShareOnlyRemaining => 'सिर्फ़ जो अभी नहीं ख़रीदे';
+
+  @override
+  String get listShareText => 'मैसेज में भेजें';
+
+  @override
+  String get listShareTextBody => 'WhatsApp या SMS के लिए चेकलिस्ट';
+
+  @override
+  String get listSharePdf => 'PDF';
+
+  @override
+  String get listShareCsv => 'स्प्रेडशीट (CSV)';
+
+  @override
+  String get listSaveToPhone => 'फ़ोन में सेव करें';
+
+  @override
+  String get listSaved => 'आपके फ़ोन में सेव हो गई';
+
+  @override
+  String get scanCameraUnavailable =>
+      'इस फ़ोन पर कैमरा स्कैनर अभी तैयार नहीं है (इसे एक बार इंटरनेट चाहिए)। इसके बदले फ़ोटो चुनें।';
 }

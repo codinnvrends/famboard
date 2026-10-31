@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/providers.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
+import '../scan/scan_flow.dart';
 import '../entries/entry_form.dart';
 import 'share_handler.dart';
 
@@ -32,6 +33,12 @@ class _HomeShellState extends ConsumerState<HomeShell> with ShareHandler {
         title: Text(index == 0 ? familyName : [l.navToday, l.navLists, l.navBills, l.navFamily][index]),
         actions: [
           const SyncBadge(),
+          if (perms.canAddEntries)
+            IconButton(
+              tooltip: l.scanBill,
+              icon: const Icon(Icons.document_scanner_outlined),
+              onPressed: () => startBillScan(context, ref),
+            ),
           IconButton(
             tooltip: l.search,
             icon: const Icon(Icons.search),

@@ -14,7 +14,7 @@ import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
 import 'backup_flow.dart';
 
-const appVersion = '0.2.3';
+const appVersion = '0.2.4';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
