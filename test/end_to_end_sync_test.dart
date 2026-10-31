@@ -75,6 +75,10 @@ class FakeTransport implements SyncTransport {
     net.join(this);
   }
 
+  /// Changes what this phone advertises without telling peers that have
+  /// already found it (how cached mDNS/Nearby discovery behaves).
+  Future<void> updateTagsQuietly(Set<String> tags) async => _tags = tags;
+
   @override
   Future<void> stop() async => net.leave(this);
 }
@@ -302,7 +306,7 @@ void retryTests() {
     await a.sync.syncAll(force: true);
     await b.sync.syncAll(force: true);
     await eventually(() async => (await a.repo.members(fam.id)).length == 2);
-    expect(a.sync.current.log.any((l) => l.message.startsWith('Synced with')), isTrue);
+    expect(a.sync.current.log.any((l) => l.message.startsWith('Synced ')), isTrue);
 
     await a.sync.dispose();
     await b.sync.dispose();

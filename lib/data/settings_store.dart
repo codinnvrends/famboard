@@ -54,10 +54,13 @@ class SettingsStore {
     return row?.value;
   }
 
+  /// Emits when [key]'s value changes. Drift re-runs the query on every
+  /// write to the table, so repeats are filtered out here.
   Stream<String?> watch(String key) =>
       (db.select(db.settings)..where((s) => s.key.equals(key)))
           .watchSingleOrNull()
-          .map((r) => r?.value);
+          .map((r) => r?.value)
+          .distinct();
 
   Future<void> set(String key, String? value) async {
     if (value == null) {
@@ -124,6 +127,10 @@ class SettingsStore {
           ),
         );
   }
+
+  /// Every family device this phone has seen.
+  Future<Set<String>> knownDeviceIds() async =>
+      (await db.select(db.peers).get()).map((p) => p.deviceId).toSet();
 
   Stream<List<PeerRow>> watchPeers(String familyId) => (db.select(db.peers)
         ..where((p) => p.familyId.equals(familyId))

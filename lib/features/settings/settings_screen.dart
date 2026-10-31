@@ -15,7 +15,7 @@ import '../../services/backup.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
 
-const appVersion = '0.2.1';
+const appVersion = '0.2.2';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
