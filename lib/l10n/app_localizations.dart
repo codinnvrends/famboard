@@ -281,7 +281,7 @@ abstract class AppLocalizations {
   /// No description provided for @scanInviteBody.
   ///
   /// In en, this message translates to:
-  /// **'Ask a family admin to open Family → Invite someone, then point your camera at the code.'**
+  /// **'Ask anyone grown-up in the family to open Family → Invite someone, then point your camera at the code.'**
   String get scanInviteBody;
 
   /// No description provided for @pasteInvite.
@@ -1475,7 +1475,7 @@ abstract class AppLocalizations {
   /// No description provided for @backupPassphraseHint.
   ///
   /// In en, this message translates to:
-  /// **'At least 6 characters. You\'ll need it to restore.'**
+  /// **'At least 6 characters. Without it the backup can\'t be opened, so write it down.'**
   String get backupPassphraseHint;
 
   /// No description provided for @backupWrongPassphrase.
@@ -1741,6 +1741,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on.'**
   String get diagHint;
+
+  /// No description provided for @inviteNewPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'New person'**
+  String get inviteNewPerson;
+
+  /// No description provided for @inviteReturning.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming back'**
+  String get inviteReturning;
+
+  /// No description provided for @inviteReturningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'For someone already in the family who reinstalled FamBoard or got a new phone. They get their name, role and history back.'**
+  String get inviteReturningBody;
+
+  /// No description provided for @inviteNoOneToBringBack.
+  ///
+  /// In en, this message translates to:
+  /// **'No other members yet.'**
+  String get inviteNoOneToBringBack;
+
+  /// No description provided for @inviteReturningFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Bringing back {name} as {role}'**
+  String inviteReturningFor(String name, String role);
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back, {name}, to {family}'**
+  String welcomeBack(String name, String family);
+
+  /// No description provided for @welcomeBackBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name, role and history come back after the first sync.'**
+  String get welcomeBackBody;
+
+  /// No description provided for @backupPassphraseAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Type it again'**
+  String get backupPassphraseAgain;
+
+  /// No description provided for @backupPassphraseMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The two passphrases don\'t match.'**
+  String get backupPassphraseMismatch;
+
+  /// No description provided for @backupReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup ready'**
+  String get backupReady;
+
+  /// No description provided for @backupReadyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Save it somewhere that survives uninstalling FamBoard, like Downloads or Google Drive, or send it to yourself on WhatsApp.'**
+  String get backupReadyBody;
+
+  /// No description provided for @backupSaveToPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to phone'**
+  String get backupSaveToPhone;
+
+  /// No description provided for @backupSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved'**
+  String get backupSaved;
+
+  /// No description provided for @backupShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share (WhatsApp, email, Drive…)'**
+  String get backupShare;
+
+  /// No description provided for @backupShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'FamBoard backup. To restore: open this file with FamBoard, or FamBoard → Settings → Restore from backup.'**
+  String get backupShareText;
+
+  /// No description provided for @backupNotABackup.
+  ///
+  /// In en, this message translates to:
+  /// **'That file isn\'t a FamBoard backup.'**
+  String get backupNotABackup;
+
+  /// No description provided for @backupNever.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup yet'**
+  String get backupNever;
+
+  /// No description provided for @backupLast.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup {date}'**
+  String backupLast(String date);
 }
 
 class _AppLocalizationsDelegate

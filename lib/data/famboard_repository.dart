@@ -88,6 +88,10 @@ class FamBoardRepository {
   }
 
   /// Joins a family from a scanned invite. Family data arrives on first sync.
+  /// Joins from a scanned invite. For a returning member ([FamilyInvite
+  /// .isReturning]) this phone takes over their existing member record, so
+  /// their name, role and history come back on first sync. [myName] is
+  /// ignored then.
   Future<LocalFamily> joinFamily(FamilyInvite invite, {required String myName}) async {
     if (invite.isExpired(_now())) {
       throw StateError('This invite has expired. Ask for a new QR code.');
@@ -96,9 +100,18 @@ class FamBoardRepository {
         .where((f) => f.id == invite.familyId)
         .firstOrNull;
     if (existing != null) return existing;
-    final memberId = newId();
+    final memberId = invite.memberId ?? newId();
     await vault.saveFamilyKey(invite.familyId, invite.key);
-    await store.write(_memberWrite(invite.familyId, memberId, myName, invite.role));
+    if (invite.isReturning) {
+      await store.write(RecordWrite(
+        familyId: invite.familyId,
+        entity: Entities.member,
+        id: memberId,
+        fields: {'rejoinedAt': _now().toIso8601String(), 'rejoinedVia': invite.invitedBy},
+      ));
+    } else {
+      await store.write(_memberWrite(invite.familyId, memberId, myName, invite.role));
+    }
     final local = LocalFamily(
       id: invite.familyId,
       name: invite.familyName,
@@ -109,21 +122,36 @@ class FamBoardRepository {
     return local;
   }
 
+  /// Creates a QR invite. Pass [returning] to invite back an existing
+  /// member (their role is kept); otherwise a new member joins with [role].
   Future<FamilyInvite> createInvite({
     required String familyId,
     required String familyName,
     required String invitedBy,
     required Role role,
+    Member? returning,
   }) async {
     final key = await vault.familyKey(familyId);
     if (key == null) throw StateError('Family key missing on this device');
+    if (returning != null && returning.removed) {
+      // Only admins see removed members in the picker; inviting them back
+      // reinstates them.
+      await store.write(RecordWrite(
+        familyId: familyId,
+        entity: Entities.member,
+        id: returning.id,
+        fields: const {'removed': false},
+      ));
+    }
     return FamilyInvite(
       familyId: familyId,
       familyName: familyName,
       key: key,
-      role: role,
+      role: returning?.role ?? role,
       invitedBy: invitedBy,
       expiresAt: _now().add(FamilyInvite.validFor),
+      memberId: returning?.id,
+      memberName: returning?.name,
     );
   }
 

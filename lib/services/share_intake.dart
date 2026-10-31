@@ -4,49 +4,72 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
-/// Text shared into FamBoard from other apps, e.g. a bill SMS (spec FR-43).
-/// Android only; on iOS users paste the text instead.
+/// Something another app handed to FamBoard.
+sealed class Shared {
+  Shared() : id = _next++;
+  static int _next = 0;
+  final int id;
+}
+
+/// Text, e.g. a bill SMS shared from Messages (spec FR-43).
+class SharedText extends Shared {
+  SharedText(this.text);
+  final String text;
+}
+
+/// A file, e.g. a backup opened from WhatsApp or a file manager.
+class SharedFile extends Shared {
+  SharedFile(this.path);
+  final String path;
+  Future<List<int>> read() => File(path).readAsBytes();
+}
+
+/// Receives shares and "Open with FamBoard" on Android. Each item is
+/// handled once, by whichever screen claims it first.
 class ShareIntake {
-  final _texts = StreamController<String>.broadcast();
+  final _items = StreamController<Shared>.broadcast();
   StreamSubscription<List<SharedMediaFile>>? _sub;
-  String? _initial;
+  Shared? _initial;
+  final Set<int> _claimed = {};
 
-  Stream<String> get texts => _texts.stream;
+  Stream<Shared> get items => _items.stream;
 
-  /// Text the app was launched with, if any (consumed once).
-  String? takeInitial() {
-    final t = _initial;
-    _initial = null;
-    return t;
-  }
+  /// What the app was launched with, if not yet handled.
+  Shared? get pending => _initial != null && !_claimed.contains(_initial!.id) ? _initial : null;
+
+  /// Returns true the first time [item] is claimed.
+  bool claim(Shared item) => _claimed.add(item.id);
 
   Future<void> init() async {
     if (kIsWeb || !Platform.isAndroid) return;
     try {
-      final initial = await ReceiveSharingIntent.instance.getInitialMedia();
-      _initial = _firstText(initial);
+      _initial = _first(await ReceiveSharingIntent.instance.getInitialMedia());
       await ReceiveSharingIntent.instance.reset();
       _sub = ReceiveSharingIntent.instance.getMediaStream().listen((files) {
-        final text = _firstText(files);
-        if (text != null) _texts.add(text);
+        final item = _first(files);
+        if (item != null) _items.add(item);
       });
     } catch (e) {
       debugPrint('Share intake unavailable: $e');
     }
   }
 
-  static String? _firstText(List<SharedMediaFile> files) {
+  static Shared? _first(List<SharedMediaFile> files) {
     for (final f in files) {
+      final value = f.path.trim();
+      if (value.isEmpty) continue;
       if (f.type == SharedMediaType.text || f.type == SharedMediaType.url) {
-        final t = f.path.trim();
-        if (t.isNotEmpty) return t;
+        // A "url" from a file manager can be a file path.
+        if (f.type == SharedMediaType.url && File(value).existsSync()) return SharedFile(value);
+        return SharedText(value);
       }
+      if (f.type == SharedMediaType.file) return SharedFile(value);
     }
     return null;
   }
 
   Future<void> dispose() async {
     await _sub?.cancel();
-    await _texts.close();
+    await _items.close();
   }
 }

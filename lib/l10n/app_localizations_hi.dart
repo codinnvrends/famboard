@@ -102,7 +102,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get scanInviteBody =>
-      'परिवार के एडमिन से परिवार → किसी को आमंत्रित करें खोलने को कहें, फिर कैमरा कोड पर रखें।';
+      'परिवार के किसी भी बड़े सदस्य से परिवार → किसी को आमंत्रित करें खोलने को कहें, फिर कैमरा कोड पर रखें।';
 
   @override
   String get pasteInvite => 'इसकी जगह आमंत्रण कोड पेस्ट करें';
@@ -811,7 +811,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get backupPassphraseHint =>
-      'कम से कम 6 अक्षर। वापस लाने के लिए यह चाहिए होगा।';
+      'कम से कम 6 अक्षर। इसके बिना बैकअप नहीं खुलेगा, इसलिए इसे लिखकर रखें।';
 
   @override
   String get backupWrongPassphrase => 'पासफ़्रेज़ ग़लत है।';
@@ -977,4 +977,68 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get diagHint =>
       'दोनों फ़ोन पर FamBoard एक साथ खुला होना चाहिए। एक ही Wi‑Fi सबसे अच्छा है; नहीं तो Bluetooth और लोकेशन चालू रखें।';
+
+  @override
+  String get inviteNewPerson => 'नया सदस्य';
+
+  @override
+  String get inviteReturning => 'वापस आ रहे हैं';
+
+  @override
+  String get inviteReturningBody =>
+      'परिवार के उस सदस्य के लिए जिसने FamBoard दोबारा इंस्टॉल किया या नया फ़ोन लिया। उन्हें उनका नाम, भूमिका और इतिहास वापस मिलेगा।';
+
+  @override
+  String get inviteNoOneToBringBack => 'अभी कोई और सदस्य नहीं है।';
+
+  @override
+  String inviteReturningFor(String name, String role) {
+    return '$name को $role के रूप में वापस ला रहे हैं';
+  }
+
+  @override
+  String welcomeBack(String name, String family) {
+    return '$name, $family में आपका फिर से स्वागत है';
+  }
+
+  @override
+  String get welcomeBackBody =>
+      'पहले सिंक के बाद आपका नाम, भूमिका और इतिहास वापस आ जाएगा।';
+
+  @override
+  String get backupPassphraseAgain => 'फिर से लिखें';
+
+  @override
+  String get backupPassphraseMismatch => 'दोनों पासफ़्रेज़ मेल नहीं खाते।';
+
+  @override
+  String get backupReady => 'बैकअप तैयार है';
+
+  @override
+  String get backupReadyBody =>
+      'इसे ऐसी जगह सहेजें जो FamBoard हटाने पर भी बची रहे, जैसे Downloads या Google Drive, या WhatsApp पर ख़ुद को भेजें।';
+
+  @override
+  String get backupSaveToPhone => 'फ़ोन में सहेजें';
+
+  @override
+  String get backupSaved => 'बैकअप सहेज लिया';
+
+  @override
+  String get backupShare => 'शेयर करें (WhatsApp, ईमेल, Drive…)';
+
+  @override
+  String get backupShareText =>
+      'FamBoard बैकअप। वापस लाने के लिए: इस फ़ाइल को FamBoard से खोलें, या FamBoard → सेटिंग्स → बैकअप से वापस लाएँ।';
+
+  @override
+  String get backupNotABackup => 'यह FamBoard बैकअप फ़ाइल नहीं है।';
+
+  @override
+  String get backupNever => 'अभी तक कोई बैकअप नहीं';
+
+  @override
+  String backupLast(String date) {
+    return 'आख़िरी बैकअप $date';
+  }
 }

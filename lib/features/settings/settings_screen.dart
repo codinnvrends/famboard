@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
@@ -11,11 +9,12 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../app/providers.dart';
 import '../../data/settings_store.dart';
-import '../../services/backup.dart';
+import '../../ui/format.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
+import 'backup_flow.dart';
 
-const appVersion = '0.2.2';
+const appVersion = '0.2.3';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -34,6 +33,9 @@ class SettingsScreen extends ConsumerWidget {
     final billLead = int.tryParse(v(SettingsStore.kBillLeadDays) ?? '') ?? 3;
     final nearby = v(SettingsStore.kNearby) != 'false';
     final deviceName = v(SettingsStore.kDeviceName) ?? '';
+    final session = ref.watch(sessionProvider);
+    final lastBackupRaw = session == null ? null : v('lastBackup.${session.familyId}');
+    final lastBackup = lastBackupRaw == null ? null : DateTime.tryParse(lastBackupRaw);
 
     Widget header(String t) => Padding(
           padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
@@ -143,12 +145,15 @@ class SettingsScreen extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.lock_outline),
             title: Text(l.backupCreate),
-            onTap: () => _backup(context, ref),
+            subtitle: lastBackup == null
+                ? Text(l.backupNever)
+                : Text(l.backupLast(formatDate(context, lastBackup))),
+            onTap: () => createBackupFlow(context, ref),
           ),
           ListTile(
             leading: const Icon(Icons.settings_backup_restore),
             title: Text(l.backupRestore),
-            onTap: () => _restore(context, ref),
+            onTap: () => pickAndRestoreBackup(context, ref),
           ),
           header(l.settingsAbout),
           ListTile(
@@ -209,37 +214,7 @@ class SettingsScreen extends ConsumerWidget {
     }
   }
 
-  Future<void> _backup(BuildContext context, WidgetRef ref) async {
-    final l = context.l10n;
-    final session = ref.read(sessionProvider);
-    if (session == null) return;
-    final pass = await _ask(context, l.backupPassphrase, '', secret: true);
-    if (pass == null) return;
-    try {
-      final bytes = await ref.read(servicesProvider).backup.createBackup(session.familyId, pass);
-      final stamp = DateTime.now().toIso8601String().substring(0, 10);
-      await _shareFile('famboard-backup-$stamp.fambackup', bytes, 'application/octet-stream');
-    } on BackupException catch (e) {
-      if (context.mounted) showSnack(context, e.message);
-    }
-  }
 
-  Future<void> _restore(BuildContext context, WidgetRef ref) async {
-    final l = context.l10n;
-    final files = await FilePicker.pickFiles();
-    if (files.isEmpty || !context.mounted) return;
-    final file = files.first;
-    final bytes = await file.xFile.readAsBytes();
-    if (!context.mounted) return;
-    final pass = await _ask(context, l.backupPassphrase, '', secret: true);
-    if (pass == null) return;
-    try {
-      final family = await ref.read(servicesProvider).backup.restoreBackup(Uint8List.fromList(bytes), pass);
-      if (context.mounted) showSnack(context, l.backupRestored(family.name));
-    } on BackupException catch (e) {
-      if (context.mounted) {
-        showSnack(context, e.message == 'Wrong passphrase.' ? l.backupWrongPassphrase : e.message);
-      }
-    }
-  }
+
+
 }

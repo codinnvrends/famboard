@@ -30,7 +30,7 @@
   "yourNameHint": "e.g. Priya",
   "createFamilyAction": "Create family",
   "scanInviteTitle": "Scan the invite QR",
-  "scanInviteBody": "Ask a family admin to open Family → Invite someone, then point your camera at the code.",
+  "scanInviteBody": "Ask anyone grown-up in the family to open Family → Invite someone, then point your camera at the code.",
   "pasteInvite": "Paste invite code instead",
   "inviteCodeLabel": "Invite code",
   "joinAction": "Join family",
@@ -472,7 +472,7 @@
   "backupCreate": "Create encrypted backup",
   "backupRestore": "Restore from backup",
   "backupPassphrase": "Backup passphrase",
-  "backupPassphraseHint": "At least 6 characters. You'll need it to restore.",
+  "backupPassphraseHint": "At least 6 characters. Without it the backup can't be opened, so write it down.",
   "backupWrongPassphrase": "Wrong passphrase.",
   "backupRestored": "Restored {name}",
   "@backupRestored": {
@@ -568,5 +568,50 @@
   "diagRecent": "Recent activity",
   "diagLastError": "Last error",
   "diagCopy": "Copy details",
-  "diagHint": "Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on."
+  "diagHint": "Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on.",
+  "inviteNewPerson": "New person",
+  "inviteReturning": "Coming back",
+  "inviteReturningBody": "For someone already in the family who reinstalled FamBoard or got a new phone. They get their name, role and history back.",
+  "inviteNoOneToBringBack": "No other members yet.",
+  "inviteReturningFor": "Bringing back {name} as {role}",
+  "@inviteReturningFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeBack": "Welcome back, {name}, to {family}",
+  "@welcomeBack": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeBackBody": "Your name, role and history come back after the first sync.",
+  "backupPassphraseAgain": "Type it again",
+  "backupPassphraseMismatch": "The two passphrases don't match.",
+  "backupReady": "Backup ready",
+  "backupReadyBody": "Save it somewhere that survives uninstalling FamBoard, like Downloads or Google Drive, or send it to yourself on WhatsApp.",
+  "backupSaveToPhone": "Save to phone",
+  "backupSaved": "Backup saved",
+  "backupShare": "Share (WhatsApp, email, Drive…)",
+  "backupShareText": "FamBoard backup. To restore: open this file with FamBoard, or FamBoard → Settings → Restore from backup.",
+  "backupNotABackup": "That file isn't a FamBoard backup.",
+  "backupNever": "No backup yet",
+  "backupLast": "Last backup {date}",
+  "@backupLast": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

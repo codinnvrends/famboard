@@ -15,6 +15,8 @@ class FamilyInvite {
     required this.role,
     required this.invitedBy,
     required this.expiresAt,
+    this.memberId,
+    this.memberName,
   });
 
   final String familyId;
@@ -23,6 +25,14 @@ class FamilyInvite {
   final Role role;
   final String invitedBy;
   final DateTime expiresAt;
+
+  /// Set when inviting back someone already in the family (e.g. after they
+  /// reinstalled): the new phone takes over that member, with their name,
+  /// role and history, instead of creating a new one.
+  final String? memberId;
+  final String? memberName;
+
+  bool get isReturning => memberId != null;
 
   static const scheme = 'famboard://join?d=';
   static const validFor = Duration(minutes: 15);
@@ -38,6 +48,8 @@ class FamilyInvite {
       'r': role.code,
       'b': invitedBy,
       'x': expiresAt.millisecondsSinceEpoch ~/ 1000,
+      if (memberId != null) 'm': memberId,
+      if (memberName != null) 'mn': memberName,
     });
     return '$scheme${base64Url.encode(utf8.encode(json))}';
   }
@@ -61,6 +73,8 @@ class FamilyInvite {
       role: Role.fromCode(map['r']),
       invitedBy: map['b'] as String? ?? '',
       expiresAt: DateTime.fromMillisecondsSinceEpoch(((map['x'] ?? 0) as num).toInt() * 1000),
+      memberId: map['m'] as String?,
+      memberName: map['mn'] as String?,
     );
   }
 }

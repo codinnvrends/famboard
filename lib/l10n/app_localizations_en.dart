@@ -102,7 +102,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scanInviteBody =>
-      'Ask a family admin to open Family → Invite someone, then point your camera at the code.';
+      'Ask anyone grown-up in the family to open Family → Invite someone, then point your camera at the code.';
 
   @override
   String get pasteInvite => 'Paste invite code instead';
@@ -809,7 +809,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupPassphraseHint =>
-      'At least 6 characters. You\'ll need it to restore.';
+      'At least 6 characters. Without it the backup can\'t be opened, so write it down.';
 
   @override
   String get backupWrongPassphrase => 'Wrong passphrase.';
@@ -975,4 +975,68 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get diagHint =>
       'Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on.';
+
+  @override
+  String get inviteNewPerson => 'New person';
+
+  @override
+  String get inviteReturning => 'Coming back';
+
+  @override
+  String get inviteReturningBody =>
+      'For someone already in the family who reinstalled FamBoard or got a new phone. They get their name, role and history back.';
+
+  @override
+  String get inviteNoOneToBringBack => 'No other members yet.';
+
+  @override
+  String inviteReturningFor(String name, String role) {
+    return 'Bringing back $name as $role';
+  }
+
+  @override
+  String welcomeBack(String name, String family) {
+    return 'Welcome back, $name, to $family';
+  }
+
+  @override
+  String get welcomeBackBody =>
+      'Your name, role and history come back after the first sync.';
+
+  @override
+  String get backupPassphraseAgain => 'Type it again';
+
+  @override
+  String get backupPassphraseMismatch => 'The two passphrases don\'t match.';
+
+  @override
+  String get backupReady => 'Backup ready';
+
+  @override
+  String get backupReadyBody =>
+      'Save it somewhere that survives uninstalling FamBoard, like Downloads or Google Drive, or send it to yourself on WhatsApp.';
+
+  @override
+  String get backupSaveToPhone => 'Save to phone';
+
+  @override
+  String get backupSaved => 'Backup saved';
+
+  @override
+  String get backupShare => 'Share (WhatsApp, email, Drive…)';
+
+  @override
+  String get backupShareText =>
+      'FamBoard backup. To restore: open this file with FamBoard, or FamBoard → Settings → Restore from backup.';
+
+  @override
+  String get backupNotABackup => 'That file isn\'t a FamBoard backup.';
+
+  @override
+  String get backupNever => 'No backup yet';
+
+  @override
+  String backupLast(String date) {
+    return 'Last backup $date';
+  }
 }
