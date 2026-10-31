@@ -109,7 +109,14 @@ class LanTransport implements SyncTransport {
 
   @override
   Future<void> updateTags(Set<String> tags) async {
-    if (_server != null) await _advertise(tags);
+    if (_server == null) return;
+    await _advertise(tags);
+    // Re-discover so other phones' adverts are read fresh (Android caches
+    // them, and a family they just joined wouldn't show).
+    await _discoverySub?.cancel();
+    await _discovery?.stop();
+    _deviceByServiceName.clear();
+    await _discover();
   }
 
   @override

@@ -102,7 +102,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get scanInviteBody =>
-      'परिवार के एडमिन से परिवार → किसी को आमंत्रित करें खोलने को कहें, फिर कैमरा कोड पर रखें।';
+      'परिवार के किसी भी बड़े सदस्य से परिवार → किसी को आमंत्रित करें खोलने को कहें, फिर कैमरा कोड पर रखें।';
 
   @override
   String get pasteInvite => 'इसकी जगह आमंत्रण कोड पेस्ट करें';
@@ -811,7 +811,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get backupPassphraseHint =>
-      'कम से कम 6 अक्षर। वापस लाने के लिए यह चाहिए होगा।';
+      'कम से कम 6 अक्षर। इसके बिना बैकअप नहीं खुलेगा, इसलिए इसे लिखकर रखें।';
 
   @override
   String get backupWrongPassphrase => 'पासफ़्रेज़ ग़लत है।';
@@ -912,4 +912,340 @@ class AppLocalizationsHi extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get syncFixTitle => 'सिंक अभी दूसरे फ़ोन नहीं ढूँढ पा रहा';
+
+  @override
+  String get problemNearbyPermission =>
+      '“आस-पास के डिवाइस” की अनुमति दें ताकि फ़ोन Bluetooth से एक-दूसरे को ढूँढ सकें।';
+
+  @override
+  String get problemLocationPermission =>
+      'लोकेशन की अनुमति दें। पास के फ़ोन ढूँढने के लिए Android को इसकी ज़रूरत है।';
+
+  @override
+  String get problemLocationOff =>
+      'क्विक सेटिंग्स में लोकेशन चालू करें। इसके बंद रहने पर Bluetooth से कुछ नहीं मिलता।';
+
+  @override
+  String get problemBluetoothOff => 'Bluetooth चालू करें।';
+
+  @override
+  String get problemNoWifi =>
+      'दोनों फ़ोन एक ही Wi‑Fi से जोड़ें, या Bluetooth इस्तेमाल करें।';
+
+  @override
+  String get allowPermissions => 'अनुमति दें';
+
+  @override
+  String get openSettings => 'सेटिंग्स खोलें';
+
+  @override
+  String get checkAgain => 'फिर से जाँचें';
+
+  @override
+  String get syncDiagnostics => 'सिंक का विवरण';
+
+  @override
+  String get diagThisPhone => 'यह फ़ोन';
+
+  @override
+  String get diagMethods => 'जुड़ने के तरीके';
+
+  @override
+  String get diagRunning => 'चालू';
+
+  @override
+  String get diagNotRunning => 'बंद';
+
+  @override
+  String get diagPhonesSeen => 'अभी दिख रहे फ़ोन';
+
+  @override
+  String get diagNone => 'कोई नहीं';
+
+  @override
+  String get diagRecent => 'हाल की गतिविधि';
+
+  @override
+  String get diagLastError => 'आख़िरी त्रुटि';
+
+  @override
+  String get diagCopy => 'विवरण कॉपी करें';
+
+  @override
+  String get diagHint =>
+      'दोनों फ़ोन पर FamBoard एक साथ खुला होना चाहिए। एक ही Wi‑Fi सबसे अच्छा है; नहीं तो Bluetooth और लोकेशन चालू रखें।';
+
+  @override
+  String get inviteNewPerson => 'नया सदस्य';
+
+  @override
+  String get inviteReturning => 'वापस आ रहे हैं';
+
+  @override
+  String get inviteReturningBody =>
+      'परिवार के उस सदस्य के लिए जिसने FamBoard दोबारा इंस्टॉल किया या नया फ़ोन लिया। उन्हें उनका नाम, भूमिका और इतिहास वापस मिलेगा।';
+
+  @override
+  String get inviteNoOneToBringBack => 'अभी कोई और सदस्य नहीं है।';
+
+  @override
+  String inviteReturningFor(String name, String role) {
+    return '$name को $role के रूप में वापस ला रहे हैं';
+  }
+
+  @override
+  String welcomeBack(String name, String family) {
+    return '$name, $family में आपका फिर से स्वागत है';
+  }
+
+  @override
+  String get welcomeBackBody =>
+      'पहले सिंक के बाद आपका नाम, भूमिका और इतिहास वापस आ जाएगा।';
+
+  @override
+  String get backupPassphraseAgain => 'फिर से लिखें';
+
+  @override
+  String get backupPassphraseMismatch => 'दोनों पासफ़्रेज़ मेल नहीं खाते।';
+
+  @override
+  String get backupReady => 'बैकअप तैयार है';
+
+  @override
+  String get backupReadyBody =>
+      'इसे ऐसी जगह सहेजें जो FamBoard हटाने पर भी बची रहे, जैसे Downloads या Google Drive, या WhatsApp पर ख़ुद को भेजें।';
+
+  @override
+  String get backupSaveToPhone => 'फ़ोन में सहेजें';
+
+  @override
+  String get backupSaved => 'बैकअप सहेज लिया';
+
+  @override
+  String get backupShare => 'शेयर करें (WhatsApp, ईमेल, Drive…)';
+
+  @override
+  String get backupShareText =>
+      'FamBoard बैकअप। वापस लाने के लिए: इस फ़ाइल को FamBoard से खोलें, या FamBoard → सेटिंग्स → बैकअप से वापस लाएँ।';
+
+  @override
+  String get backupNotABackup => 'यह FamBoard बैकअप फ़ाइल नहीं है।';
+
+  @override
+  String get backupNever => 'अभी तक कोई बैकअप नहीं';
+
+  @override
+  String backupLast(String date) {
+    return 'आख़िरी बैकअप $date';
+  }
+
+  @override
+  String get scanBill => 'बिल स्कैन करें';
+
+  @override
+  String get scanBillBody =>
+      'FamBoard बिल को आपके फ़ोन पर ही पढ़ता है, इंटरनेट के बिना। सेव करने से पहले आप कुछ भी ठीक कर सकते हैं।';
+
+  @override
+  String get scanBillCamera => 'फ़ोटो लें';
+
+  @override
+  String get scanBillCameraBody =>
+      'बिल अपने आप काटकर सीधा करता है। लंबा बिल हो तो ऊपर से नीचे कई फ़ोटो लें, थोड़ा हिस्सा दोहराते हुए।';
+
+  @override
+  String get scanBillGallery => 'फ़ोटो चुनें';
+
+  @override
+  String get scanBillGalleryBody => 'गैलरी से बिल की एक या ज़्यादा फ़ोटो चुनें';
+
+  @override
+  String get scanBillHindi => 'बिल में हिंदी लिखा है';
+
+  @override
+  String scanReading(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count फ़ोटो पढ़ी जा रही हैं…',
+      one: 'बिल पढ़ा जा रहा है…',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scanNothingFound =>
+      'कोई सामान नहीं मिला। अच्छी रोशनी में साफ़ फ़ोटो लें, या सामान ख़ुद जोड़ें।';
+
+  @override
+  String get scanFailed => 'फ़ोटो पढ़ी नहीं जा सकी। फिर कोशिश करें।';
+
+  @override
+  String get billReviewTitle => 'सामान जाँचें';
+
+  @override
+  String get billReviewHint =>
+      'ठीक करने के लिए सामान पर टैप करें। ⚠ वाले सामान ज़रूर देखें। हटाने के लिए बाएँ स्वाइप करें।';
+
+  @override
+  String get billStore => 'दुकान';
+
+  @override
+  String get billDate => 'बिल की तारीख़';
+
+  @override
+  String get billUntitled => 'बिल';
+
+  @override
+  String get billSelectAll => 'सब चुनें';
+
+  @override
+  String get billSelectNone => 'कोई नहीं';
+
+  @override
+  String get billCheckThis => 'कृपया यह सामान जाँचें';
+
+  @override
+  String get billLineRemoved => 'सामान हटाया गया';
+
+  @override
+  String billItemsTotal(String total) {
+    return 'सामान का कुल $total';
+  }
+
+  @override
+  String billTotalMatches(String total) {
+    return 'बिल के कुल $total से मेल खाता है';
+  }
+
+  @override
+  String billTotalMismatch(String items, String printed) {
+    return 'सामान का जोड़ $items है पर बिल में $printed लिखा है। ⚠ वाले सामान जाँचें या छूटा सामान जोड़ें।';
+  }
+
+  @override
+  String billSelectedTotal(String items, String printed) {
+    return 'चुना गया सामान: $items (बिल का कुल $printed)';
+  }
+
+  @override
+  String get billSaveList => 'सूची सेव करें';
+
+  @override
+  String get billAddToBoard => 'बोर्ड पर जोड़ें';
+
+  @override
+  String billAddedToBoard(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count सामान बोर्ड पर जोड़े गए',
+      one: '1 सामान बोर्ड पर जोड़ा गया',
+      zero: 'सब कुछ पहले से बोर्ड पर है',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get listName => 'सूची का नाम';
+
+  @override
+  String get listKindGrocery => 'किराना';
+
+  @override
+  String get listKindGeneral => 'सामान्य';
+
+  @override
+  String get listItemName => 'सामान';
+
+  @override
+  String get listItemRate => 'दर';
+
+  @override
+  String get listAddItem => 'सामान जोड़ें';
+
+  @override
+  String get listSavedForNextTime =>
+      'सेव हो गई। अगली बार \'सेव की गई सूचियाँ\' में मिलेगी।';
+
+  @override
+  String get savedListsTitle => 'सेव की गई सूचियाँ';
+
+  @override
+  String get savedListsEmpty => 'अभी कोई सूची सेव नहीं है';
+
+  @override
+  String get savedListsEmptyBody =>
+      'बिल स्कैन करें ताकि ख़रीदा हुआ सामान अगली बार के लिए सूची बन जाए, या ख़ुद सूची बनाएँ।';
+
+  @override
+  String get listNew => 'नई सूची';
+
+  @override
+  String get listEmpty => 'इस सूची में अभी कुछ नहीं है';
+
+  @override
+  String get listQuickAddHint => 'सामान जोड़ें';
+
+  @override
+  String listItemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count सामान',
+      one: '1 सामान',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String listBoughtCount(int count) {
+    return '$count ख़रीदे';
+  }
+
+  @override
+  String get listAddRemainingToBoard => 'बिना टिक वाले सामान बोर्ड पर जोड़ें';
+
+  @override
+  String get listUntickAll => 'सारे टिक हटाएँ';
+
+  @override
+  String get listDeleteTitle => 'यह सूची हटाएँ?';
+
+  @override
+  String get listDeleteBody => 'यह परिवार के हर फ़ोन से हट जाएगी।';
+
+  @override
+  String get listShareTitle => 'शेयर या डाउनलोड करें';
+
+  @override
+  String get listSharePrices => 'दाम भी दिखाएँ';
+
+  @override
+  String get listShareOnlyRemaining => 'सिर्फ़ जो अभी नहीं ख़रीदे';
+
+  @override
+  String get listShareText => 'मैसेज में भेजें';
+
+  @override
+  String get listShareTextBody => 'WhatsApp या SMS के लिए चेकलिस्ट';
+
+  @override
+  String get listSharePdf => 'PDF';
+
+  @override
+  String get listShareCsv => 'स्प्रेडशीट (CSV)';
+
+  @override
+  String get listSaveToPhone => 'फ़ोन में सेव करें';
+
+  @override
+  String get listSaved => 'आपके फ़ोन में सेव हो गई';
+
+  @override
+  String get scanCameraUnavailable =>
+      'इस फ़ोन पर कैमरा स्कैनर अभी तैयार नहीं है (इसे एक बार इंटरनेट चाहिए)। इसके बदले फ़ोटो चुनें।';
 }

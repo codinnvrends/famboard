@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,8 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../app/providers.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
+import '../scan/scan_flow.dart';
 import '../entries/entry_form.dart';
-import '../entries/sms_paste.dart';
+import 'share_handler.dart';
 
 /// Bottom-navigation shell with the family name, sync badge, search and the
 /// always-visible add button.
@@ -21,28 +20,7 @@ class HomeShell extends ConsumerStatefulWidget {
   ConsumerState<HomeShell> createState() => _HomeShellState();
 }
 
-class _HomeShellState extends ConsumerState<HomeShell> {
-  StreamSubscription<String>? _shareSub;
-
-  @override
-  void initState() {
-    super.initState();
-    final share = ref.read(servicesProvider).share;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final initial = share.takeInitial();
-      if (initial != null && mounted) openFromSharedText(context, initial);
-    });
-    _shareSub = share.texts.listen((t) {
-      if (mounted) openFromSharedText(context, t);
-    });
-  }
-
-  @override
-  void dispose() {
-    _shareSub?.cancel();
-    super.dispose();
-  }
-
+class _HomeShellState extends ConsumerState<HomeShell> with ShareHandler {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -55,6 +33,12 @@ class _HomeShellState extends ConsumerState<HomeShell> {
         title: Text(index == 0 ? familyName : [l.navToday, l.navLists, l.navBills, l.navFamily][index]),
         actions: [
           const SyncBadge(),
+          if (perms.canAddEntries)
+            IconButton(
+              tooltip: l.scanBill,
+              icon: const Icon(Icons.document_scanner_outlined),
+              onPressed: () => startBillScan(context, ref),
+            ),
           IconButton(
             tooltip: l.search,
             icon: const Icon(Icons.search),

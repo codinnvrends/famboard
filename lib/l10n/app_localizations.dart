@@ -281,7 +281,7 @@ abstract class AppLocalizations {
   /// No description provided for @scanInviteBody.
   ///
   /// In en, this message translates to:
-  /// **'Ask a family admin to open Family → Invite someone, then point your camera at the code.'**
+  /// **'Ask anyone grown-up in the family to open Family → Invite someone, then point your camera at the code.'**
   String get scanInviteBody;
 
   /// No description provided for @pasteInvite.
@@ -1475,7 +1475,7 @@ abstract class AppLocalizations {
   /// No description provided for @backupPassphraseHint.
   ///
   /// In en, this message translates to:
-  /// **'At least 6 characters. You\'ll need it to restore.'**
+  /// **'At least 6 characters. Without it the backup can\'t be opened, so write it down.'**
   String get backupPassphraseHint;
 
   /// No description provided for @backupWrongPassphrase.
@@ -1621,6 +1621,564 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{n, plural, =1{yesterday} other{{n} days ago}}'**
   String daysAgo(int n);
+
+  /// No description provided for @syncFixTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync can\'t find other phones yet'**
+  String get syncFixTitle;
+
+  /// No description provided for @problemNearbyPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow “Nearby devices” so phones can find each other over Bluetooth.'**
+  String get problemNearbyPermission;
+
+  /// No description provided for @problemLocationPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Location. Android needs it to scan for nearby phones.'**
+  String get problemLocationPermission;
+
+  /// No description provided for @problemLocationOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Location in quick settings. Bluetooth scanning finds nothing while it\'s off.'**
+  String get problemLocationOff;
+
+  /// No description provided for @problemBluetoothOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Bluetooth.'**
+  String get problemBluetoothOff;
+
+  /// No description provided for @problemNoWifi.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect both phones to the same Wi‑Fi, or use Bluetooth.'**
+  String get problemNoWifi;
+
+  /// No description provided for @allowPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allowPermissions;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
+
+  /// No description provided for @checkAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get checkAgain;
+
+  /// No description provided for @syncDiagnostics.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync details'**
+  String get syncDiagnostics;
+
+  /// No description provided for @diagThisPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone'**
+  String get diagThisPhone;
+
+  /// No description provided for @diagMethods.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection methods'**
+  String get diagMethods;
+
+  /// No description provided for @diagRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get diagRunning;
+
+  /// No description provided for @diagNotRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Not running'**
+  String get diagNotRunning;
+
+  /// No description provided for @diagPhonesSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Phones seen now'**
+  String get diagPhonesSeen;
+
+  /// No description provided for @diagNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get diagNone;
+
+  /// No description provided for @diagRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activity'**
+  String get diagRecent;
+
+  /// No description provided for @diagLastError.
+  ///
+  /// In en, this message translates to:
+  /// **'Last error'**
+  String get diagLastError;
+
+  /// No description provided for @diagCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy details'**
+  String get diagCopy;
+
+  /// No description provided for @diagHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on.'**
+  String get diagHint;
+
+  /// No description provided for @inviteNewPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'New person'**
+  String get inviteNewPerson;
+
+  /// No description provided for @inviteReturning.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming back'**
+  String get inviteReturning;
+
+  /// No description provided for @inviteReturningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'For someone already in the family who reinstalled FamBoard or got a new phone. They get their name, role and history back.'**
+  String get inviteReturningBody;
+
+  /// No description provided for @inviteNoOneToBringBack.
+  ///
+  /// In en, this message translates to:
+  /// **'No other members yet.'**
+  String get inviteNoOneToBringBack;
+
+  /// No description provided for @inviteReturningFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Bringing back {name} as {role}'**
+  String inviteReturningFor(String name, String role);
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back, {name}, to {family}'**
+  String welcomeBack(String name, String family);
+
+  /// No description provided for @welcomeBackBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name, role and history come back after the first sync.'**
+  String get welcomeBackBody;
+
+  /// No description provided for @backupPassphraseAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Type it again'**
+  String get backupPassphraseAgain;
+
+  /// No description provided for @backupPassphraseMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The two passphrases don\'t match.'**
+  String get backupPassphraseMismatch;
+
+  /// No description provided for @backupReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup ready'**
+  String get backupReady;
+
+  /// No description provided for @backupReadyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Save it somewhere that survives uninstalling FamBoard, like Downloads or Google Drive, or send it to yourself on WhatsApp.'**
+  String get backupReadyBody;
+
+  /// No description provided for @backupSaveToPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to phone'**
+  String get backupSaveToPhone;
+
+  /// No description provided for @backupSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved'**
+  String get backupSaved;
+
+  /// No description provided for @backupShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share (WhatsApp, email, Drive…)'**
+  String get backupShare;
+
+  /// No description provided for @backupShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'FamBoard backup. To restore: open this file with FamBoard, or FamBoard → Settings → Restore from backup.'**
+  String get backupShareText;
+
+  /// No description provided for @backupNotABackup.
+  ///
+  /// In en, this message translates to:
+  /// **'That file isn\'t a FamBoard backup.'**
+  String get backupNotABackup;
+
+  /// No description provided for @backupNever.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup yet'**
+  String get backupNever;
+
+  /// No description provided for @backupLast.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup {date}'**
+  String backupLast(String date);
+
+  /// No description provided for @scanBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a bill'**
+  String get scanBill;
+
+  /// No description provided for @scanBillBody.
+  ///
+  /// In en, this message translates to:
+  /// **'FamBoard reads the bill on your phone, without internet. You can fix anything before saving.'**
+  String get scanBillBody;
+
+  /// No description provided for @scanBillCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photos'**
+  String get scanBillCamera;
+
+  /// No description provided for @scanBillCameraBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Crops the bill for you. For a long bill, take several photos top to bottom with a little overlap.'**
+  String get scanBillCameraBody;
+
+  /// No description provided for @scanBillGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose photos'**
+  String get scanBillGallery;
+
+  /// No description provided for @scanBillGalleryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick one or more bill photos from your gallery'**
+  String get scanBillGalleryBody;
+
+  /// No description provided for @scanBillHindi.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill has Hindi text'**
+  String get scanBillHindi;
+
+  /// No description provided for @scanReading.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Reading the bill…} other{Reading {count} photos…}}'**
+  String scanReading(int count);
+
+  /// No description provided for @scanNothingFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No items found. Try a sharper photo in good light, or add items by hand.'**
+  String get scanNothingFound;
+
+  /// No description provided for @scanFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read that photo. Please try again.'**
+  String get scanFailed;
+
+  /// No description provided for @billReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check items'**
+  String get billReviewTitle;
+
+  /// No description provided for @billReviewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap an item to fix it. Items marked ⚠ need a look. Swipe left to remove.'**
+  String get billReviewHint;
+
+  /// No description provided for @billStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get billStore;
+
+  /// No description provided for @billDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill date'**
+  String get billDate;
+
+  /// No description provided for @billUntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill'**
+  String get billUntitled;
+
+  /// No description provided for @billSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get billSelectAll;
+
+  /// No description provided for @billSelectNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Select none'**
+  String get billSelectNone;
+
+  /// No description provided for @billCheckThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check this item'**
+  String get billCheckThis;
+
+  /// No description provided for @billLineRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Item removed'**
+  String get billLineRemoved;
+
+  /// No description provided for @billItemsTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Items total {total}'**
+  String billItemsTotal(String total);
+
+  /// No description provided for @billTotalMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Adds up to the bill total of {total}'**
+  String billTotalMatches(String total);
+
+  /// No description provided for @billTotalMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Items add up to {items} but the bill says {printed}. Check items marked ⚠ or add a missing one.'**
+  String billTotalMismatch(String items, String printed);
+
+  /// No description provided for @billSelectedTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected items: {items} (bill total {printed})'**
+  String billSelectedTotal(String items, String printed);
+
+  /// No description provided for @billSaveList.
+  ///
+  /// In en, this message translates to:
+  /// **'Save list'**
+  String get billSaveList;
+
+  /// No description provided for @billAddToBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to board'**
+  String get billAddToBoard;
+
+  /// No description provided for @billAddedToBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Everything is already on the board} =1{1 item added to the board} other{{count} items added to the board}}'**
+  String billAddedToBoard(int count);
+
+  /// No description provided for @listName.
+  ///
+  /// In en, this message translates to:
+  /// **'List name'**
+  String get listName;
+
+  /// No description provided for @listKindGrocery.
+  ///
+  /// In en, this message translates to:
+  /// **'Grocery'**
+  String get listKindGrocery;
+
+  /// No description provided for @listKindGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get listKindGeneral;
+
+  /// No description provided for @listItemName.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get listItemName;
+
+  /// No description provided for @listItemRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get listItemRate;
+
+  /// No description provided for @listAddItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add item'**
+  String get listAddItem;
+
+  /// No description provided for @listSavedForNextTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved. Find it under Saved lists next time.'**
+  String get listSavedForNextTime;
+
+  /// No description provided for @savedListsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved lists'**
+  String get savedListsTitle;
+
+  /// No description provided for @savedListsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved lists yet'**
+  String get savedListsEmpty;
+
+  /// No description provided for @savedListsEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a bill to keep what you bought as a list for next time, or make a list by hand.'**
+  String get savedListsEmptyBody;
+
+  /// No description provided for @listNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New list'**
+  String get listNew;
+
+  /// No description provided for @listEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing on this list yet'**
+  String get listEmpty;
+
+  /// No description provided for @listQuickAddHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an item'**
+  String get listQuickAddHint;
+
+  /// No description provided for @listItemCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
+  String listItemCount(int count);
+
+  /// No description provided for @listBoughtCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} bought'**
+  String listBoughtCount(int count);
+
+  /// No description provided for @listAddRemainingToBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'Add unticked items to board'**
+  String get listAddRemainingToBoard;
+
+  /// No description provided for @listUntickAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Untick all'**
+  String get listUntickAll;
+
+  /// No description provided for @listDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this list?'**
+  String get listDeleteTitle;
+
+  /// No description provided for @listDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It will be removed from every phone in the family.'**
+  String get listDeleteBody;
+
+  /// No description provided for @listShareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share or download'**
+  String get listShareTitle;
+
+  /// No description provided for @listSharePrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Include prices'**
+  String get listSharePrices;
+
+  /// No description provided for @listShareOnlyRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Only items not yet bought'**
+  String get listShareOnlyRemaining;
+
+  /// No description provided for @listShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Send as message'**
+  String get listShareText;
+
+  /// No description provided for @listShareTextBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A checklist for WhatsApp or SMS'**
+  String get listShareTextBody;
+
+  /// No description provided for @listSharePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get listSharePdf;
+
+  /// No description provided for @listShareCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Spreadsheet (CSV)'**
+  String get listShareCsv;
+
+  /// No description provided for @listSaveToPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to phone'**
+  String get listSaveToPhone;
+
+  /// No description provided for @listSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to your phone'**
+  String get listSaved;
+
+  /// No description provided for @scanCameraUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera scanner isn\'t ready on this phone yet (it needs internet once). Choose a photo instead.'**
+  String get scanCameraUnavailable;
 }
 
 class _AppLocalizationsDelegate

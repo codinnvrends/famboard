@@ -75,6 +75,10 @@ class FakeTransport implements SyncTransport {
     net.join(this);
   }
 
+  /// Changes what this phone advertises without telling peers that have
+  /// already found it (how cached mDNS/Nearby discovery behaves).
+  Future<void> updateTagsQuietly(Set<String> tags) async => _tags = tags;
+
   @override
   Future<void> stop() async => net.leave(this);
 }
@@ -112,6 +116,7 @@ Future<void> eventually(Future<bool> Function() check, {Duration timeout = const
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+  retryTests();
 
   test('a family forms, syncs, and handles offline edits and removal', () async {
     final net = FakeNetwork();
@@ -233,5 +238,77 @@ void main() {
     for (final s in [a, b, c]) {
       await s.sync.dispose();
     }
+  });
+}
+
+/// Fails to start until [allowed] is set, like Nearby before the user grants
+/// the "Nearby devices" permission.
+class FlakyTransport extends FakeTransport {
+  FlakyTransport(super.net);
+  bool allowed = false;
+  int attempts = 0;
+
+  @override
+  String get name => 'nearby';
+
+  @override
+  Future<void> start({
+    required String deviceId,
+    required Set<String> tags,
+    required void Function(DiscoveredPeer peer) onPeer,
+    required void Function(String deviceId) onPeerLost,
+    required void Function(PeerChannel channel) onIncoming,
+  }) async {
+    attempts++;
+    if (!allowed) throw StateError('8034: MISSING_PERMISSION_BLUETOOTH_ADVERTISE');
+    await super.start(
+      deviceId: deviceId,
+      tags: tags,
+      onPeer: onPeer,
+      onPeerLost: onPeerLost,
+      onIncoming: onIncoming,
+    );
+  }
+}
+
+void retryTests() {
+  test('a transport that failed to start is retried and then syncs', () async {
+    final net = FakeNetwork();
+    final flakyA = FlakyTransport(net);
+    final flakyB = FlakyTransport(net);
+    final a = await AppServices.assemble(
+      db: openMemoryDatabase(), vault: MemoryKeyVault(), transports: [flakyA],
+      notifications: NoopNotifications(), defaultDeviceName: 'A',
+    );
+    final b = await AppServices.assemble(
+      db: openMemoryDatabase(), vault: MemoryKeyVault(), transports: [flakyB],
+      notifications: NoopNotifications(), defaultDeviceName: 'B',
+    );
+    final fam = await a.repo.createFamily(familyName: 'Home', myName: 'A');
+    final invite = await a.repo.createInvite(
+      familyId: fam.id, familyName: 'Home', invitedBy: fam.memberId, role: Role.member,
+    );
+    await b.repo.joinFamily(invite, myName: 'B');
+
+    // Permission not granted yet: sync runs but the transport is down.
+    await a.sync.start();
+    await b.sync.start();
+    expect(a.sync.current.running, isTrue);
+    expect(a.sync.current.transports, isEmpty);
+    expect(a.sync.current.transportErrors['nearby'], contains('MISSING_PERMISSION'));
+
+    // Permission granted: a retry brings it up and the phones sync.
+    flakyA.allowed = flakyB.allowed = true;
+    await a.sync.retryTransports();
+    await b.sync.retryTransports();
+    expect(a.sync.current.transports, {'nearby'});
+    expect(a.sync.current.transportErrors, isEmpty);
+    await a.sync.syncAll(force: true);
+    await b.sync.syncAll(force: true);
+    await eventually(() async => (await a.repo.members(fam.id)).length == 2);
+    expect(a.sync.current.log.any((l) => l.message.startsWith('Synced ')), isTrue);
+
+    await a.sync.dispose();
+    await b.sync.dispose();
   });
 }

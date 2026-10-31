@@ -4,6 +4,7 @@ import '../data/db/database.dart';
 import '../data/settings_store.dart';
 import '../domain/models.dart';
 import '../domain/permissions.dart';
+import '../sync/sync_health.dart';
 import '../sync/sync_manager.dart';
 import 'services.dart';
 
@@ -111,4 +112,10 @@ final knownPeersProvider = StreamProvider.family<List<PeerRow>, String>((ref, fa
 
 final settingProvider = StreamProvider.family<String?, String>((ref, key) {
   return ref.watch(servicesProvider).settings.watch(key);
+});
+
+final syncHealthProvider = StreamProvider<SyncHealth>((ref) async* {
+  final health = ref.watch(servicesProvider).health;
+  yield health.value;
+  yield* health.changes;
 });

@@ -89,21 +89,28 @@ class NearbyTransport implements SyncTransport {
     ));
   }
 
+  /// Opens a new connection. Each connection is handed out exactly once
+  /// (here or through `onIncoming`); the sync manager shares it between
+  /// families, so an already-open one means it is in use elsewhere.
   Future<PeerChannel> _connect(String endpointId) async {
     final existing = _channels[endpointId];
-    if (existing != null && !existing.closed) return existing;
+    if (existing != null && !existing.closed) {
+      throw StateError('Already connected to this phone');
+    }
     final completer = Completer<PeerChannel>();
     _pendingOutgoing[endpointId] = completer;
-    final ok = await _nearby.requestConnection(
-      _advert,
-      endpointId,
-      onConnectionInitiated: _onConnectionInitiated,
-      onConnectionResult: _onConnectionResult,
-      onDisconnected: _onDisconnected,
-    );
-    if (!ok) {
+    try {
+      final ok = await _nearby.requestConnection(
+        _advert,
+        endpointId,
+        onConnectionInitiated: _onConnectionInitiated,
+        onConnectionResult: _onConnectionResult,
+        onDisconnected: _onDisconnected,
+      );
+      if (!ok) throw StateError('Nearby connection request failed');
+    } catch (e) {
       _pendingOutgoing.remove(endpointId);
-      throw StateError('Nearby connection request failed');
+      rethrow;
     }
     return completer.future.timeout(
       const Duration(seconds: 20),
@@ -115,6 +122,11 @@ class NearbyTransport implements SyncTransport {
   }
 
   void _onConnectionInitiated(String endpointId, ConnectionInfo info) {
+    // Learn who this is even if discovery missed them (the endpoint name is
+    // their advert).
+    final decoded = decodeAdvert(info.endpointName);
+    if (decoded != null) _deviceByEndpoint[endpointId] = decoded.$1;
+    _channels[endpointId]?.markClosed();
     _channels[endpointId] = _NearbyChannel(endpointId, _nearby);
     unawaited(_nearby.acceptConnection(
       endpointId,
