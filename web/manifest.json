@@ -1,11 +1,11 @@
 {
-    "name": "famboard",
-    "short_name": "famboard",
+    "name": "FamBoard",
+    "short_name": "FamBoard",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "FamBoard - offline-first family household board",
+    "background_color": "#FAF7F2",
+    "theme_color": "#1F6F6B",
+    "description": "Your family's shared board for groceries, repairs and bills. Works offline.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
