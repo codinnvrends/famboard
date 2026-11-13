@@ -54,3 +54,4 @@ app.*.map.json
 
 # Kotlin build cache
 /android/.kotlin/
+/store/screenshots/raw/

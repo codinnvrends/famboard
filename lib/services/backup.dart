@@ -90,6 +90,29 @@ class BackupService {
 
   // Encrypted backup -----------------------------------------------------------
 
+  /// Suggested file name, e.g. `FamBoard-backup-Sharma-home-2026-10-31.json`.
+  /// `.json` keeps WhatsApp, Gmail and Drive treating it as a document to
+  /// save rather than something to run.
+  static String fileName(String familyName, DateTime when) {
+    final slug = familyName
+        .replaceAll(RegExp(r'[^A-Za-z0-9]+'), '-')
+        .replaceAll(RegExp(r'^-+|-+$'), '');
+    final date = '${when.year}-${when.month.toString().padLeft(2, '0')}-${when.day.toString().padLeft(2, '0')}';
+    return 'FamBoard-backup-${slug.isEmpty ? 'family' : slug}-$date.json';
+  }
+
+  static const mimeType = 'application/json';
+
+  /// Whether [bytes] look like a FamBoard backup (either format).
+  static bool looksLikeBackup(List<int> bytes) {
+    if (bytes.length < 16) return false;
+    final head = utf8.decode(bytes.take(200).toList(), allowMalformed: true);
+    return head.contains(_magic) || head.contains('"famboard"');
+  }
+
+  /// Encrypts the family (its key and full history) with [passphrase].
+  /// The result is a small JSON document; everything private is inside the
+  /// encrypted `data` field.
   Future<Uint8List> createBackup(String familyId, String passphrase) async {
     if (passphrase.length < 6) {
       throw BackupException('Use a passphrase of at least 6 characters.');
@@ -107,35 +130,26 @@ class BackupService {
     final salt = _random(16);
     final secret = await _deriveKey(passphrase, salt);
     final box = await AesGcm.with256bits().encrypt(payload, secretKey: secret);
-    final header = utf8.encode(jsonEncode({
-      'magic': _magic,
+    final doc = {
+      'famboard': 'backup',
+      'version': 2,
+      'note': 'Encrypted FamBoard backup. Open it in FamBoard: Settings > Restore from backup.',
+      'created': DateTime.now().toIso8601String(),
       'kdf': 'pbkdf2-sha256',
       'iter': _iterations,
       'salt': base64Encode(salt),
       'nonce': base64Encode(box.nonce),
       'mac': base64Encode(box.mac.bytes),
-    }));
-    final out = BytesBuilder()
-      ..add(_u32(header.length))
-      ..add(header)
-      ..add(box.cipherText);
-    return out.takeBytes();
+      'data': base64Encode(box.cipherText),
+    };
+    await settings.set('lastBackup.$familyId', DateTime.now().toIso8601String());
+    return Uint8List.fromList(utf8.encode(const JsonEncoder.withIndent('  ').convert(doc)));
   }
 
-  /// Restores a backup and makes its family active. Returns the family.
+  /// Restores a backup (new JSON or original binary format) and makes its
+  /// family active. Returns the family.
   Future<LocalFamily> restoreBackup(Uint8List bytes, String passphrase) async {
-    if (bytes.length < 8) throw BackupException('This is not a FamBoard backup.');
-    final headerLen = ByteData.view(bytes.buffer, bytes.offsetInBytes, 4).getUint32(0);
-    if (headerLen > 4096 || bytes.length < 4 + headerLen) {
-      throw BackupException('This is not a FamBoard backup.');
-    }
-    final Map<String, Object?> header;
-    try {
-      header = jsonDecode(utf8.decode(bytes.sublist(4, 4 + headerLen))) as Map<String, Object?>;
-    } catch (_) {
-      throw BackupException('This is not a FamBoard backup.');
-    }
-    if (header['magic'] != _magic) throw BackupException('This is not a FamBoard backup.');
+    final (header, cipher) = _parse(bytes);
     final secret = await _deriveKey(
       passphrase,
       base64Decode(header['salt']! as String),
@@ -145,7 +159,7 @@ class BackupService {
     try {
       clear = await AesGcm.with256bits().decrypt(
         SecretBox(
-          bytes.sublist(4 + headerLen),
+          cipher,
           nonce: base64Decode(header['nonce']! as String),
           mac: Mac(base64Decode(header['mac']! as String)),
         ),
@@ -168,6 +182,35 @@ class BackupService {
     return family;
   }
 
+  static (Map<String, Object?>, List<int>) _parse(Uint8List bytes) {
+    const notBackup = 'This is not a FamBoard backup.';
+    // Version 2: JSON document.
+    if (bytes.isNotEmpty && (bytes.first == 0x7B || bytes.first == 0xEF || bytes.first == 0x20)) {
+      try {
+        final doc = jsonDecode(utf8.decode(bytes).trim()) as Map<String, Object?>;
+        if (doc['famboard'] != 'backup') throw BackupException(notBackup);
+        return (doc, base64Decode(doc['data']! as String));
+      } on BackupException {
+        rethrow;
+      } catch (_) {
+        throw BackupException(notBackup);
+      }
+    }
+    // Version 1: [u32 header length][JSON header][cipher text].
+    if (bytes.length < 8) throw BackupException(notBackup);
+    final headerLen = ByteData.view(bytes.buffer, bytes.offsetInBytes, 4).getUint32(0);
+    if (headerLen > 4096 || bytes.length < 4 + headerLen) throw BackupException(notBackup);
+    try {
+      final header = jsonDecode(utf8.decode(bytes.sublist(4, 4 + headerLen))) as Map<String, Object?>;
+      if (header['magic'] != _magic) throw BackupException(notBackup);
+      return (header, bytes.sublist(4 + headerLen));
+    } on BackupException {
+      rethrow;
+    } catch (_) {
+      throw BackupException(notBackup);
+    }
+  }
+
   static Future<SecretKey> _deriveKey(
     String passphrase,
     List<int> salt, {
@@ -181,9 +224,4 @@ class BackupService {
     return Uint8List.fromList(List.generate(n, (_) => r.nextInt(256)));
   }
 
-  static Uint8List _u32(int v) {
-    final b = Uint8List(4);
-    ByteData.view(b.buffer).setUint32(0, v);
-    return b;
-  }
 }

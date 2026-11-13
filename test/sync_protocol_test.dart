@@ -80,7 +80,8 @@ void main() {
     final a = await _device('A', 'mA');
     final b = await _device('B', 'mB');
     final wrong = KeyVault.randomKey();
-    await expectLater(_sync(a, b, wrong, key), throwsA(isA<SyncAuthException>()));
+    // A different key means a different family: refused before any data.
+    await expectLater(_sync(a, b, wrong, key), throwsA(isA<NotInFamilyException>()));
   });
 
   test('an impostor that knows the tag but not the key fails to authenticate', () async {
@@ -139,3 +140,4 @@ void main() {
     expect(out.map((f) => f.length), [3, 1000, 0]);
   });
 }
+

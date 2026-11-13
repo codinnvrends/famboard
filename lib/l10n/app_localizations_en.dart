@@ -102,7 +102,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scanInviteBody =>
-      'Ask a family admin to open Family → Invite someone, then point your camera at the code.';
+      'Ask anyone grown-up in the family to open Family → Invite someone, then point your camera at the code.';
 
   @override
   String get pasteInvite => 'Paste invite code instead';
@@ -809,7 +809,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupPassphraseHint =>
-      'At least 6 characters. You\'ll need it to restore.';
+      'At least 6 characters. Without it the backup can\'t be opened, so write it down.';
 
   @override
   String get backupWrongPassphrase => 'Wrong passphrase.';
@@ -910,4 +910,342 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get syncFixTitle => 'Sync can\'t find other phones yet';
+
+  @override
+  String get problemNearbyPermission =>
+      'Allow “Nearby devices” so phones can find each other over Bluetooth.';
+
+  @override
+  String get problemLocationPermission =>
+      'Allow Location. Android needs it to scan for nearby phones.';
+
+  @override
+  String get problemLocationOff =>
+      'Turn on Location in quick settings. Bluetooth scanning finds nothing while it\'s off.';
+
+  @override
+  String get problemBluetoothOff => 'Turn on Bluetooth.';
+
+  @override
+  String get problemNoWifi =>
+      'Connect both phones to the same Wi‑Fi, or use Bluetooth.';
+
+  @override
+  String get allowPermissions => 'Allow';
+
+  @override
+  String get openSettings => 'Open settings';
+
+  @override
+  String get checkAgain => 'Check again';
+
+  @override
+  String get syncDiagnostics => 'Sync details';
+
+  @override
+  String get diagThisPhone => 'This phone';
+
+  @override
+  String get diagMethods => 'Connection methods';
+
+  @override
+  String get diagRunning => 'Running';
+
+  @override
+  String get diagNotRunning => 'Not running';
+
+  @override
+  String get diagPhonesSeen => 'Phones seen now';
+
+  @override
+  String get diagNone => 'None';
+
+  @override
+  String get diagRecent => 'Recent activity';
+
+  @override
+  String get diagLastError => 'Last error';
+
+  @override
+  String get diagCopy => 'Copy details';
+
+  @override
+  String get diagHint =>
+      'Both phones need FamBoard open at the same time. Same Wi‑Fi works best; otherwise keep Bluetooth and Location on.';
+
+  @override
+  String get inviteNewPerson => 'New person';
+
+  @override
+  String get inviteReturning => 'Coming back';
+
+  @override
+  String get inviteReturningBody =>
+      'For someone already in the family who reinstalled FamBoard or got a new phone. They get their name, role and history back.';
+
+  @override
+  String get inviteNoOneToBringBack => 'No other members yet.';
+
+  @override
+  String inviteReturningFor(String name, String role) {
+    return 'Bringing back $name as $role';
+  }
+
+  @override
+  String welcomeBack(String name, String family) {
+    return 'Welcome back, $name, to $family';
+  }
+
+  @override
+  String get welcomeBackBody =>
+      'Your name, role and history come back after the first sync.';
+
+  @override
+  String get backupPassphraseAgain => 'Type it again';
+
+  @override
+  String get backupPassphraseMismatch => 'The two passphrases don\'t match.';
+
+  @override
+  String get backupReady => 'Backup ready';
+
+  @override
+  String get backupReadyBody =>
+      'Save it somewhere that survives uninstalling FamBoard, like Downloads or Google Drive, or send it to yourself on WhatsApp.';
+
+  @override
+  String get backupSaveToPhone => 'Save to phone';
+
+  @override
+  String get backupSaved => 'Backup saved';
+
+  @override
+  String get backupShare => 'Share (WhatsApp, email, Drive…)';
+
+  @override
+  String get backupShareText =>
+      'FamBoard backup. To restore: open this file with FamBoard, or FamBoard → Settings → Restore from backup.';
+
+  @override
+  String get backupNotABackup => 'That file isn\'t a FamBoard backup.';
+
+  @override
+  String get backupNever => 'No backup yet';
+
+  @override
+  String backupLast(String date) {
+    return 'Last backup $date';
+  }
+
+  @override
+  String get scanBill => 'Scan a bill';
+
+  @override
+  String get scanBillBody =>
+      'FamBoard reads the bill on your phone, without internet. You can fix anything before saving.';
+
+  @override
+  String get scanBillCamera => 'Take photos';
+
+  @override
+  String get scanBillCameraBody =>
+      'Crops the bill for you. For a long bill, take several photos top to bottom with a little overlap.';
+
+  @override
+  String get scanBillGallery => 'Choose photos';
+
+  @override
+  String get scanBillGalleryBody =>
+      'Pick one or more bill photos from your gallery';
+
+  @override
+  String get scanBillHindi => 'Bill has Hindi text';
+
+  @override
+  String scanReading(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Reading $count photos…',
+      one: 'Reading the bill…',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scanNothingFound =>
+      'No items found. Try a sharper photo in good light, or add items by hand.';
+
+  @override
+  String get scanFailed => 'Couldn\'t read that photo. Please try again.';
+
+  @override
+  String get billReviewTitle => 'Check items';
+
+  @override
+  String get billReviewHint =>
+      'Tap an item to fix it. Items marked ⚠ need a look. Swipe left to remove.';
+
+  @override
+  String get billStore => 'Shop';
+
+  @override
+  String get billDate => 'Bill date';
+
+  @override
+  String get billUntitled => 'Bill';
+
+  @override
+  String get billSelectAll => 'Select all';
+
+  @override
+  String get billSelectNone => 'Select none';
+
+  @override
+  String get billCheckThis => 'Please check this item';
+
+  @override
+  String get billLineRemoved => 'Item removed';
+
+  @override
+  String billItemsTotal(String total) {
+    return 'Items total $total';
+  }
+
+  @override
+  String billTotalMatches(String total) {
+    return 'Adds up to the bill total of $total';
+  }
+
+  @override
+  String billTotalMismatch(String items, String printed) {
+    return 'Items add up to $items but the bill says $printed. Check items marked ⚠ or add a missing one.';
+  }
+
+  @override
+  String billSelectedTotal(String items, String printed) {
+    return 'Selected items: $items (bill total $printed)';
+  }
+
+  @override
+  String get billSaveList => 'Save list';
+
+  @override
+  String get billAddToBoard => 'Add to board';
+
+  @override
+  String billAddedToBoard(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items added to the board',
+      one: '1 item added to the board',
+      zero: 'Everything is already on the board',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get listName => 'List name';
+
+  @override
+  String get listKindGrocery => 'Grocery';
+
+  @override
+  String get listKindGeneral => 'General';
+
+  @override
+  String get listItemName => 'Item';
+
+  @override
+  String get listItemRate => 'Rate';
+
+  @override
+  String get listAddItem => 'Add item';
+
+  @override
+  String get listSavedForNextTime =>
+      'Saved. Find it under Saved lists next time.';
+
+  @override
+  String get savedListsTitle => 'Saved lists';
+
+  @override
+  String get savedListsEmpty => 'No saved lists yet';
+
+  @override
+  String get savedListsEmptyBody =>
+      'Scan a bill to keep what you bought as a list for next time, or make a list by hand.';
+
+  @override
+  String get listNew => 'New list';
+
+  @override
+  String get listEmpty => 'Nothing on this list yet';
+
+  @override
+  String get listQuickAddHint => 'Add an item';
+
+  @override
+  String listItemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String listBoughtCount(int count) {
+    return '$count bought';
+  }
+
+  @override
+  String get listAddRemainingToBoard => 'Add unticked items to board';
+
+  @override
+  String get listUntickAll => 'Untick all';
+
+  @override
+  String get listDeleteTitle => 'Delete this list?';
+
+  @override
+  String get listDeleteBody =>
+      'It will be removed from every phone in the family.';
+
+  @override
+  String get listShareTitle => 'Share or download';
+
+  @override
+  String get listSharePrices => 'Include prices';
+
+  @override
+  String get listShareOnlyRemaining => 'Only items not yet bought';
+
+  @override
+  String get listShareText => 'Send as message';
+
+  @override
+  String get listShareTextBody => 'A checklist for WhatsApp or SMS';
+
+  @override
+  String get listSharePdf => 'PDF';
+
+  @override
+  String get listShareCsv => 'Spreadsheet (CSV)';
+
+  @override
+  String get listSaveToPhone => 'Save to phone';
+
+  @override
+  String get listSaved => 'Saved to your phone';
+
+  @override
+  String get scanCameraUnavailable =>
+      'The camera scanner isn\'t ready on this phone yet (it needs internet once). Choose a photo instead.';
 }

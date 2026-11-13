@@ -1,0 +1,1 @@
+FamBoard 1.0, the first release. One shared board for groceries, repairs, bills and chores. Syncs phone to phone without internet, scans shop bills into reusable lists, and works in English and Hindi.

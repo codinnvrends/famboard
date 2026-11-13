@@ -15,6 +15,13 @@ class SyncAuthException implements Exception {
   String toString() => 'SyncAuthException: $message';
 }
 
+/// The other phone isn't in the family this session asked about. Expected
+/// when two phones share some families but not others.
+class NotInFamilyException implements Exception {
+  @override
+  String toString() => 'Not in this family';
+}
+
 class SyncProtocolException implements Exception {
   SyncProtocolException(this.message);
   final String message;
@@ -95,6 +102,7 @@ class SecureChannel {
 
     final (reply, replyBytes) = await _readPlain(queue);
     if (reply['t'] == 'reject') {
+      if (reply['reason'] == 'family') throw NotInFamilyException();
       throw SyncAuthException('Peer rejected: ${reply['reason']}');
     }
     if (reply['t'] != 'hello' || reply['tag'] != tag) {
@@ -131,7 +139,7 @@ class SecureChannel {
     final family = await lookup(tag);
     if (family == null) {
       await channel.send(_wrapPlain(utf8.encode(jsonEncode({'t': 'reject', 'reason': 'family'}))));
-      throw SyncAuthException('Unknown family');
+      throw NotInFamilyException();
     }
     final eph = await X25519().newKeyPair();
     final myHello = await _hello(tag, deviceId, deviceName, eph);

@@ -8,7 +8,17 @@ class Perms {
   final String memberId;
 
   bool get isAdmin => role == Role.admin;
-  bool get canInvite => role == Role.admin;
+  /// Admins and adult members can invite, so a family isn't locked out if
+  /// its only admin loses their phone.
+  bool get canInvite => role == Role.admin || role == Role.member;
+
+  /// Roles this person may give someone new. Only admins create admins.
+  List<Role> get invitableRoles => role == Role.admin
+      ? const [Role.member, Role.child, Role.viewer, Role.admin]
+      : const [Role.member, Role.child, Role.viewer];
+
+  /// Removed members can only be invited back by an admin.
+  bool canInviteBack(Member m) => !m.removed || role == Role.admin;
   bool get canManageMembers => role == Role.admin;
   bool get canSeeAmounts => role == Role.admin || role == Role.member;
   bool get canAddEntries => role != Role.viewer;

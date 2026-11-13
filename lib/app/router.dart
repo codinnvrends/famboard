@@ -6,6 +6,9 @@ import '../features/family/family_screen.dart';
 import '../features/family/invite_screen.dart';
 import '../features/home/home_shell.dart';
 import '../features/lists/lists_screen.dart';
+import '../features/lists/saved_lists_screen.dart';
+import '../features/scan/bill_review_screen.dart';
+import '../services/receipt/receipt_parser.dart';
 import '../features/onboarding/onboarding_screens.dart';
 import '../features/search/search_screen.dart';
 import '../features/settings/settings_screen.dart';
@@ -42,5 +45,15 @@ GoRouter buildRouter(FamiliesNotifier families) => GoRouter(
         GoRoute(path: '/search', builder: (_, _) => const SearchScreen()),
         GoRoute(path: '/invite', builder: (_, _) => const InviteScreen()),
         GoRoute(path: '/settings', builder: (_, _) => const SettingsScreen()),
+        GoRoute(path: '/saved-lists', builder: (_, _) => const SavedListsScreen()),
+        GoRoute(
+          path: '/saved-lists/:id',
+          builder: (_, state) => SavedListScreen(listId: state.pathParameters['id']!),
+        ),
+        GoRoute(
+          path: '/bill-review',
+          redirect: (_, state) => state.extra is ParsedBill ? null : '/saved-lists',
+          builder: (_, state) => BillReviewScreen(bill: state.extra! as ParsedBill),
+        ),
       ],
     );

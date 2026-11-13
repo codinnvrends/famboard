@@ -8,6 +8,7 @@ import '../../domain/models.dart';
 import '../../ui/format.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
+import 'sync_help.dart';
 
 class FamilyScreen extends ConsumerWidget {
   const FamilyScreen({super.key});
@@ -43,6 +44,15 @@ class FamilyScreen extends ConsumerWidget {
           ],
         ),
         const _SyncCard(),
+        const SyncProblemsCard(),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            icon: const Icon(Icons.troubleshoot, size: 18),
+            label: Text(l.syncDiagnostics),
+            onPressed: () => showSyncDiagnostics(context),
+          ),
+        ),
         SectionHeader(
           l.familyMembers,
           count: members.where((m) => !m.removed).length,
@@ -249,7 +259,11 @@ class _SyncCard extends ConsumerWidget {
                 onPressed: syncing
                     ? null
                     : () async {
-                        final sync = ref.read(servicesProvider).sync;
+                        final services = ref.read(servicesProvider);
+                        final sync = services.sync;
+                        await services.health.refresh();
+                        await sync.retryTransports();
+                        if (!context.mounted) return;
                         if (sync.current.peers.isEmpty) {
                           showSnack(context, l.syncNoPeersToSync);
                         }

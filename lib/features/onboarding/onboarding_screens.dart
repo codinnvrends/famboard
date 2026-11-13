@@ -8,12 +8,23 @@ import '../../app/theme.dart';
 import '../../domain/invite.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
+import '../home/share_handler.dart';
+import '../settings/backup_flow.dart';
 
-class WelcomeScreen extends ConsumerWidget {
+class WelcomeScreen extends ConsumerStatefulWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with ShareHandler {
+  /// Without a family there's nowhere to add text; only backups apply here.
+  @override
+  bool get acceptsText => false;
+
+  @override
+  Widget build(BuildContext context) {
     final l = context.l10n;
     final theme = Theme.of(context);
     final hasFamily = (ref.watch(familiesProvider).value ?? const []).isNotEmpty;
@@ -58,6 +69,12 @@ class WelcomeScreen extends ConsumerWidget {
                 icon: const Icon(Icons.qr_code_scanner),
                 label: Text(l.joinFamily),
                 onPressed: () => context.push('/welcome/join'),
+              ),
+              const SizedBox(height: 8),
+              TextButton.icon(
+                icon: const Icon(Icons.settings_backup_restore),
+                label: Text(l.backupRestore),
+                onPressed: () => pickAndRestoreBackup(context, ref),
               ),
             ],
           ),
@@ -168,7 +185,7 @@ class _JoinFamilyScreenState extends ConsumerState<JoinFamilyScreen> {
 
   Future<void> _join() async {
     final invite = _invite;
-    if (invite == null || _name.text.trim().isEmpty || _busy) return;
+    if (invite == null || (!invite.isReturning && _name.text.trim().isEmpty) || _busy) return;
     setState(() => _busy = true);
     try {
       await ref.read(servicesProvider).repo.joinFamily(invite, myName: _name.text);
@@ -242,23 +259,27 @@ class _JoinFamilyScreenState extends ConsumerState<JoinFamilyScreen> {
           ] else ...[
             Card(
               child: ListTile(
-                leading: const Icon(Icons.home_outlined),
-                title: Text(l.joiningFamily(invite.familyName)),
+                leading: Icon(invite.isReturning ? Icons.waving_hand_outlined : Icons.home_outlined),
+                title: Text(invite.isReturning
+                    ? l.welcomeBack(invite.memberName ?? '', invite.familyName)
+                    : l.joiningFamily(invite.familyName)),
+                subtitle: invite.isReturning ? Text(l.welcomeBackBody) : null,
               ),
             ),
             const SizedBox(height: 16),
-            TextField(
-              controller: _name,
-              autofocus: true,
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(labelText: l.yourNameLabel, hintText: l.yourNameHint),
-              onChanged: (_) => setState(() {}),
-              onSubmitted: (_) => _join(),
-            ),
+            if (!invite.isReturning)
+              TextField(
+                controller: _name,
+                autofocus: true,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(labelText: l.yourNameLabel, hintText: l.yourNameHint),
+                onChanged: (_) => setState(() {}),
+                onSubmitted: (_) => _join(),
+              ),
             const SizedBox(height: 24),
             FilledButton(
               style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
-              onPressed: _name.text.trim().isNotEmpty && !_busy ? _join : null,
+              onPressed: (invite.isReturning || _name.text.trim().isNotEmpty) && !_busy ? _join : null,
               child: Text(l.joinAction),
             ),
           ],

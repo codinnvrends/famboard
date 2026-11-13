@@ -10,6 +10,19 @@ abstract final class Entities {
   static const activity = 'activity';
   static const keywordOverride = 'keyword_override';
   static const category = 'category';
+  static const list = 'list';
+  static const listItem = 'list_item';
+}
+
+enum ListKind {
+  grocery('grocery'),
+  general('general');
+
+  const ListKind(this.code);
+  final String code;
+
+  static ListKind fromCode(Object? code) =>
+      ListKind.values.firstWhere((k) => k.code == code, orElse: () => ListKind.general);
 }
 
 enum EntryType {
@@ -327,4 +340,96 @@ class CustomCategory {
         name: _str(r.fields['name']) ?? '?',
         parentId: _str(r.fields['parentId']) ?? 'other',
       );
+}
+
+/// A saved list: a scanned bill kept for next time, or a list made by hand.
+class SavedList {
+  const SavedList({
+    required this.id,
+    required this.familyId,
+    required this.name,
+    required this.kind,
+    required this.createdAt,
+    this.store,
+    this.billDate,
+    this.billTotal,
+    this.createdBy,
+    this.fromBill = false,
+  });
+
+  final String id;
+  final String familyId;
+  final String name;
+  final ListKind kind;
+  final String? store;
+  final DateTime? billDate;
+  final double? billTotal;
+  final String? createdBy;
+  final DateTime createdAt;
+  final bool fromBill;
+
+  factory SavedList.fromRecord(RecordState r) => SavedList(
+        id: r.id,
+        familyId: r.familyId,
+        name: _str(r.fields['name']) ?? '?',
+        kind: ListKind.fromCode(r.fields['kind']),
+        store: _str(r.fields['store']),
+        billDate: _date(r.fields['billDate']),
+        billTotal: _num(r.fields['billTotal']),
+        createdBy: _str(r.fields['createdBy']),
+        createdAt: _date(r.fields['createdAt']) ?? _clockTime(r.updatedClock),
+        fromBill: r.fields['fromBill'] == true,
+      );
+}
+
+/// One line of a [SavedList].
+class ListItem {
+  const ListItem({
+    required this.id,
+    required this.listId,
+    required this.name,
+    required this.position,
+    this.categoryId,
+    this.quantity,
+    this.unit,
+    this.rate,
+    this.amount,
+    this.checked = false,
+  });
+
+  final String id;
+  final String listId;
+  final String name;
+  final String? categoryId;
+  final double? quantity;
+  final String? unit;
+  final double? rate;
+  final double? amount;
+  final bool checked;
+  final double position;
+
+  factory ListItem.fromRecord(RecordState r) => ListItem(
+        id: r.id,
+        listId: _str(r.fields['listId']) ?? '',
+        name: _str(r.fields['name']) ?? '',
+        categoryId: _str(r.fields['categoryId']),
+        quantity: _num(r.fields['quantity']),
+        unit: _str(r.fields['unit']),
+        rate: _num(r.fields['rate']),
+        amount: _num(r.fields['amount']),
+        checked: r.fields['checked'] == true,
+        position: _num(r.fields['position']) ?? 0,
+      );
+
+  Map<String, Object?> toFields() => {
+        'listId': listId,
+        'name': name,
+        'categoryId': categoryId,
+        'quantity': quantity,
+        'unit': unit,
+        'rate': rate,
+        'amount': amount,
+        'checked': checked,
+        'position': position,
+      };
 }

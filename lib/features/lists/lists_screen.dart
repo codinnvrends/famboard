@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
 import '../../domain/categories.dart';
@@ -21,15 +22,15 @@ class _ListsScreenState extends ConsumerState<ListsScreen> {
   EntryFilter _filter = const EntryFilter();
 
   static String _bucketLabel(AppLocalizations l, ListBucket b) => switch (b) {
-        ListBucket.allOpen => l.listsAllOpen,
-        ListBucket.daily => l.listsDaily,
-        ListBucket.weekly => l.listsWeekly,
-        ListBucket.monthly => l.listsMonthly,
-        ListBucket.yearly => l.listsYearly,
-        ListBucket.recurring => l.listsRecurring,
-        ListBucket.done => l.listsDone,
-        ListBucket.deleted => l.listsDeleted,
-      };
+    ListBucket.allOpen => l.listsAllOpen,
+    ListBucket.daily => l.listsDaily,
+    ListBucket.weekly => l.listsWeekly,
+    ListBucket.monthly => l.listsMonthly,
+    ListBucket.yearly => l.listsYearly,
+    ListBucket.recurring => l.listsRecurring,
+    ListBucket.done => l.listsDone,
+    ListBucket.deleted => l.listsDeleted,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +54,13 @@ class _ListsScreenState extends ConsumerState<ListsScreen> {
                 ),
               ),
               IconButton(
+                tooltip: l.savedListsTitle,
+                icon: const Icon(Icons.bookmarks_outlined),
+                onPressed: () => context.push('/saved-lists'),
+              ),
+              IconButton(
                 tooltip: l.filters,
-                icon: Badge(
-                  isLabelVisible: !_filter.isEmpty,
-                  child: const Icon(Icons.filter_list),
-                ),
+                icon: Badge(isLabelVisible: !_filter.isEmpty, child: const Icon(Icons.filter_list)),
                 onPressed: () => _openFilters(context),
               ),
             ],
@@ -68,9 +71,11 @@ class _ListsScreenState extends ConsumerState<ListsScreen> {
                 for (final b in ListBucket.values)
                   _BucketList(
                     entries: (all.where((e) => inBucket(e, b, now) && _filter.matches(e)).toList()
-                      ..sort(b == ListBucket.done || b == ListBucket.deleted
-                          ? (x, y) => y.updatedAt.compareTo(x.updatedAt)
-                          : compareEntries)),
+                      ..sort(
+                        b == ListBucket.done || b == ListBucket.deleted
+                            ? (x, y) => y.updatedAt.compareTo(x.updatedAt)
+                            : compareEntries,
+                      )),
                     deleted: b == ListBucket.deleted,
                   ),
               ],
@@ -153,9 +158,9 @@ class _FilterSheetState extends State<_FilterSheet> {
     final l = context.l10n;
     final theme = Theme.of(context);
     Widget label(String t) => Padding(
-          padding: const EdgeInsets.only(top: 16, bottom: 6),
-          child: Text(t, style: theme.textTheme.labelLarge),
-        );
+      padding: const EdgeInsets.only(top: 16, bottom: 6),
+      child: Text(t, style: theme.textTheme.labelLarge),
+    );
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -164,55 +169,67 @@ class _FilterSheetState extends State<_FilterSheet> {
           children: [
             Text(l.filters, style: theme.textTheme.titleLarge),
             label(l.typeLabel),
-            Wrap(spacing: 8, runSpacing: 4, children: [
-              for (final t in EntryType.values)
-                FilterChip(
-                  label: Text(t.label(l)),
-                  selected: f.types.contains(t),
-                  onSelected: (_) => setState(() => f = f.copyWith(types: _toggle(f.types, t))),
-                ),
-            ]),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                for (final t in EntryType.values)
+                  FilterChip(
+                    label: Text(t.label(l)),
+                    selected: f.types.contains(t),
+                    onSelected: (_) => setState(() => f = f.copyWith(types: _toggle(f.types, t))),
+                  ),
+              ],
+            ),
             label(l.categoryLabel),
-            Wrap(spacing: 8, runSpacing: 4, children: [
-              for (final c in builtInCategories.where((c) => c.isTop))
-                FilterChip(
-                  label: Text(c.name(context.locale)),
-                  selected: f.topCategories.contains(c.id),
-                  onSelected: (_) =>
-                      setState(() => f = f.copyWith(topCategories: _toggle(f.topCategories, c.id))),
-                ),
-            ]),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                for (final c in builtInCategories.where((c) => c.isTop))
+                  FilterChip(
+                    label: Text(c.name(context.locale)),
+                    selected: f.topCategories.contains(c.id),
+                    onSelected: (_) => setState(() => f = f.copyWith(topCategories: _toggle(f.topCategories, c.id))),
+                  ),
+              ],
+            ),
             label(l.priorityLabel),
-            Wrap(spacing: 8, runSpacing: 4, children: [
-              for (final p in Priority.values)
-                FilterChip(
-                  label: Text(p.label(l)),
-                  selected: f.priorities.contains(p),
-                  onSelected: (_) => setState(() => f = f.copyWith(priorities: _toggle(f.priorities, p))),
-                ),
-            ]),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                for (final p in Priority.values)
+                  FilterChip(
+                    label: Text(p.label(l)),
+                    selected: f.priorities.contains(p),
+                    onSelected: (_) => setState(() => f = f.copyWith(priorities: _toggle(f.priorities, p))),
+                  ),
+              ],
+            ),
             label(l.assigneeLabel),
-            Wrap(spacing: 8, runSpacing: 4, children: [
-              FilterChip(
-                label: Text(l.nobody),
-                selected: f.assignees.contains(''),
-                onSelected: (_) => setState(() => f = f.copyWith(assignees: _toggle(f.assignees, ''))),
-              ),
-              for (final m in widget.members.where((m) => !m.removed))
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: [
                 FilterChip(
-                  avatar: MemberAvatar(m, radius: 10),
-                  label: Text(m.name),
-                  selected: f.assignees.contains(m.id),
-                  onSelected: (_) => setState(() => f = f.copyWith(assignees: _toggle(f.assignees, m.id))),
+                  label: Text(l.nobody),
+                  selected: f.assignees.contains(''),
+                  onSelected: (_) => setState(() => f = f.copyWith(assignees: _toggle(f.assignees, ''))),
                 ),
-            ]),
+                for (final m in widget.members.where((m) => !m.removed))
+                  FilterChip(
+                    avatar: MemberAvatar(m, radius: 10),
+                    label: Text(m.name),
+                    selected: f.assignees.contains(m.id),
+                    onSelected: (_) => setState(() => f = f.copyWith(assignees: _toggle(f.assignees, m.id))),
+                  ),
+              ],
+            ),
             const SizedBox(height: 20),
             Row(
               children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, const EntryFilter()),
-                  child: Text(l.clearFilters),
-                ),
+                TextButton(onPressed: () => Navigator.pop(context, const EntryFilter()), child: Text(l.clearFilters)),
                 const Spacer(),
                 FilledButton(onPressed: () => Navigator.pop(context, f), child: Text(l.save)),
               ],

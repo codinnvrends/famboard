@@ -88,6 +88,10 @@ class FamBoardRepository {
   }
 
   /// Joins a family from a scanned invite. Family data arrives on first sync.
+  /// Joins from a scanned invite. For a returning member ([FamilyInvite
+  /// .isReturning]) this phone takes over their existing member record, so
+  /// their name, role and history come back on first sync. [myName] is
+  /// ignored then.
   Future<LocalFamily> joinFamily(FamilyInvite invite, {required String myName}) async {
     if (invite.isExpired(_now())) {
       throw StateError('This invite has expired. Ask for a new QR code.');
@@ -96,9 +100,18 @@ class FamBoardRepository {
         .where((f) => f.id == invite.familyId)
         .firstOrNull;
     if (existing != null) return existing;
-    final memberId = newId();
+    final memberId = invite.memberId ?? newId();
     await vault.saveFamilyKey(invite.familyId, invite.key);
-    await store.write(_memberWrite(invite.familyId, memberId, myName, invite.role));
+    if (invite.isReturning) {
+      await store.write(RecordWrite(
+        familyId: invite.familyId,
+        entity: Entities.member,
+        id: memberId,
+        fields: {'rejoinedAt': _now().toIso8601String(), 'rejoinedVia': invite.invitedBy},
+      ));
+    } else {
+      await store.write(_memberWrite(invite.familyId, memberId, myName, invite.role));
+    }
     final local = LocalFamily(
       id: invite.familyId,
       name: invite.familyName,
@@ -109,21 +122,36 @@ class FamBoardRepository {
     return local;
   }
 
+  /// Creates a QR invite. Pass [returning] to invite back an existing
+  /// member (their role is kept); otherwise a new member joins with [role].
   Future<FamilyInvite> createInvite({
     required String familyId,
     required String familyName,
     required String invitedBy,
     required Role role,
+    Member? returning,
   }) async {
     final key = await vault.familyKey(familyId);
     if (key == null) throw StateError('Family key missing on this device');
+    if (returning != null && returning.removed) {
+      // Only admins see removed members in the picker; inviting them back
+      // reinstates them.
+      await store.write(RecordWrite(
+        familyId: familyId,
+        entity: Entities.member,
+        id: returning.id,
+        fields: const {'removed': false},
+      ));
+    }
     return FamilyInvite(
       familyId: familyId,
       familyName: familyName,
       key: key,
-      role: role,
+      role: returning?.role ?? role,
       invitedBy: invitedBy,
       expiresAt: _now().add(FamilyInvite.validFor),
+      memberId: returning?.id,
+      memberName: returning?.name,
     );
   }
 
@@ -432,6 +460,121 @@ class FamBoardRepository {
       fields: {'name': name.trim(), 'parentId': parentId},
     ));
     return id;
+  }
+
+  // Saved lists ---------------------------------------------------------------
+
+  Stream<List<SavedList>> watchLists(String familyId) => store
+      .watch(familyId, Entities.list)
+      .map((l) => l.map(SavedList.fromRecord).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
+
+  Stream<SavedList?> watchList(String familyId, String id) => store
+      .watch(familyId, Entities.list)
+      .map((l) => l.where((r) => r.id == id).map(SavedList.fromRecord).firstOrNull);
+
+  Stream<List<ListItem>> watchListItems(String familyId, String listId) => store
+      .watch(familyId, Entities.listItem)
+      .map((l) => l.map(ListItem.fromRecord).where((i) => i.listId == listId).toList()
+        ..sort((a, b) => a.position.compareTo(b.position)));
+
+  Future<List<ListItem>> listItems(String familyId, String listId) async =>
+      (await store.list(familyId, Entities.listItem))
+          .map(ListItem.fromRecord)
+          .where((i) => i.listId == listId)
+          .toList()
+        ..sort((a, b) => a.position.compareTo(b.position));
+
+  /// Saves a list with its items in one go (one write batch, so a peer never
+  /// sees half a list).
+  Future<String> createList({
+    required String familyId,
+    required String memberId,
+    required String name,
+    required ListKind kind,
+    required List<ListItem> items,
+    String? storeName,
+    DateTime? billDate,
+    double? billTotal,
+    bool fromBill = false,
+  }) async {
+    final listId = newId();
+    await store.writeAll([
+      RecordWrite(
+        familyId: familyId,
+        entity: Entities.list,
+        id: listId,
+        fields: {
+          'name': name.trim(),
+          'kind': kind.code,
+          'store': storeName,
+          'billDate': billDate?.toIso8601String(),
+          'billTotal': billTotal,
+          'fromBill': fromBill,
+          'createdBy': memberId,
+          'createdAt': _now().toIso8601String(),
+        },
+      ),
+      for (var i = 0; i < items.length; i++)
+        RecordWrite(
+          familyId: familyId,
+          entity: Entities.listItem,
+          id: newId(),
+          fields: {...items[i].toFields(), 'listId': listId, 'position': i.toDouble()},
+        ),
+    ]);
+    return listId;
+  }
+
+  Future<void> renameList(String familyId, String listId, String name) => store.write(RecordWrite(
+        familyId: familyId,
+        entity: Entities.list,
+        id: listId,
+        fields: {'name': name.trim()},
+      ));
+
+  Future<String> addListItem(String familyId, String listId, String name, {String? categoryId, double? position}) async {
+    final id = newId();
+    final items = await listItems(familyId, listId);
+    final pos = position ?? (items.isEmpty ? 0 : items.last.position + 1);
+    await store.write(RecordWrite(
+      familyId: familyId,
+      entity: Entities.listItem,
+      id: id,
+      fields: {'listId': listId, 'name': name.trim(), 'categoryId': categoryId, 'checked': false, 'position': pos},
+    ));
+    return id;
+  }
+
+  /// Writes only the fields that changed.
+  Future<void> updateListItem(String familyId, ListItem before, Map<String, Object?> changes) async {
+    final current = before.toFields();
+    final changed = {
+      for (final e in changes.entries)
+        if (current[e.key] != e.value) e.key: e.value,
+    };
+    if (changed.isEmpty) return;
+    await store.write(RecordWrite(familyId: familyId, entity: Entities.listItem, id: before.id, fields: changed));
+  }
+
+  Future<void> deleteListItem(String familyId, String itemId) =>
+      store.delete(familyId, Entities.listItem, itemId);
+
+  Future<void> deleteList(String familyId, String listId) async {
+    final items = await listItems(familyId, listId);
+    await store.writeAll([
+      RecordWrite(familyId: familyId, entity: Entities.list, id: listId, fields: {RecordState.deletedField: true}),
+      for (final i in items)
+        RecordWrite(familyId: familyId, entity: Entities.listItem, id: i.id, fields: {RecordState.deletedField: true}),
+    ]);
+  }
+
+  /// Unticks every item so the list can be used again.
+  Future<void> resetList(String familyId, String listId) async {
+    final items = await listItems(familyId, listId);
+    await store.writeAll([
+      for (final i in items.where((i) => i.checked))
+        RecordWrite(familyId: familyId, entity: Entities.listItem, id: i.id, fields: {'checked': false}),
+    ]);
   }
 
   // Helpers -------------------------------------------------------------------

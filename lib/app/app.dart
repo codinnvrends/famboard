@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 
 import '../data/settings_store.dart';
 import '../domain/models.dart';
-import '../features/settings/settings_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../services/notifications.dart';
 import '../sync/sync_session.dart';
@@ -53,33 +52,51 @@ class _FamBoardAppState extends ConsumerState<FamBoardApp> with WidgetsBindingOb
     super.dispose();
   }
 
+  /// True while the first-run permission dialogs are on screen. Each dialog
+  /// briefly sends the app through "resumed"; starting sync then would try
+  /// Bluetooth before it is allowed.
+  bool _askingPermissions = false;
+
   /// Sync only runs while the app is open (iOS stops it in the background
   /// anyway); it starts once this phone belongs to a family.
   Future<void> _onFamiliesChanged() async {
     final services = ref.read(servicesProvider);
     if (services.families.isEmpty) return;
-    if (!services.sync.current.running) {
-      await _firstRunPermissions();
-      await services.sync.start();
-    }
+    await _firstRunPermissions();
+    await _startSync();
+  }
+
+  Future<void> _startSync() async {
+    final services = ref.read(servicesProvider);
+    if (_askingPermissions || services.families.isEmpty) return;
+    await services.health.refresh();
+    await services.sync.start();
+    await services.sync.retryTransports();
   }
 
   Future<void> _firstRunPermissions() async {
-    final settings = ref.read(servicesProvider).settings;
+    final services = ref.read(servicesProvider);
+    final settings = services.settings;
     if (await settings.get('permissionsAsked') == 'true') return;
-    await settings.set('permissionsAsked', 'true');
-    if (!kIsWeb && Platform.isAndroid && await settings.get(SettingsStore.kNearby) != 'false') {
-      await requestNearbyPermissions();
+    _askingPermissions = true;
+    try {
+      await settings.set('permissionsAsked', 'true');
+      if (!kIsWeb && Platform.isAndroid && await settings.get(SettingsStore.kNearby) != 'false') {
+        await services.health.checker.requestPermissions();
+      }
+      await services.notifications.requestPermission();
+    } finally {
+      _askingPermissions = false;
     }
-    await ref.read(servicesProvider).notifications.requestPermission();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final services = ref.read(servicesProvider);
     if (state == AppLifecycleState.resumed && !services.families.isEmpty) {
-      unawaited(services.sync.start().then((_) => services.sync.syncAll(force: true)));
-    } else if (state == AppLifecycleState.paused) {
+      // Coming back from Settings may have fixed permissions or Location.
+      unawaited(_startSync().then((_) => services.sync.syncAll(force: true)));
+    } else if (state == AppLifecycleState.paused && !_askingPermissions) {
       unawaited(services.sync.stop());
     }
   }
