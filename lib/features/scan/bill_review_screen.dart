@@ -137,10 +137,7 @@ class _BillReviewScreenState extends ConsumerState<BillReviewScreen> {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  l.billReviewHint,
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                ),
+                child: _hint(l.billReviewHint, theme),
               ),
               TextButton(
                 onPressed: () => setState(() {
@@ -181,6 +178,28 @@ class _BillReviewScreenState extends ConsumerState<BillReviewScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// The hint mentions ⚠; show the same icon the rows use instead of the
+  /// emoji, which some phones draw differently.
+  Widget _hint(String text, ThemeData theme) {
+    final style = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
+    final parts = text.split('⚠');
+    return Text.rich(
+      TextSpan(
+        style: style,
+        children: [
+          for (var i = 0; i < parts.length; i++) ...[
+            if (i > 0)
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Icon(Icons.warning_amber_rounded, size: 15, color: theme.colorScheme.tertiary),
+              ),
+            TextSpan(text: parts[i]),
+          ],
+        ],
       ),
     );
   }
