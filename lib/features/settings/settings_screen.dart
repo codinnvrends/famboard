@@ -15,7 +15,7 @@ import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
 import 'backup_flow.dart';
 
-const appVersion = '1.0.0';
+const appVersion = '1.0.1';
 
 /// Sapps home: news, new features and the other Sapps apps.
 const sappsUrl = 'https://sapps-8ny.pages.dev/';
