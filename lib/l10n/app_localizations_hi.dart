@@ -830,6 +830,20 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get aboutMoreApps => 'Sapps के और ऐप';
+
+  @override
+  String get aboutMoreAppsBody => 'नई सुविधाएँ, अपडेट और हमारे दूसरे ऐप';
+
+  @override
+  String get aboutPrivacy => 'गोपनीयता नीति';
+
+  @override
+  String linkOpenFailed(String url) {
+    return 'लिंक नहीं खुला। $url पर जाएँ';
+  }
+
+  @override
   String get settingsNeedsRestart => 'लागू करने के लिए सिंक फिर से शुरू करें';
 
   @override

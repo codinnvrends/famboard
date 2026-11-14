@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/providers.dart';
 import '../../data/settings_store.dart';
@@ -15,6 +16,10 @@ import '../../ui/widgets.dart';
 import 'backup_flow.dart';
 
 const appVersion = '1.0.0';
+
+/// Sapps home: news, new features and the other Sapps apps.
+const sappsUrl = 'https://sapps-8ny.pages.dev/';
+const privacyUrl = 'https://sapps-8ny.pages.dev/famboard/privacy/';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -161,9 +166,32 @@ class SettingsScreen extends ConsumerWidget {
             title: Text(l.appTitle),
             subtitle: Text(l.aboutBody(appVersion)),
           ),
+          ListTile(
+            leading: const Icon(Icons.apps),
+            title: Text(l.aboutMoreApps),
+            subtitle: Text(l.aboutMoreAppsBody),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () => _openLink(context, sappsUrl),
+          ),
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: Text(l.aboutPrivacy),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () => _openLink(context, privacyUrl),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _openLink(BuildContext context, String url) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.linkOpenFailed(url);
+    var ok = false;
+    try {
+      ok = await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } catch (_) {}
+    if (!ok) messenger.showSnackBar(SnackBar(content: Text(failed)));
   }
 
   Future<String?> _ask(BuildContext context, String title, String initial, {bool secret = false}) async {
