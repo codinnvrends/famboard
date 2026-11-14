@@ -1502,6 +1502,30 @@ abstract class AppLocalizations {
   /// **'Version {version}. Your board lives on your family\'s phones and syncs between them directly. No ads, no tracking.'**
   String aboutBody(String version);
 
+  /// No description provided for @aboutMoreApps.
+  ///
+  /// In en, this message translates to:
+  /// **'More apps from Sapps'**
+  String get aboutMoreApps;
+
+  /// No description provided for @aboutMoreAppsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'New features, updates and our other apps'**
+  String get aboutMoreAppsBody;
+
+  /// No description provided for @aboutPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get aboutPrivacy;
+
+  /// No description provided for @linkOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the link. Visit {url}'**
+  String linkOpenFailed(String url);
+
   /// No description provided for @settingsNeedsRestart.
   ///
   /// In en, this message translates to:

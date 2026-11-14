@@ -828,6 +828,20 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get aboutMoreApps => 'More apps from Sapps';
+
+  @override
+  String get aboutMoreAppsBody => 'New features, updates and our other apps';
+
+  @override
+  String get aboutPrivacy => 'Privacy policy';
+
+  @override
+  String linkOpenFailed(String url) {
+    return 'Couldn\'t open the link. Visit $url';
+  }
+
+  @override
   String get settingsNeedsRestart => 'Restart sync to apply';
 
   @override

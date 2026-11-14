@@ -491,6 +491,17 @@
       }
     }
   },
+  "aboutMoreApps": "More apps from Sapps",
+  "aboutMoreAppsBody": "New features, updates and our other apps",
+  "aboutPrivacy": "Privacy policy",
+  "linkOpenFailed": "Couldn't open the link. Visit {url}",
+  "@linkOpenFailed": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
   "settingsNeedsRestart": "Restart sync to apply",
   "notifChannel": "Reminders",
   "notifDueToday": "Due today: {title}",
