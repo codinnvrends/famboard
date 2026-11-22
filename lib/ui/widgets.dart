@@ -25,32 +25,43 @@ class SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(4, 20, 4, 8),
       child: Row(
         children: [
-          Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: color ?? theme.colorScheme.onSurfaceVariant,
-              letterSpacing: 0.2,
+          // The title gives way (ellipsis) before the trailing action does,
+          // e.g. in large-text mode or Hindi.
+          Expanded(
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: color ?? theme.colorScheme.onSurfaceVariant,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ),
+                if (count != null) ...[
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: (color ?? theme.colorScheme.primary).withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '$count',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: color ?? theme.colorScheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
           ),
-          if (count != null) ...[
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: (color ?? theme.colorScheme.primary).withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                '$count',
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: color ?? theme.colorScheme.primary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ],
-          const Spacer(),
           ?trailing,
         ],
       ),

@@ -137,16 +137,19 @@ class SettingsScreen extends ConsumerWidget {
               },
             ),
           header(l.settingsData),
-          ListTile(
-            leading: const Icon(Icons.table_chart_outlined),
-            title: Text(l.exportCsv),
-            onTap: () => _export(context, ref, csv: true),
-          ),
-          ListTile(
-            leading: const Icon(Icons.data_object),
-            title: Text(l.exportJson),
-            onTap: () => _export(context, ref, csv: false),
-          ),
+          // Exports include bill amounts, so they follow money access.
+          if (ref.watch(permsProvider).canSeeMoney) ...[
+            ListTile(
+              leading: const Icon(Icons.table_chart_outlined),
+              title: Text(l.exportCsv),
+              onTap: () => _export(context, ref, csv: true),
+            ),
+            ListTile(
+              leading: const Icon(Icons.data_object),
+              title: Text(l.exportJson),
+              onTap: () => _export(context, ref, csv: false),
+            ),
+          ],
           ListTile(
             leading: const Icon(Icons.lock_outline),
             title: Text(l.backupCreate),

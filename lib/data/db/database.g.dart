@@ -1576,6 +1576,358 @@ class PeersCompanion extends UpdateCompanion<PeerRow> {
   }
 }
 
+class $BlobsTable extends Blobs with TableInfo<$BlobsTable, BlobRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BlobsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _familyIdMeta = const VerificationMeta(
+    'familyId',
+  );
+  @override
+  late final GeneratedColumn<String> familyId = GeneratedColumn<String>(
+    'family_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _mimeMeta = const VerificationMeta('mime');
+  @override
+  late final GeneratedColumn<String> mime = GeneratedColumn<String>(
+    'mime',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _bytesMeta = const VerificationMeta('bytes');
+  @override
+  late final GeneratedColumn<Uint8List> bytes = GeneratedColumn<Uint8List>(
+    'bytes',
+    aliasedName,
+    false,
+    type: DriftSqlType.blob,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdMeta = const VerificationMeta(
+    'created',
+  );
+  @override
+  late final GeneratedColumn<int> created = GeneratedColumn<int>(
+    'created',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [familyId, id, mime, bytes, created];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'blobs';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BlobRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('family_id')) {
+      context.handle(
+        _familyIdMeta,
+        familyId.isAcceptableOrUnknown(data['family_id']!, _familyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_familyIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('mime')) {
+      context.handle(
+        _mimeMeta,
+        mime.isAcceptableOrUnknown(data['mime']!, _mimeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_mimeMeta);
+    }
+    if (data.containsKey('bytes')) {
+      context.handle(
+        _bytesMeta,
+        bytes.isAcceptableOrUnknown(data['bytes']!, _bytesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_bytesMeta);
+    }
+    if (data.containsKey('created')) {
+      context.handle(
+        _createdMeta,
+        created.isAcceptableOrUnknown(data['created']!, _createdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {familyId, id};
+  @override
+  BlobRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BlobRow(
+      familyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}family_id'],
+      )!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      mime: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}mime'],
+      )!,
+      bytes: attachedDatabase.typeMapping.read(
+        DriftSqlType.blob,
+        data['${effectivePrefix}bytes'],
+      )!,
+      created: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created'],
+      )!,
+    );
+  }
+
+  @override
+  $BlobsTable createAlias(String alias) {
+    return $BlobsTable(attachedDatabase, alias);
+  }
+}
+
+class BlobRow extends DataClass implements Insertable<BlobRow> {
+  final String familyId;
+  final String id;
+  final String mime;
+  final Uint8List bytes;
+  final int created;
+  const BlobRow({
+    required this.familyId,
+    required this.id,
+    required this.mime,
+    required this.bytes,
+    required this.created,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['family_id'] = Variable<String>(familyId);
+    map['id'] = Variable<String>(id);
+    map['mime'] = Variable<String>(mime);
+    map['bytes'] = Variable<Uint8List>(bytes);
+    map['created'] = Variable<int>(created);
+    return map;
+  }
+
+  BlobsCompanion toCompanion(bool nullToAbsent) {
+    return BlobsCompanion(
+      familyId: Value(familyId),
+      id: Value(id),
+      mime: Value(mime),
+      bytes: Value(bytes),
+      created: Value(created),
+    );
+  }
+
+  factory BlobRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BlobRow(
+      familyId: serializer.fromJson<String>(json['familyId']),
+      id: serializer.fromJson<String>(json['id']),
+      mime: serializer.fromJson<String>(json['mime']),
+      bytes: serializer.fromJson<Uint8List>(json['bytes']),
+      created: serializer.fromJson<int>(json['created']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'familyId': serializer.toJson<String>(familyId),
+      'id': serializer.toJson<String>(id),
+      'mime': serializer.toJson<String>(mime),
+      'bytes': serializer.toJson<Uint8List>(bytes),
+      'created': serializer.toJson<int>(created),
+    };
+  }
+
+  BlobRow copyWith({
+    String? familyId,
+    String? id,
+    String? mime,
+    Uint8List? bytes,
+    int? created,
+  }) => BlobRow(
+    familyId: familyId ?? this.familyId,
+    id: id ?? this.id,
+    mime: mime ?? this.mime,
+    bytes: bytes ?? this.bytes,
+    created: created ?? this.created,
+  );
+  BlobRow copyWithCompanion(BlobsCompanion data) {
+    return BlobRow(
+      familyId: data.familyId.present ? data.familyId.value : this.familyId,
+      id: data.id.present ? data.id.value : this.id,
+      mime: data.mime.present ? data.mime.value : this.mime,
+      bytes: data.bytes.present ? data.bytes.value : this.bytes,
+      created: data.created.present ? data.created.value : this.created,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BlobRow(')
+          ..write('familyId: $familyId, ')
+          ..write('id: $id, ')
+          ..write('mime: $mime, ')
+          ..write('bytes: $bytes, ')
+          ..write('created: $created')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(familyId, id, mime, $driftBlobEquality.hash(bytes), created);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BlobRow &&
+          other.familyId == this.familyId &&
+          other.id == this.id &&
+          other.mime == this.mime &&
+          $driftBlobEquality.equals(other.bytes, this.bytes) &&
+          other.created == this.created);
+}
+
+class BlobsCompanion extends UpdateCompanion<BlobRow> {
+  final Value<String> familyId;
+  final Value<String> id;
+  final Value<String> mime;
+  final Value<Uint8List> bytes;
+  final Value<int> created;
+  final Value<int> rowid;
+  const BlobsCompanion({
+    this.familyId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.mime = const Value.absent(),
+    this.bytes = const Value.absent(),
+    this.created = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BlobsCompanion.insert({
+    required String familyId,
+    required String id,
+    required String mime,
+    required Uint8List bytes,
+    required int created,
+    this.rowid = const Value.absent(),
+  }) : familyId = Value(familyId),
+       id = Value(id),
+       mime = Value(mime),
+       bytes = Value(bytes),
+       created = Value(created);
+  static Insertable<BlobRow> custom({
+    Expression<String>? familyId,
+    Expression<String>? id,
+    Expression<String>? mime,
+    Expression<Uint8List>? bytes,
+    Expression<int>? created,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (familyId != null) 'family_id': familyId,
+      if (id != null) 'id': id,
+      if (mime != null) 'mime': mime,
+      if (bytes != null) 'bytes': bytes,
+      if (created != null) 'created': created,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BlobsCompanion copyWith({
+    Value<String>? familyId,
+    Value<String>? id,
+    Value<String>? mime,
+    Value<Uint8List>? bytes,
+    Value<int>? created,
+    Value<int>? rowid,
+  }) {
+    return BlobsCompanion(
+      familyId: familyId ?? this.familyId,
+      id: id ?? this.id,
+      mime: mime ?? this.mime,
+      bytes: bytes ?? this.bytes,
+      created: created ?? this.created,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (familyId.present) {
+      map['family_id'] = Variable<String>(familyId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (mime.present) {
+      map['mime'] = Variable<String>(mime.value);
+    }
+    if (bytes.present) {
+      map['bytes'] = Variable<Uint8List>(bytes.value);
+    }
+    if (created.present) {
+      map['created'] = Variable<int>(created.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BlobsCompanion(')
+          ..write('familyId: $familyId, ')
+          ..write('id: $id, ')
+          ..write('mime: $mime, ')
+          ..write('bytes: $bytes, ')
+          ..write('created: $created, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1583,6 +1935,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ChangesTable changes = $ChangesTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
   late final $PeersTable peers = $PeersTable(this);
+  late final $BlobsTable blobs = $BlobsTable(this);
   late final Index changesFamilyNodeHlc = Index(
     'changes_family_node_hlc',
     'CREATE INDEX changes_family_node_hlc ON changes (family_id, node, hlc)',
@@ -1596,6 +1949,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     changes,
     settings,
     peers,
+    blobs,
     changesFamilyNodeHlc,
   ];
 }
@@ -2453,6 +2807,206 @@ typedef $$PeersTableProcessedTableManager =
       PeerRow,
       PrefetchHooks Function()
     >;
+typedef $$BlobsTableCreateCompanionBuilder = BlobsCompanion Function({
+  required String familyId,
+  required String id,
+  required String mime,
+  required Uint8List bytes,
+  required int created,
+  Value<int> rowid,
+});
+typedef $$BlobsTableUpdateCompanionBuilder = BlobsCompanion Function({
+  Value<String> familyId,
+  Value<String> id,
+  Value<String> mime,
+  Value<Uint8List> bytes,
+  Value<int> created,
+  Value<int> rowid,
+});
+
+class $$BlobsTableFilterComposer extends Composer<_$AppDatabase, $BlobsTable> {
+  $$BlobsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get familyId => $composableBuilder(
+    column: $table.familyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get mime => $composableBuilder(
+    column: $table.mime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<Uint8List> get bytes => $composableBuilder(
+    column: $table.bytes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get created => $composableBuilder(
+    column: $table.created,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$BlobsTableOrderingComposer
+    extends Composer<_$AppDatabase, $BlobsTable> {
+  $$BlobsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get familyId => $composableBuilder(
+    column: $table.familyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get mime => $composableBuilder(
+    column: $table.mime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<Uint8List> get bytes => $composableBuilder(
+    column: $table.bytes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get created => $composableBuilder(
+    column: $table.created,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$BlobsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BlobsTable> {
+  $$BlobsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get familyId =>
+      $composableBuilder(column: $table.familyId, builder: (column) => column);
+
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get mime =>
+      $composableBuilder(column: $table.mime, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get bytes =>
+      $composableBuilder(column: $table.bytes, builder: (column) => column);
+
+  GeneratedColumn<int> get created =>
+      $composableBuilder(column: $table.created, builder: (column) => column);
+}
+
+class $$BlobsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BlobsTable,
+          BlobRow,
+          $$BlobsTableFilterComposer,
+          $$BlobsTableOrderingComposer,
+          $$BlobsTableAnnotationComposer,
+          $$BlobsTableCreateCompanionBuilder,
+          $$BlobsTableUpdateCompanionBuilder,
+          (BlobRow, BaseReferences<_$AppDatabase, $BlobsTable, BlobRow>),
+          BlobRow,
+          PrefetchHooks Function()
+        > {
+  $$BlobsTableTableManager(_$AppDatabase db, $BlobsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BlobsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BlobsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BlobsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> familyId = const Value.absent(),
+                Value<String> id = const Value.absent(),
+                Value<String> mime = const Value.absent(),
+                Value<Uint8List> bytes = const Value.absent(),
+                Value<int> created = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BlobsCompanion(
+                familyId: familyId,
+                id: id,
+                mime: mime,
+                bytes: bytes,
+                created: created,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String familyId,
+                required String id,
+                required String mime,
+                required Uint8List bytes,
+                required int created,
+                Value<int> rowid = const Value.absent(),
+              }) => BlobsCompanion.insert(
+                familyId: familyId,
+                id: id,
+                mime: mime,
+                bytes: bytes,
+                created: created,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$BlobsTable, BlobRow>(table),
+                  BaseReferences<_$AppDatabase, $BlobsTable, BlobRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$BlobsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BlobsTable,
+      BlobRow,
+      $$BlobsTableFilterComposer,
+      $$BlobsTableOrderingComposer,
+      $$BlobsTableAnnotationComposer,
+      $$BlobsTableCreateCompanionBuilder,
+      $$BlobsTableUpdateCompanionBuilder,
+      (BlobRow, BaseReferences<_$AppDatabase, $BlobsTable, BlobRow>),
+      BlobRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2465,4 +3019,6 @@ class $AppDatabaseManager {
       $$SettingsTableTableManager(_db, _db.settings);
   $$PeersTableTableManager get peers =>
       $$PeersTableTableManager(_db, _db.peers);
+  $$BlobsTableTableManager get blobs =>
+      $$BlobsTableTableManager(_db, _db.blobs);
 }

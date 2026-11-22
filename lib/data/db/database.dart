@@ -66,12 +66,26 @@ class Peers extends Table {
   Set<Column<Object>> get primaryKey => {deviceId, familyId};
 }
 
-@DriftDatabase(tables: [Records, Changes, Settings, Peers])
+/// Photos (warranty cards, bills), keyed by the SHA-256 of their bytes.
+/// Records point at them by id; sync fetches the ones a phone lacks.
+@DataClassName('BlobRow')
+class Blobs extends Table {
+  TextColumn get familyId => text()();
+  TextColumn get id => text()();
+  TextColumn get mime => text()();
+  BlobColumn get bytes => blob()();
+  IntColumn get created => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {familyId, id};
+}
+
+@DriftDatabase(tables: [Records, Changes, Settings, Peers, Blobs])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -81,6 +95,9 @@ class AppDatabase extends _$AppDatabase {
             'CREATE INDEX IF NOT EXISTS records_family_entity '
             'ON records (family_id, entity)',
           );
+        },
+        onUpgrade: (m, from, to) async {
+          if (from < 2) await m.createTable(blobs);
         },
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');

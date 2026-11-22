@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 
 import '../data/settings_store.dart';
 import '../domain/models.dart';
+import '../domain/warranty.dart';
 import '../l10n/app_localizations.dart';
 import '../services/notifications.dart';
 import '../sync/sync_session.dart';
@@ -111,7 +112,12 @@ class _FamBoardAppState extends ConsumerState<FamBoardApp> with WidgetsBindingOb
       ..showSnackBar(SnackBar(content: Text(l.syncReceived(r.received, r.peerName))));
   }
 
-  void _scheduleReminders(List<Entry> entries) {
+  List<Entry> _remindEntries = const [];
+  List<Appliance> _remindAppliances = const [];
+
+  void _scheduleReminders({List<Entry>? entries, List<Appliance>? appliances}) {
+    if (entries != null) _remindEntries = entries;
+    if (appliances != null) _remindAppliances = appliances;
     _reminderDebounce?.cancel();
     _reminderDebounce = Timer(const Duration(seconds: 3), () async {
       final context = scaffoldMessengerKey.currentContext;
@@ -121,7 +127,8 @@ class _FamBoardAppState extends ConsumerState<FamBoardApp> with WidgetsBindingOb
       final s = services.settings;
       final digest = (await s.get(SettingsStore.kDigestTime) ?? '08:00').split(':');
       await services.notifications.reschedule(
-        entries: entries,
+        entries: _remindEntries,
+        appliances: _remindAppliances,
         enabled: await s.get(SettingsStore.kNotifications) != 'false',
         billLeadDays: int.tryParse(await s.get(SettingsStore.kBillLeadDays) ?? '') ?? 3,
         digestTime: TimeOfDay(hour: int.parse(digest[0]), minute: int.parse(digest[1])),
@@ -131,6 +138,8 @@ class _FamBoardAppState extends ConsumerState<FamBoardApp> with WidgetsBindingOb
           dueIn: l.notifDueIn,
           digestTitle: l.notifDigestTitle,
           digestBody: l.notifDigestBody,
+          warrantyEndsIn: l.notifWarrantyEnds,
+          extraEndsIn: l.notifExtraEnds,
         ),
       );
     });
@@ -145,7 +154,11 @@ class _FamBoardAppState extends ConsumerState<FamBoardApp> with WidgetsBindingOb
     if (session != null) {
       ref.listen(entriesProvider(session.familyId), (_, next) {
         final list = next.value;
-        if (list != null) _scheduleReminders(list);
+        if (list != null) _scheduleReminders(entries: list);
+      });
+      ref.listen(appliancesProvider(session.familyId), (_, next) {
+        final list = next.value;
+        if (list != null) _scheduleReminders(appliances: list);
       });
     }
 

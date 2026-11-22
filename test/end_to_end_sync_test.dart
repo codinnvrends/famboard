@@ -4,6 +4,7 @@ import 'package:famboard/data/db/connection.dart';
 import 'package:famboard/data/famboard_repository.dart';
 import 'package:famboard/data/key_vault.dart';
 import 'package:famboard/domain/models.dart';
+import 'package:famboard/domain/warranty.dart';
 import 'package:famboard/services/notifications.dart';
 import 'package:famboard/services/recurrence.dart';
 import 'package:famboard/sync/channel.dart';
@@ -94,6 +95,7 @@ class NoopNotifications extends NotificationService {
     required int billLeadDays,
     required TimeOfDay digestTime,
     required ReminderTexts texts,
+    List<Appliance> appliances = const [],
   }) async {}
 }
 

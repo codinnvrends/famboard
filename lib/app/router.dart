@@ -14,6 +14,10 @@ import '../features/search/search_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/shopping/shopping_screen.dart';
 import '../features/today/today_screen.dart';
+import '../features/warranties/appliance_detail_screen.dart';
+import '../features/warranties/appliance_form_screen.dart';
+import '../features/warranties/warranties_screen.dart';
+import '../services/warranty/warranty_scanner.dart';
 import 'services.dart';
 
 GoRouter buildRouter(FamiliesNotifier families) => GoRouter(
@@ -34,12 +38,27 @@ GoRouter buildRouter(FamiliesNotifier families) => GoRouter(
             StatefulShellBranch(routes: [GoRoute(path: '/today', builder: (_, _) => const TodayScreen())]),
             StatefulShellBranch(routes: [GoRoute(path: '/lists', builder: (_, _) => const ListsScreen())]),
             StatefulShellBranch(routes: [GoRoute(path: '/bills', builder: (_, _) => const BillsScreen())]),
+            StatefulShellBranch(routes: [GoRoute(path: '/warranties', builder: (_, _) => const WarrantiesScreen())]),
             StatefulShellBranch(routes: [GoRoute(path: '/family', builder: (_, _) => const FamilyScreen())]),
           ],
         ),
         GoRoute(
           path: '/entry/:id',
           builder: (_, state) => EntryDetailScreen(entryId: state.pathParameters['id']!),
+        ),
+        GoRoute(
+          path: '/appliance-new',
+          builder: (_, state) => ApplianceFormScreen(scan: state.extra is WarrantyScan ? state.extra! as WarrantyScan : null),
+        ),
+        GoRoute(
+          path: '/appliance/:id',
+          builder: (_, state) => ApplianceDetailScreen(applianceId: state.pathParameters['id']!),
+          routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (_, state) => ApplianceFormScreen(applianceId: state.pathParameters['id']!),
+            ),
+          ],
         ),
         GoRoute(path: '/shopping', builder: (_, _) => const ShoppingScreen()),
         GoRoute(path: '/search', builder: (_, _) => const SearchScreen()),

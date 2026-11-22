@@ -2203,6 +2203,624 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The camera scanner isn\'t ready on this phone yet (it needs internet once). Choose a photo instead.'**
   String get scanCameraUnavailable;
+
+  /// No description provided for @navWarranties.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranties'**
+  String get navWarranties;
+
+  /// No description provided for @canSeeMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Can see bills & money'**
+  String get canSeeMoney;
+
+  /// No description provided for @seesMoneyShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sees bills'**
+  String get seesMoneyShort;
+
+  /// No description provided for @noMoneyShort.
+  ///
+  /// In en, this message translates to:
+  /// **'No bills'**
+  String get noMoneyShort;
+
+  /// No description provided for @moneyAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} can now see bills and money'**
+  String moneyAllowed(String name);
+
+  /// No description provided for @moneyHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills and money are now hidden from {name}'**
+  String moneyHidden(String name);
+
+  /// No description provided for @billHiddenFromYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills are only shown to people an admin has allowed. It will be saved for them.'**
+  String get billHiddenFromYou;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @applianceNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get applianceNone;
+
+  /// No description provided for @repairAppliance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appliance'**
+  String get repairAppliance;
+
+  /// No description provided for @fromPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'From photo, please check'**
+  String get fromPhoto;
+
+  /// No description provided for @photoNotSyncedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrives on Wi‑Fi sync'**
+  String get photoNotSyncedYet;
+
+  /// No description provided for @removePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get removePhoto;
+
+  /// No description provided for @coverUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty end not known'**
+  String get coverUnknown;
+
+  /// No description provided for @coverExpiredOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired {date}'**
+  String coverExpiredOn(String date);
+
+  /// No description provided for @coverEndsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends today'**
+  String get coverEndsToday;
+
+  /// No description provided for @coverEndsInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{Ends tomorrow} other{Ends in {days} days}}'**
+  String coverEndsInDays(int days);
+
+  /// No description provided for @coverTill.
+  ///
+  /// In en, this message translates to:
+  /// **'Covered till {date}'**
+  String coverTill(String date);
+
+  /// No description provided for @coverExtended.
+  ///
+  /// In en, this message translates to:
+  /// **'Extended warranty'**
+  String get coverExtended;
+
+  /// No description provided for @coverAmc.
+  ///
+  /// In en, this message translates to:
+  /// **'AMC'**
+  String get coverAmc;
+
+  /// No description provided for @monthsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} months'**
+  String monthsShort(int n);
+
+  /// No description provided for @yearsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 year} other{{n} years}}'**
+  String yearsShort(int n);
+
+  /// No description provided for @notifWarrantyEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: warranty ends in {days} days'**
+  String notifWarrantyEnds(String name, int days);
+
+  /// No description provided for @notifExtraEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: extended warranty / AMC ends in {days} days'**
+  String notifExtraEnds(String name, int days);
+
+  /// No description provided for @warrantiesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep every warranty in one place'**
+  String get warrantiesEmpty;
+
+  /// No description provided for @warrantiesEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Snap the bill and warranty card of your fridge, AC, TV or phone. FamBoard reads the details and reminds the family before the warranty runs out.'**
+  String get warrantiesEmptyBody;
+
+  /// No description provided for @warrantiesEmptyViewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranties your family adds will show here.'**
+  String get warrantiesEmptyViewer;
+
+  /// No description provided for @warrantyAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add warranty'**
+  String get warrantyAdd;
+
+  /// No description provided for @warrantyAddBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Photograph the bill and the warranty card. FamBoard reads them on this phone; you check the details before saving.'**
+  String get warrantyAddBody;
+
+  /// No description provided for @warrantyScanCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan with camera'**
+  String get warrantyScanCamera;
+
+  /// No description provided for @warrantyScanCameraBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill, warranty card, box sticker. Several pages are fine'**
+  String get warrantyScanCameraBody;
+
+  /// No description provided for @warrantyScanGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose photos'**
+  String get warrantyScanGallery;
+
+  /// No description provided for @warrantyScanGalleryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos or screenshots already on the phone'**
+  String get warrantyScanGalleryBody;
+
+  /// No description provided for @warrantyManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Type it in'**
+  String get warrantyManual;
+
+  /// No description provided for @warrantyReading.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Reading the photo…} other{Reading {count} photos…}}'**
+  String warrantyReading(int count);
+
+  /// No description provided for @warrantyNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New warranty'**
+  String get warrantyNew;
+
+  /// No description provided for @warrantyEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit warranty'**
+  String get warrantyEdit;
+
+  /// No description provided for @warrantyOcrFilled.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Filled 1 detail from the photos} other{Filled {count} details from the photos}}'**
+  String warrantyOcrFilled(int count);
+
+  /// No description provided for @warrantyOcrCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check them against the paper before saving.'**
+  String get warrantyOcrCheck;
+
+  /// No description provided for @warrantyOcrNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read details from the photos. Fill them in below; the photos are kept.'**
+  String get warrantyOcrNothing;
+
+  /// No description provided for @warrantyOwnEditUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this until {time} today'**
+  String warrantyOwnEditUntil(String time);
+
+  /// No description provided for @warrantyOnlyAdminsAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'After that, only admins can edit or delete it.'**
+  String get warrantyOnlyAdminsAfter;
+
+  /// No description provided for @warrantyAfterSaveNote.
+  ///
+  /// In en, this message translates to:
+  /// **'After saving you have 24 hours to fix mistakes. Then only admins can edit or delete it.'**
+  String get warrantyAfterSaveNote;
+
+  /// No description provided for @warrantyAdminsOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only admins can edit or delete this.'**
+  String get warrantyAdminsOnly;
+
+  /// No description provided for @warrantyEditLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Only admins can change this now'**
+  String get warrantyEditLocked;
+
+  /// No description provided for @warrantyEditLockedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranties can be changed by whoever added them for 24 hours, and by admins after that.'**
+  String get warrantyEditLockedBody;
+
+  /// No description provided for @warrantyPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill and warranty card'**
+  String get warrantyPhotos;
+
+  /// No description provided for @warrantyAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get warrantyAddPhoto;
+
+  /// No description provided for @warrantyProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get warrantyProduct;
+
+  /// No description provided for @warrantyName.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it?'**
+  String get warrantyName;
+
+  /// No description provided for @warrantyNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Samsung fridge, bedroom AC'**
+  String get warrantyNameHint;
+
+  /// No description provided for @warrantyNameNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Give it a name'**
+  String get warrantyNameNeeded;
+
+  /// No description provided for @warrantyBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get warrantyBrand;
+
+  /// No description provided for @warrantyModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get warrantyModel;
+
+  /// No description provided for @warrantySerial.
+  ///
+  /// In en, this message translates to:
+  /// **'Serial / IMEI'**
+  String get warrantySerial;
+
+  /// No description provided for @warrantyPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase'**
+  String get warrantyPurchase;
+
+  /// No description provided for @warrantyPurchaseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Bought on'**
+  String get warrantyPurchaseDate;
+
+  /// No description provided for @warrantyStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get warrantyStore;
+
+  /// No description provided for @warrantyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get warrantyPrice;
+
+  /// No description provided for @warrantyInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice no.'**
+  String get warrantyInvoice;
+
+  /// No description provided for @warrantyCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty'**
+  String get warrantyCover;
+
+  /// No description provided for @warrantyMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty length (months)'**
+  String get warrantyMonths;
+
+  /// No description provided for @warrantyEndsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty ends on'**
+  String get warrantyEndsOn;
+
+  /// No description provided for @warrantyEndsComputed.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked out from the purchase date. Tap to set a different date'**
+  String get warrantyEndsComputed;
+
+  /// No description provided for @warrantyHasExtra.
+  ///
+  /// In en, this message translates to:
+  /// **'Extended warranty or AMC'**
+  String get warrantyHasExtra;
+
+  /// No description provided for @warrantyExtraProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Provided by'**
+  String get warrantyExtraProvider;
+
+  /// No description provided for @warrantyExtraEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'Covered till'**
+  String get warrantyExtraEnds;
+
+  /// No description provided for @warrantyExtraCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get warrantyExtraCost;
+
+  /// No description provided for @warrantyExtraCostIs.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost {amount}'**
+  String warrantyExtraCostIs(String amount);
+
+  /// No description provided for @warrantyService.
+  ///
+  /// In en, this message translates to:
+  /// **'Service contacts'**
+  String get warrantyService;
+
+  /// No description provided for @warrantyHelpline.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand helpline'**
+  String get warrantyHelpline;
+
+  /// No description provided for @warrantyServiceCentre.
+  ///
+  /// In en, this message translates to:
+  /// **'Service centre'**
+  String get warrantyServiceCentre;
+
+  /// No description provided for @warrantyServiceCentrePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Service centre phone'**
+  String get warrantyServiceCentrePhone;
+
+  /// No description provided for @warrantyNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything else, e.g. where the paper bill is kept'**
+  String get warrantyNoteHint;
+
+  /// No description provided for @warrantySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search name, brand, model, serial'**
+  String get warrantySearchHint;
+
+  /// No description provided for @warrantyFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get warrantyFilterAll;
+
+  /// No description provided for @warrantyFilterSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Ending soon'**
+  String get warrantyFilterSoon;
+
+  /// No description provided for @warrantyFilterExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get warrantyFilterExpired;
+
+  /// No description provided for @warrantyNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing matches.'**
+  String get warrantyNoMatch;
+
+  /// No description provided for @warrantyGone.
+  ///
+  /// In en, this message translates to:
+  /// **'This warranty was deleted'**
+  String get warrantyGone;
+
+  /// No description provided for @warrantyMaker.
+  ///
+  /// In en, this message translates to:
+  /// **'Maker\'s warranty'**
+  String get warrantyMaker;
+
+  /// No description provided for @warrantyAddEndHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the purchase date and warranty length to get reminders.'**
+  String get warrantyAddEndHint;
+
+  /// No description provided for @warrantyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get warrantyDetails;
+
+  /// No description provided for @warrantyAddedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Added by'**
+  String get warrantyAddedBy;
+
+  /// No description provided for @warrantyRepairs.
+  ///
+  /// In en, this message translates to:
+  /// **'Repairs'**
+  String get warrantyRepairs;
+
+  /// No description provided for @warrantyReportRepair.
+  ///
+  /// In en, this message translates to:
+  /// **'Report repair'**
+  String get warrantyReportRepair;
+
+  /// No description provided for @warrantyRepairNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Under warranty: {status}'**
+  String warrantyRepairNote(String status);
+
+  /// No description provided for @warrantyNoRepairs.
+  ///
+  /// In en, this message translates to:
+  /// **'No repairs reported.'**
+  String get warrantyNoRepairs;
+
+  /// No description provided for @warrantyHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Service history'**
+  String get warrantyHistory;
+
+  /// No description provided for @warrantyAddVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Add visit'**
+  String get warrantyAddVisit;
+
+  /// No description provided for @warrantyNoVisits.
+  ///
+  /// In en, this message translates to:
+  /// **'No service visits yet.'**
+  String get warrantyNoVisits;
+
+  /// No description provided for @warrantyDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete warranty?'**
+  String get warrantyDeleteTitle;
+
+  /// No description provided for @warrantyDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, its photos and service history will be removed from every family phone.'**
+  String warrantyDeleteBody(String name);
+
+  /// No description provided for @warrantyDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} deleted'**
+  String warrantyDeleted(String name);
+
+  /// No description provided for @visitEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Service visit'**
+  String get visitEdit;
+
+  /// No description provided for @visitIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'What was done?'**
+  String get visitIssue;
+
+  /// No description provided for @visitIssueHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Gas refill, cooling problem fixed'**
+  String get visitIssueHint;
+
+  /// No description provided for @visitDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get visitDate;
+
+  /// No description provided for @visitTechnician.
+  ///
+  /// In en, this message translates to:
+  /// **'Technician / company'**
+  String get visitTechnician;
+
+  /// No description provided for @visitCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get visitCost;
+
+  /// No description provided for @visitCoveredQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Free under warranty / AMC'**
+  String get visitCoveredQuestion;
+
+  /// No description provided for @visitCovered.
+  ///
+  /// In en, this message translates to:
+  /// **'Under warranty'**
+  String get visitCovered;
+
+  /// No description provided for @visitDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this visit?'**
+  String get visitDelete;
 }
 
 class _AppLocalizationsDelegate

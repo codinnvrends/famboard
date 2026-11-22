@@ -74,12 +74,24 @@ class FamilyScreen extends ConsumerWidget {
                     m.id == session.memberId ? '${m.name} (${l.youLabel})' : m.name,
                     style: m.removed ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
                   ),
-                  subtitle: Text(m.removed ? l.removedLabel : m.role.label(l)),
+                  subtitle: Text(
+                    m.removed
+                        ? l.removedLabel
+                        : perms.canManageMembers && m.role != Role.admin
+                            ? '${m.role.label(l)} · ${m.canSeeMoney ? l.seesMoneyShort : l.noMoneyShort}'
+                            : m.role.label(l),
+                  ),
                   trailing: perms.canManageMembers && m.id != session.memberId && !m.removed
                       ? PopupMenuButton<String>(
                           onSelected: (v) => _memberAction(context, ref, m, v),
                           itemBuilder: (_) => [
                             PopupMenuItem(value: 'role', child: Text(l.changeRole)),
+                            if (m.role != Role.admin)
+                              CheckedPopupMenuItem(
+                                value: 'money',
+                                checked: m.canSeeMoney,
+                                child: Text(l.canSeeMoney),
+                              ),
                             PopupMenuItem(value: 'remove', child: Text(l.removeMember)),
                           ],
                         )
@@ -155,6 +167,14 @@ class FamilyScreen extends ConsumerWidget {
         destructive: true,
       )) {
         await repo.removeMember(m.familyId, m.id);
+      }
+      return;
+    }
+    if (action == 'money') {
+      final allow = !m.canSeeMoney;
+      await repo.setMemberSeesMoney(m.familyId, m.id, allow);
+      if (context.mounted) {
+        showSnack(context, allow ? l.moneyAllowed(m.name) : l.moneyHidden(m.name));
       }
       return;
     }

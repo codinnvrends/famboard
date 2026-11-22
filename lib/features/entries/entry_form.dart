@@ -14,6 +14,8 @@ import '../../services/voice.dart';
 import '../../ui/format.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
+import '../../domain/warranty.dart';
+import '../warranties/cover_status.dart';
 import 'category_picker.dart';
 
 /// Prefill for the form, e.g. from a shared bill SMS.
@@ -25,6 +27,7 @@ class EntryPrefill {
     this.amount,
     this.dueAt,
     this.note,
+    this.applianceId,
   });
 
   final String? title;
@@ -33,6 +36,9 @@ class EntryPrefill {
   final double? amount;
   final DateTime? dueAt;
   final String? note;
+
+  /// Pre-links a repair to an appliance (from its warranty page).
+  final String? applianceId;
 }
 
 /// Opens the quick-add sheet.
@@ -85,6 +91,7 @@ class _EntryFormState extends ConsumerState<EntryForm> {
   String? _assignee;
   String? _rrule;
   int? _leadDays;
+  String? _applianceId;
 
   bool _typeLocked = false;
   bool _categoryLocked = false;
@@ -117,6 +124,7 @@ class _EntryFormState extends ConsumerState<EntryForm> {
       _assignee = e.assigneeId;
       _rrule = e.rrule;
       _leadDays = e.leadDays;
+      _applianceId = e.applianceId;
       _typeLocked = _categoryLocked = true;
       _expanded = true;
       _title.addListener(() => setState(() {}));
@@ -129,7 +137,8 @@ class _EntryFormState extends ConsumerState<EntryForm> {
       _note.text = p?.note ?? '';
       if (p?.amount != null) _amount.text = _num(p!.amount!);
       _due = p?.dueAt;
-      if (p?.amount != null || p?.dueAt != null) _expanded = true;
+      _applianceId = p?.applianceId;
+      if (p?.amount != null || p?.dueAt != null || p?.applianceId != null) _expanded = true;
       _title.addListener(_onTitleChanged);
       if (_title.text.isNotEmpty) _onTitleChanged();
     }
@@ -349,6 +358,7 @@ class _EntryFormState extends ConsumerState<EntryForm> {
             'note': _note.text.trim().isEmpty ? null : _note.text.trim(),
             'rrule': _rrule,
             'leadDays': _leadDays,
+            'applianceId': _type == EntryType.repair ? _applianceId : null,
           },
         );
       } else {
@@ -368,6 +378,7 @@ class _EntryFormState extends ConsumerState<EntryForm> {
             note: _note.text.trim().isEmpty ? null : _note.text.trim(),
             rrule: _rrule,
             leadDays: _leadDays,
+            applianceId: _type == EntryType.repair ? _applianceId : null,
           ),
         );
       }
@@ -506,7 +517,8 @@ class _EntryFormState extends ConsumerState<EntryForm> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  for (final t in EntryType.values) ...[
+                  for (final t in EntryType.values)
+                    if (t != EntryType.bill || perms.canSeeBills || _type == t) ...[
                     ChoiceChip(
                       avatar: Icon(t.icon, size: 18),
                       label: Text(t.label(l)),
@@ -563,6 +575,11 @@ class _EntryFormState extends ConsumerState<EntryForm> {
               ),
             ),
             if (_expanded) ..._details(context, members, perms.canSeeAmounts),
+            if (_type == EntryType.bill && !perms.canSeeBills)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(l.billHiddenFromYou, style: theme.textTheme.bodySmall),
+              ),
             const SizedBox(height: 12),
             FilledButton.icon(
               style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
@@ -658,6 +675,7 @@ class _EntryFormState extends ConsumerState<EntryForm> {
             if (n != null) setState(() => _leadDays = n);
           },
         ),
+      if (_type == EntryType.repair) _appliancePicker(context),
       ListTile(
         contentPadding: EdgeInsets.zero,
         leading: const Icon(Icons.person_outline),
@@ -680,5 +698,41 @@ class _EntryFormState extends ConsumerState<EntryForm> {
         decoration: InputDecoration(labelText: l.noteLabel),
       ),
     ];
+  }
+
+  /// Repairs can point at an appliance, so the warranty shows on the repair.
+  Widget _appliancePicker(BuildContext context) {
+    final l = context.l10n;
+    final session = ref.watch(sessionProvider);
+    final appliances = session == null
+        ? const <Appliance>[]
+        : (ref.watch(appliancesProvider(session.familyId)).value ?? const <Appliance>[]);
+    if (appliances.isEmpty && _applianceId == null) return const SizedBox.shrink();
+    final chosen = appliances.where((a) => a.id == _applianceId).firstOrNull;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const Icon(Icons.kitchen_outlined),
+          title: Text(l.repairAppliance),
+          trailing: DropdownButton<String?>(
+            value: chosen?.id,
+            underline: const SizedBox.shrink(),
+            items: [
+              DropdownMenuItem<String?>(value: null, child: Text(l.applianceNone)),
+              for (final a in (appliances.toList()..sort((x, y) => x.name.toLowerCase().compareTo(y.name.toLowerCase()))))
+                DropdownMenuItem<String?>(value: a.id, child: Text(a.name, overflow: TextOverflow.ellipsis)),
+            ],
+            onChanged: (v) => setState(() => _applianceId = v),
+          ),
+        ),
+        if (chosen != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 40, bottom: 8),
+            child: CoverChip(chosen.bestCover),
+          ),
+      ],
+    );
   }
 }

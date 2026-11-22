@@ -10,6 +10,8 @@ import '../../l10n/app_localizations.dart';
 import '../../ui/format.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
+import '../../domain/warranty.dart';
+import '../warranties/cover_status.dart';
 import 'entry_actions.dart';
 import 'entry_form.dart';
 
@@ -37,7 +39,7 @@ class EntryDetailScreen extends ConsumerWidget {
     return entry.when(
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(appBar: AppBar(), body: Center(child: Text(l.genericError))),
-      data: (e) => e == null
+      data: (e) => e == null || !ref.watch(permsProvider).canView(e)
           ? Scaffold(appBar: AppBar(), body: EmptyState(icon: Icons.search_off, title: l.notFound))
           : _Detail(entry: e, activity: ref.watch(_activityProvider(key)).value ?? const []),
     );
@@ -187,6 +189,7 @@ class _Detail extends ConsumerWidget {
               ],
             ),
           ),
+          if (entry.applianceId != null) _LinkedAppliance(familyId: session.familyId, id: entry.applianceId!),
           SectionHeader(l.historyTitle),
           for (final a in activity)
             ListTile(
@@ -297,4 +300,32 @@ class _Field extends StatelessWidget {
         title: Text(label, style: Theme.of(context).textTheme.labelMedium),
         subtitle: Text(value, style: Theme.of(context).textTheme.bodyLarge),
       );
+}
+
+/// A repair's appliance and whether it is still under warranty.
+class _LinkedAppliance extends ConsumerWidget {
+  const _LinkedAppliance({required this.familyId, required this.id});
+
+  final String familyId;
+  final String id;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final a = (ref.watch(appliancesProvider(familyId)).value ?? const <Appliance>[])
+        .where((x) => x.id == id)
+        .firstOrNull;
+    if (a == null) return const SizedBox.shrink();
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.kitchen_outlined),
+        title: Text(a.name),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Align(alignment: Alignment.centerLeft, child: CoverChip(a.bestCover)),
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => context.push('/appliance/${a.id}'),
+      ),
+    );
+  }
 }

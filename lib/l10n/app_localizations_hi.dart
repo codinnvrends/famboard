@@ -1262,4 +1262,381 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get scanCameraUnavailable =>
       'इस फ़ोन पर कैमरा स्कैनर अभी तैयार नहीं है (इसे एक बार इंटरनेट चाहिए)। इसके बदले फ़ोटो चुनें।';
+
+  @override
+  String get navWarranties => 'वारंटी';
+
+  @override
+  String get canSeeMoney => 'बिल और पैसे देख सकते हैं';
+
+  @override
+  String get seesMoneyShort => 'बिल देखते हैं';
+
+  @override
+  String get noMoneyShort => 'बिल नहीं';
+
+  @override
+  String moneyAllowed(String name) {
+    return '$name अब बिल और पैसे देख सकते हैं';
+  }
+
+  @override
+  String moneyHidden(String name) {
+    return '$name से अब बिल और पैसे छिपे हैं';
+  }
+
+  @override
+  String get billHiddenFromYou =>
+      'बिल सिर्फ़ उन्हें दिखते हैं जिन्हें एडमिन ने अनुमति दी है। यह उनके लिए सहेजा जाएगा।';
+
+  @override
+  String get clear => 'हटाएँ';
+
+  @override
+  String get applianceNone => 'कोई नहीं';
+
+  @override
+  String get repairAppliance => 'उपकरण';
+
+  @override
+  String get fromPhoto => 'फ़ोटो से, कृपया जाँचें';
+
+  @override
+  String get photoNotSyncedYet => 'Wi‑Fi सिंक पर आएगी';
+
+  @override
+  String get removePhoto => 'फ़ोटो हटाएँ';
+
+  @override
+  String get coverUnknown => 'वारंटी कब तक है, पता नहीं';
+
+  @override
+  String coverExpiredOn(String date) {
+    return '$date को खत्म';
+  }
+
+  @override
+  String get coverEndsToday => 'आज खत्म';
+
+  @override
+  String coverEndsInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days दिन में खत्म',
+      one: 'कल खत्म',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String coverTill(String date) {
+    return '$date तक वारंटी';
+  }
+
+  @override
+  String get coverExtended => 'एक्सटेंडेड वारंटी';
+
+  @override
+  String get coverAmc => 'AMC';
+
+  @override
+  String monthsShort(int n) {
+    return '$n महीने';
+  }
+
+  @override
+  String yearsShort(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n साल',
+      one: '1 साल',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifWarrantyEnds(String name, int days) {
+    return '$name: वारंटी $days दिन में खत्म';
+  }
+
+  @override
+  String notifExtraEnds(String name, int days) {
+    return '$name: एक्सटेंडेड वारंटी / AMC $days दिन में खत्म';
+  }
+
+  @override
+  String get warrantiesEmpty => 'सारी वारंटी एक जगह रखें';
+
+  @override
+  String get warrantiesEmptyBody =>
+      'फ़्रिज, AC, TV या फ़ोन के बिल और वारंटी कार्ड की फ़ोटो लें। FamBoard जानकारी पढ़ता है और वारंटी खत्म होने से पहले परिवार को याद दिलाता है।';
+
+  @override
+  String get warrantiesEmptyViewer =>
+      'परिवार जो वारंटी जोड़ेगा, वे यहाँ दिखेंगी।';
+
+  @override
+  String get warrantyAdd => 'वारंटी जोड़ें';
+
+  @override
+  String get warrantyAddBody =>
+      'बिल और वारंटी कार्ड की फ़ोटो लें। FamBoard इन्हें इसी फ़ोन पर पढ़ता है; सहेजने से पहले आप जानकारी जाँच लें।';
+
+  @override
+  String get warrantyScanCamera => 'कैमरे से स्कैन करें';
+
+  @override
+  String get warrantyScanCameraBody =>
+      'बिल, वारंटी कार्ड, डिब्बे का स्टिकर। कई पेज भी चलेंगे';
+
+  @override
+  String get warrantyScanGallery => 'फ़ोटो चुनें';
+
+  @override
+  String get warrantyScanGalleryBody =>
+      'फ़ोन में पहले से रखी फ़ोटो या स्क्रीनशॉट';
+
+  @override
+  String get warrantyManual => 'खुद लिखें';
+
+  @override
+  String warrantyReading(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count फ़ोटो पढ़ी जा रही हैं…',
+      one: 'फ़ोटो पढ़ी जा रही है…',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get warrantyNew => 'नई वारंटी';
+
+  @override
+  String get warrantyEdit => 'वारंटी बदलें';
+
+  @override
+  String warrantyOcrFilled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'फ़ोटो से $count जानकारियाँ भरीं',
+      one: 'फ़ोटो से 1 जानकारी भरी',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get warrantyOcrCheck => 'सहेजने से पहले कागज़ से मिला लें।';
+
+  @override
+  String get warrantyOcrNothing =>
+      'फ़ोटो से जानकारी नहीं पढ़ी जा सकी। नीचे भर दें; फ़ोटो सहेजी रहेंगी।';
+
+  @override
+  String warrantyOwnEditUntil(String time) {
+    return 'आप इसे आज $time तक बदल सकते हैं';
+  }
+
+  @override
+  String get warrantyOnlyAdminsAfter =>
+      'उसके बाद सिर्फ़ एडमिन इसे बदल या हटा सकते हैं।';
+
+  @override
+  String get warrantyAfterSaveNote =>
+      'सहेजने के बाद गलतियाँ ठीक करने के लिए 24 घंटे मिलेंगे। फिर सिर्फ़ एडमिन बदल या हटा सकते हैं।';
+
+  @override
+  String get warrantyAdminsOnly => 'इसे सिर्फ़ एडमिन बदल या हटा सकते हैं।';
+
+  @override
+  String get warrantyEditLocked => 'अब इसे सिर्फ़ एडमिन बदल सकते हैं';
+
+  @override
+  String get warrantyEditLockedBody =>
+      'वारंटी जोड़ने वाले 24 घंटे तक इसे बदल सकते हैं, उसके बाद सिर्फ़ एडमिन।';
+
+  @override
+  String get warrantyPhotos => 'बिल और वारंटी कार्ड';
+
+  @override
+  String get warrantyAddPhoto => 'फ़ोटो जोड़ें';
+
+  @override
+  String get warrantyProduct => 'सामान';
+
+  @override
+  String get warrantyName => 'यह क्या है?';
+
+  @override
+  String get warrantyNameHint => 'जैसे Samsung फ़्रिज, बेडरूम का AC';
+
+  @override
+  String get warrantyNameNeeded => 'नाम लिखें';
+
+  @override
+  String get warrantyBrand => 'ब्रांड';
+
+  @override
+  String get warrantyModel => 'मॉडल';
+
+  @override
+  String get warrantySerial => 'सीरियल / IMEI';
+
+  @override
+  String get warrantyPurchase => 'खरीदारी';
+
+  @override
+  String get warrantyPurchaseDate => 'खरीदा';
+
+  @override
+  String get warrantyStore => 'दुकान';
+
+  @override
+  String get warrantyPrice => 'कीमत';
+
+  @override
+  String get warrantyInvoice => 'इनवॉइस नं.';
+
+  @override
+  String get warrantyCover => 'वारंटी';
+
+  @override
+  String get warrantyMonths => 'वारंटी कितने महीने';
+
+  @override
+  String get warrantyEndsOn => 'वारंटी खत्म होगी';
+
+  @override
+  String get warrantyEndsComputed =>
+      'खरीद की तारीख से निकाली गई। दूसरी तारीख चुनने के लिए टैप करें';
+
+  @override
+  String get warrantyHasExtra => 'एक्सटेंडेड वारंटी या AMC';
+
+  @override
+  String get warrantyExtraProvider => 'किसकी';
+
+  @override
+  String get warrantyExtraEnds => 'कब तक';
+
+  @override
+  String get warrantyExtraCost => 'खर्च';
+
+  @override
+  String warrantyExtraCostIs(String amount) {
+    return 'खर्च $amount';
+  }
+
+  @override
+  String get warrantyService => 'सर्विस संपर्क';
+
+  @override
+  String get warrantyHelpline => 'ब्रांड हेल्पलाइन';
+
+  @override
+  String get warrantyServiceCentre => 'सर्विस सेंटर';
+
+  @override
+  String get warrantyServiceCentrePhone => 'सर्विस सेंटर फ़ोन';
+
+  @override
+  String get warrantyNoteHint => 'और कुछ, जैसे कागज़ी बिल कहाँ रखा है';
+
+  @override
+  String get warrantySearchHint => 'नाम, ब्रांड, मॉडल, सीरियल खोजें';
+
+  @override
+  String get warrantyFilterAll => 'सभी';
+
+  @override
+  String get warrantyFilterSoon => 'जल्द खत्म';
+
+  @override
+  String get warrantyFilterExpired => 'खत्म';
+
+  @override
+  String get warrantyNoMatch => 'कुछ नहीं मिला।';
+
+  @override
+  String get warrantyGone => 'यह वारंटी हटा दी गई';
+
+  @override
+  String get warrantyMaker => 'कंपनी की वारंटी';
+
+  @override
+  String get warrantyAddEndHint =>
+      'रिमाइंडर के लिए खरीद की तारीख और वारंटी की अवधि भरें।';
+
+  @override
+  String get warrantyDetails => 'जानकारी';
+
+  @override
+  String get warrantyAddedBy => 'किसने जोड़ा';
+
+  @override
+  String get warrantyRepairs => 'मरम्मत';
+
+  @override
+  String get warrantyReportRepair => 'मरम्मत बताएँ';
+
+  @override
+  String warrantyRepairNote(String status) {
+    return 'वारंटी में: $status';
+  }
+
+  @override
+  String get warrantyNoRepairs => 'कोई मरम्मत नहीं।';
+
+  @override
+  String get warrantyHistory => 'सर्विस का इतिहास';
+
+  @override
+  String get warrantyAddVisit => 'विज़िट जोड़ें';
+
+  @override
+  String get warrantyNoVisits => 'अभी कोई सर्विस विज़िट नहीं।';
+
+  @override
+  String get warrantyDeleteTitle => 'वारंटी हटाएँ?';
+
+  @override
+  String warrantyDeleteBody(String name) {
+    return '$name, इसकी फ़ोटो और सर्विस इतिहास परिवार के हर फ़ोन से हट जाएँगे।';
+  }
+
+  @override
+  String warrantyDeleted(String name) {
+    return '$name हटाया गया';
+  }
+
+  @override
+  String get visitEdit => 'सर्विस विज़िट';
+
+  @override
+  String get visitIssue => 'क्या किया गया?';
+
+  @override
+  String get visitIssueHint => 'जैसे गैस भरी, कूलिंग ठीक की';
+
+  @override
+  String get visitDate => 'तारीख';
+
+  @override
+  String get visitTechnician => 'मैकेनिक / कंपनी';
+
+  @override
+  String get visitCost => 'खर्च';
+
+  @override
+  String get visitCoveredQuestion => 'वारंटी / AMC में मुफ़्त';
+
+  @override
+  String get visitCovered => 'वारंटी में';
+
+  @override
+  String get visitDelete => 'यह विज़िट हटाएँ?';
 }

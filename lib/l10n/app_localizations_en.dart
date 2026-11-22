@@ -1262,4 +1262,382 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get scanCameraUnavailable =>
       'The camera scanner isn\'t ready on this phone yet (it needs internet once). Choose a photo instead.';
+
+  @override
+  String get navWarranties => 'Warranties';
+
+  @override
+  String get canSeeMoney => 'Can see bills & money';
+
+  @override
+  String get seesMoneyShort => 'Sees bills';
+
+  @override
+  String get noMoneyShort => 'No bills';
+
+  @override
+  String moneyAllowed(String name) {
+    return '$name can now see bills and money';
+  }
+
+  @override
+  String moneyHidden(String name) {
+    return 'Bills and money are now hidden from $name';
+  }
+
+  @override
+  String get billHiddenFromYou =>
+      'Bills are only shown to people an admin has allowed. It will be saved for them.';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get applianceNone => 'None';
+
+  @override
+  String get repairAppliance => 'Appliance';
+
+  @override
+  String get fromPhoto => 'From photo, please check';
+
+  @override
+  String get photoNotSyncedYet => 'Arrives on Wi‑Fi sync';
+
+  @override
+  String get removePhoto => 'Remove photo';
+
+  @override
+  String get coverUnknown => 'Warranty end not known';
+
+  @override
+  String coverExpiredOn(String date) {
+    return 'Expired $date';
+  }
+
+  @override
+  String get coverEndsToday => 'Ends today';
+
+  @override
+  String coverEndsInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Ends in $days days',
+      one: 'Ends tomorrow',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String coverTill(String date) {
+    return 'Covered till $date';
+  }
+
+  @override
+  String get coverExtended => 'Extended warranty';
+
+  @override
+  String get coverAmc => 'AMC';
+
+  @override
+  String monthsShort(int n) {
+    return '$n months';
+  }
+
+  @override
+  String yearsShort(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n years',
+      one: '1 year',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifWarrantyEnds(String name, int days) {
+    return '$name: warranty ends in $days days';
+  }
+
+  @override
+  String notifExtraEnds(String name, int days) {
+    return '$name: extended warranty / AMC ends in $days days';
+  }
+
+  @override
+  String get warrantiesEmpty => 'Keep every warranty in one place';
+
+  @override
+  String get warrantiesEmptyBody =>
+      'Snap the bill and warranty card of your fridge, AC, TV or phone. FamBoard reads the details and reminds the family before the warranty runs out.';
+
+  @override
+  String get warrantiesEmptyViewer =>
+      'Warranties your family adds will show here.';
+
+  @override
+  String get warrantyAdd => 'Add warranty';
+
+  @override
+  String get warrantyAddBody =>
+      'Photograph the bill and the warranty card. FamBoard reads them on this phone; you check the details before saving.';
+
+  @override
+  String get warrantyScanCamera => 'Scan with camera';
+
+  @override
+  String get warrantyScanCameraBody =>
+      'Bill, warranty card, box sticker. Several pages are fine';
+
+  @override
+  String get warrantyScanGallery => 'Choose photos';
+
+  @override
+  String get warrantyScanGalleryBody =>
+      'Photos or screenshots already on the phone';
+
+  @override
+  String get warrantyManual => 'Type it in';
+
+  @override
+  String warrantyReading(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Reading $count photos…',
+      one: 'Reading the photo…',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get warrantyNew => 'New warranty';
+
+  @override
+  String get warrantyEdit => 'Edit warranty';
+
+  @override
+  String warrantyOcrFilled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Filled $count details from the photos',
+      one: 'Filled 1 detail from the photos',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get warrantyOcrCheck => 'Check them against the paper before saving.';
+
+  @override
+  String get warrantyOcrNothing =>
+      'Couldn\'t read details from the photos. Fill them in below; the photos are kept.';
+
+  @override
+  String warrantyOwnEditUntil(String time) {
+    return 'You can change this until $time today';
+  }
+
+  @override
+  String get warrantyOnlyAdminsAfter =>
+      'After that, only admins can edit or delete it.';
+
+  @override
+  String get warrantyAfterSaveNote =>
+      'After saving you have 24 hours to fix mistakes. Then only admins can edit or delete it.';
+
+  @override
+  String get warrantyAdminsOnly => 'Only admins can edit or delete this.';
+
+  @override
+  String get warrantyEditLocked => 'Only admins can change this now';
+
+  @override
+  String get warrantyEditLockedBody =>
+      'Warranties can be changed by whoever added them for 24 hours, and by admins after that.';
+
+  @override
+  String get warrantyPhotos => 'Bill and warranty card';
+
+  @override
+  String get warrantyAddPhoto => 'Add photo';
+
+  @override
+  String get warrantyProduct => 'Product';
+
+  @override
+  String get warrantyName => 'What is it?';
+
+  @override
+  String get warrantyNameHint => 'e.g. Samsung fridge, bedroom AC';
+
+  @override
+  String get warrantyNameNeeded => 'Give it a name';
+
+  @override
+  String get warrantyBrand => 'Brand';
+
+  @override
+  String get warrantyModel => 'Model';
+
+  @override
+  String get warrantySerial => 'Serial / IMEI';
+
+  @override
+  String get warrantyPurchase => 'Purchase';
+
+  @override
+  String get warrantyPurchaseDate => 'Bought on';
+
+  @override
+  String get warrantyStore => 'Shop';
+
+  @override
+  String get warrantyPrice => 'Price';
+
+  @override
+  String get warrantyInvoice => 'Invoice no.';
+
+  @override
+  String get warrantyCover => 'Warranty';
+
+  @override
+  String get warrantyMonths => 'Warranty length (months)';
+
+  @override
+  String get warrantyEndsOn => 'Warranty ends on';
+
+  @override
+  String get warrantyEndsComputed =>
+      'Worked out from the purchase date. Tap to set a different date';
+
+  @override
+  String get warrantyHasExtra => 'Extended warranty or AMC';
+
+  @override
+  String get warrantyExtraProvider => 'Provided by';
+
+  @override
+  String get warrantyExtraEnds => 'Covered till';
+
+  @override
+  String get warrantyExtraCost => 'Cost';
+
+  @override
+  String warrantyExtraCostIs(String amount) {
+    return 'Cost $amount';
+  }
+
+  @override
+  String get warrantyService => 'Service contacts';
+
+  @override
+  String get warrantyHelpline => 'Brand helpline';
+
+  @override
+  String get warrantyServiceCentre => 'Service centre';
+
+  @override
+  String get warrantyServiceCentrePhone => 'Service centre phone';
+
+  @override
+  String get warrantyNoteHint =>
+      'Anything else, e.g. where the paper bill is kept';
+
+  @override
+  String get warrantySearchHint => 'Search name, brand, model, serial';
+
+  @override
+  String get warrantyFilterAll => 'All';
+
+  @override
+  String get warrantyFilterSoon => 'Ending soon';
+
+  @override
+  String get warrantyFilterExpired => 'Expired';
+
+  @override
+  String get warrantyNoMatch => 'Nothing matches.';
+
+  @override
+  String get warrantyGone => 'This warranty was deleted';
+
+  @override
+  String get warrantyMaker => 'Maker\'s warranty';
+
+  @override
+  String get warrantyAddEndHint =>
+      'Add the purchase date and warranty length to get reminders.';
+
+  @override
+  String get warrantyDetails => 'Details';
+
+  @override
+  String get warrantyAddedBy => 'Added by';
+
+  @override
+  String get warrantyRepairs => 'Repairs';
+
+  @override
+  String get warrantyReportRepair => 'Report repair';
+
+  @override
+  String warrantyRepairNote(String status) {
+    return 'Under warranty: $status';
+  }
+
+  @override
+  String get warrantyNoRepairs => 'No repairs reported.';
+
+  @override
+  String get warrantyHistory => 'Service history';
+
+  @override
+  String get warrantyAddVisit => 'Add visit';
+
+  @override
+  String get warrantyNoVisits => 'No service visits yet.';
+
+  @override
+  String get warrantyDeleteTitle => 'Delete warranty?';
+
+  @override
+  String warrantyDeleteBody(String name) {
+    return '$name, its photos and service history will be removed from every family phone.';
+  }
+
+  @override
+  String warrantyDeleted(String name) {
+    return '$name deleted';
+  }
+
+  @override
+  String get visitEdit => 'Service visit';
+
+  @override
+  String get visitIssue => 'What was done?';
+
+  @override
+  String get visitIssueHint => 'e.g. Gas refill, cooling problem fixed';
+
+  @override
+  String get visitDate => 'Date';
+
+  @override
+  String get visitTechnician => 'Technician / company';
+
+  @override
+  String get visitCost => 'Cost';
+
+  @override
+  String get visitCoveredQuestion => 'Free under warranty / AMC';
+
+  @override
+  String get visitCovered => 'Under warranty';
+
+  @override
+  String get visitDelete => 'Delete this visit?';
 }
