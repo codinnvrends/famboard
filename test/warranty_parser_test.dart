@@ -132,4 +132,13 @@ void main() {
     final fills = g.fillsFor({'brand': 'LG Electronics', 'model': '', 'price': '40000', 'months': ' '});
     expect(fills, {'model': 'PS-Q19YNZE', 'months': '24', 'serial': 'ABC123'});
   });
+
+  test('the shop comes from the bill even when the warranty card is read first', () {
+    final g = parser.parse([
+      _page(['SAMSUNG', 'WARRANTY CARD', 'Model No: RT28C3053S8', 'Date of purchase: 15/12/2025', 'Warranty period: 1 year']),
+      _page(['CROMA', 'Infiniti Retail Ltd, Andheri West', 'TAX INVOICE', 'Invoice No: CRM/2026/004512', 'Grand Total Rs. 27,990.00']),
+    ]);
+    expect(g.store?.toUpperCase(), 'CROMA');
+    expect(g.brand, 'Samsung');
+  });
 }

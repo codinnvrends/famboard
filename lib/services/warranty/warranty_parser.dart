@@ -195,7 +195,14 @@ class WarrantyParser {
     final invoice = _first(_invoiceRe, lines, valid: (v) => RegExp(r'\d').hasMatch(v));
     final brand = _brand(text);
     final date = _purchaseDate(lines) ?? bills.map((b) => b.date).whereType<DateTime>().firstOrNull;
-    final store = bills.map((b) => b.store).whereType<String>().firstOrNull;
+    // The shop comes from the bill: a warranty card's heading is the
+    // brand, not where it was bought.
+    final kinds = [for (final p in pages) if (p.fragments.isNotEmpty) classify(p)];
+    String? storeFrom(bool Function(PhotoKind) ok) => [
+          for (final (i, b) in bills.indexed)
+            if (ok(kinds[i])) b.store,
+        ].whereType<String>().firstOrNull;
+    final store = storeFrom((k) => k == PhotoKind.bill) ?? storeFrom((k) => k != PhotoKind.card);
     final price = _price(lines, bills);
     final (warranty, extended) = _warranty(lines);
     final helpline = _helplineRe.firstMatch(text)?.group(1)?.replaceAll(RegExp(r'\s+'), '-');
