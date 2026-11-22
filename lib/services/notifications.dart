@@ -6,6 +6,7 @@ import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../domain/models.dart' hide Priority;
+import '../domain/warranty.dart';
 
 /// Localised notification text, built from the app's strings.
 class ReminderTexts {
@@ -15,6 +16,8 @@ class ReminderTexts {
     required this.dueIn,
     required this.digestTitle,
     required this.digestBody,
+    this.warrantyEndsIn,
+    this.extraEndsIn,
   });
 
   final String channelName;
@@ -22,6 +25,12 @@ class ReminderTexts {
   final String Function(String title, int days) dueIn;
   final String digestTitle;
   final String digestBody;
+
+  /// "{name}: warranty ends in {days} days".
+  final String Function(String name, int days)? warrantyEndsIn;
+
+  /// Same for an extended warranty or AMC.
+  final String Function(String name, int days)? extraEndsIn;
 }
 
 /// A reminder to schedule.
@@ -43,13 +52,38 @@ class ReminderPlanner {
   /// iOS keeps at most 64 pending notifications; stay under it.
   final int max;
 
+  /// Days before a warranty or AMC ends to remind the family.
+  static const warrantyLeadDays = [30, 7];
+
   List<PlannedReminder> plan({
     required List<Entry> entries,
     required DateTime now,
     required int billLeadDays,
     required ReminderTexts texts,
+    List<Appliance> appliances = const [],
   }) {
     final out = <PlannedReminder>[];
+    for (final a in appliances) {
+      if (a.deleted) continue;
+      final covers = <(Coverage?, int, String Function(String, int)?)>[
+        (a.warranty, 0, texts.warrantyEndsIn),
+        (a.extra, 1, texts.extraEndsIn),
+      ];
+      for (final (cover, kind, text) in covers) {
+        final ends = cover?.ends;
+        if (ends == null || text == null) continue;
+        for (final (i, lead) in warrantyLeadDays.indexed) {
+          final at = DateTime(ends.year, ends.month, ends.day, hour).subtract(Duration(days: lead));
+          if (!at.isAfter(now) || at.isAfter(now.add(Duration(days: horizonDays)))) continue;
+          out.add(PlannedReminder(
+            id: _id(a.id, 2 + kind * 2 + i),
+            at: at,
+            title: text(a.name, lead),
+            body: [a.brand, a.model].whereType<String>().join(' '),
+          ));
+        }
+      }
+    }
     final horizon = now.add(Duration(days: horizonDays));
     for (final e in entries) {
       final due = e.dueAt;
@@ -81,8 +115,9 @@ class ReminderPlanner {
     return out.take(max).toList();
   }
 
-  static int _id(String entryId, int kind) =>
-      (entryId.hashCode & 0x0fffffff) * 2 + kind + 10;
+  /// Stable per (record, kind). Kinds 0–1 are entries, 2–5 warranties.
+  static int _id(String recordId, int kind) =>
+      (recordId.hashCode & 0x00ffffff) * 8 + kind + 10;
 }
 
 /// Local, offline reminders and the daily digest (spec FR-22, FR-23).
@@ -144,6 +179,7 @@ class NotificationService {
     required int billLeadDays,
     required TimeOfDay digestTime,
     required ReminderTexts texts,
+    List<Appliance> appliances = const [],
   }) async {
     if (!_ready) return;
     try {
@@ -156,6 +192,7 @@ class NotificationService {
         now: now,
         billLeadDays: billLeadDays,
         texts: texts,
+        appliances: appliances,
       );
       for (final r in plan) {
         await _plugin.zonedSchedule(

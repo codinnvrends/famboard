@@ -12,6 +12,8 @@ abstract final class Entities {
   static const category = 'category';
   static const list = 'list';
   static const listItem = 'list_item';
+  static const appliance = 'appliance';
+  static const serviceVisit = 'service_visit';
 }
 
 enum ListKind {
@@ -132,6 +134,7 @@ class Member {
     required this.role,
     this.color = 0,
     this.removed = false,
+    this.seesMoney,
   });
 
   final String id;
@@ -141,6 +144,13 @@ class Member {
   final int color;
   final bool removed;
 
+  /// Set by an admin: whether this person sees bills and money. Null means
+  /// the role's default (members yes, children and viewers no).
+  final bool? seesMoney;
+
+  /// Admins always see bills and money; others per [seesMoney].
+  bool get canSeeMoney => role == Role.admin || (seesMoney ?? role == Role.member);
+
   factory Member.fromRecord(RecordState r) => Member(
         id: r.id,
         familyId: r.familyId,
@@ -148,6 +158,7 @@ class Member {
         role: Role.fromCode(r.fields['role']),
         color: (r.fields['color'] as num?)?.toInt() ?? 0,
         removed: r.fields['removed'] == true,
+        seesMoney: r.fields['seesMoney'] is bool ? r.fields['seesMoney'] as bool : null,
       );
 
   String get initials {
@@ -187,6 +198,7 @@ class Entry {
     required this.updatedAt,
     this.doneAt,
     this.deleted = false,
+    this.applianceId,
   });
 
   final String id;
@@ -221,6 +233,9 @@ class Entry {
   final DateTime? doneAt;
   final bool deleted;
 
+  /// The appliance a repair is about, if one was picked.
+  final String? applianceId;
+
   bool get isRecurring => rrule != null && rrule!.isNotEmpty;
   bool get isOpen => !status.isClosed && !deleted;
 
@@ -251,6 +266,7 @@ class Entry {
       updatedAt: _clockTime(r.updatedClock),
       doneAt: _date(f['doneAt']),
       deleted: r.isDeleted,
+      applianceId: _str(f['applianceId']),
     );
   }
 
@@ -270,6 +286,7 @@ class Entry {
         'rrule': rrule,
         'seriesId': seriesId,
         'leadDays': leadDays,
+        'applianceId': applianceId,
       };
 }
 
@@ -419,6 +436,18 @@ class ListItem {
         amount: _num(r.fields['amount']),
         checked: r.fields['checked'] == true,
         position: _num(r.fields['position']) ?? 0,
+      );
+
+  /// A copy without rate and amount (for people who can't see money).
+  ListItem withoutPrices() => ListItem(
+        id: id,
+        listId: listId,
+        name: name,
+        position: position,
+        categoryId: categoryId,
+        quantity: quantity,
+        unit: unit,
+        checked: checked,
       );
 
   Map<String, Object?> toFields() => {

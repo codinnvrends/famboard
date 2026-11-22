@@ -1,0 +1,1 @@
+Settings → About now links to the Sapps website for new features and our other apps, and to FamBoard's privacy policy.

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
+import '../data/blob_store.dart';
 import '../data/record_store.dart';
 import '../domain/change.dart';
 import 'channel.dart';
@@ -16,6 +18,7 @@ class SyncResult {
     required this.transport,
     required this.sent,
     required this.received,
+    this.photosReceived = 0,
   });
 
   final String familyId;
@@ -25,6 +28,7 @@ class SyncResult {
   final String transport;
   final int sent;
   final int received;
+  final int photosReceived;
 }
 
 /// Who this device is, for the handshake.
@@ -54,9 +58,19 @@ class SyncSession {
     required this.identity,
     required this.memberIdFor,
     required this.isMemberAllowed,
+    this.blobs,
   });
 
+  /// Capability flag for the photo exchange. Older app versions don't send
+  /// it, so they never see the extra messages.
+  static const capBlobs = 'blobs1';
+
+  /// Photos only travel over Wi‑Fi; over Bluetooth just the details sync and
+  /// photos follow the next time both phones share a Wi‑Fi network.
+  static const blobTransports = {'wifi', 'memory'};
+
   final ChangeStore store;
+  final BlobSource? blobs;
   final LocalIdentity identity;
   final MemberIdFor memberIdFor;
   final MemberCheck isMemberAllowed;
@@ -99,6 +113,7 @@ class SyncSession {
         't': 'who',
         'member': me,
         'vv': await store.versionVector(familyId),
+        if (blobs != null) 'caps': [capBlobs],
       });
       final who = await _expect(secure, 'who');
       final peerMember = who['member'] as String? ?? '';
@@ -107,6 +122,7 @@ class SyncSession {
         throw SyncAuthException('Device belongs to a removed member');
       }
       final peerVector = Map<String, String>.from(who['vv']! as Map);
+      final peerCaps = {...((who['caps'] as List?) ?? const []).whereType<String>()};
 
       // Send what they lack.
       final outgoing = await store.changesSince(familyId, peerVector);
@@ -125,6 +141,13 @@ class SyncSession {
             received += await store.applyRemote(list);
           case 'end':
             await sendDone;
+            var photos = 0;
+            final source = blobs;
+            if (source != null &&
+                peerCaps.contains(capBlobs) &&
+                blobTransports.contains(secure.transport)) {
+              photos = await _swapBlobs(secure, familyId, source);
+            }
             await secure.send({'t': 'bye'});
             return SyncResult(
               familyId: familyId,
@@ -134,6 +157,7 @@ class SyncSession {
               transport: secure.transport,
               sent: outgoing.length,
               received: received,
+              photosReceived: photos,
             );
           case 'bye':
             throw SyncProtocolException('Peer ended the sync: ${msg['reason']}');
@@ -164,6 +188,62 @@ class SyncSession {
     }
     if (batch.isNotEmpty) await secure.send({'t': 'ch', 'c': batch});
     await secure.send({'t': 'end', 'n': changes.length});
+  }
+
+  /// Photo exchange, after both sides have all records: each asks for the
+  /// photos its records point at but it lacks, answers the other's request,
+  /// then sends `bend`. Returns how many photos arrived.
+  Future<int> _swapBlobs(SecureChannel secure, String familyId, BlobSource source) async {
+    await secure.send({'t': 'want', 'ids': await source.missingBlobs(familyId)});
+    Future<void>? answering;
+    var peerDone = false;
+    var got = 0;
+    while (!peerDone || answering == null) {
+      final msg = await secure.receive();
+      switch (msg['t']) {
+        case 'want':
+          final ids = ((msg['ids'] as List?) ?? const []).whereType<String>().toList();
+          answering = _sendBlobs(secure, familyId, source, ids);
+        case 'blob':
+          final id = msg['id'] as String? ?? '';
+          final data = msg['b'] as String? ?? '';
+          if (id.isNotEmpty && data.isNotEmpty) {
+            final ok = await source.putVerified(
+              familyId,
+              id,
+              base64Decode(data),
+              mime: msg['m'] as String? ?? 'image/jpeg',
+            );
+            if (ok) got++;
+          }
+        case 'bend':
+          peerDone = true;
+        case 'bye':
+          throw SyncProtocolException('Peer ended the sync: ${msg['reason']}');
+        default:
+          throw SyncProtocolException('Unexpected message ${msg['t']}');
+      }
+    }
+    await answering;
+    return got;
+  }
+
+  Future<void> _sendBlobs(
+    SecureChannel secure,
+    String familyId,
+    BlobSource source,
+    List<String> ids,
+  ) async {
+    final limit = secure.maxMessageBytes - 512;
+    for (final id in ids) {
+      final bytes = await source.blob(familyId, id);
+      if (bytes == null) continue;
+      final msg = {'t': 'blob', 'id': id, 'm': 'image/jpeg', 'b': base64Encode(bytes)};
+      // Too big for this transport: skip it rather than fail the sync.
+      if (SecureChannel.sealedSize(msg) > limit) continue;
+      await secure.send(msg);
+    }
+    await secure.send({'t': 'bend'});
   }
 
   Future<Map<String, Object?>> _expect(SecureChannel secure, String type) async {

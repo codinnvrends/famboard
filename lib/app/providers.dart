@@ -4,6 +4,7 @@ import '../data/db/database.dart';
 import '../data/settings_store.dart';
 import '../domain/models.dart';
 import '../domain/permissions.dart';
+import '../domain/warranty.dart';
 import '../sync/sync_health.dart';
 import '../sync/sync_manager.dart';
 import 'services.dart';
@@ -54,12 +55,33 @@ final membersProvider = StreamProvider.family<List<Member>, String>((ref, family
   return ref.watch(servicesProvider).repo.watchMembers(familyId);
 });
 
+/// Entries this person may see: bills are left out for people without
+/// money access, so every screen and reminder follows the same rule.
 final entriesProvider = StreamProvider.family<List<Entry>, String>((ref, familyId) {
-  return ref.watch(servicesProvider).repo.watchEntries(familyId);
+  final perms = ref.watch(permsProvider);
+  return ref
+      .watch(servicesProvider)
+      .repo
+      .watchEntries(familyId)
+      .map((l) => perms.canSeeBills ? l : l.where(perms.canView).toList());
 });
 
 final allEntriesProvider = StreamProvider.family<List<Entry>, String>((ref, familyId) {
-  return ref.watch(servicesProvider).repo.watchEntries(familyId, includeDeleted: true);
+  final perms = ref.watch(permsProvider);
+  return ref
+      .watch(servicesProvider)
+      .repo
+      .watchEntries(familyId, includeDeleted: true)
+      .map((l) => perms.canSeeBills ? l : l.where(perms.canView).toList());
+});
+
+final appliancesProvider = StreamProvider.family<List<Appliance>, String>((ref, familyId) {
+  return ref.watch(servicesProvider).repo.watchAppliances(familyId);
+});
+
+final serviceVisitsProvider =
+    StreamProvider.family<List<ServiceVisit>, String>((ref, familyId) {
+  return ref.watch(servicesProvider).repo.watchServiceVisits(familyId);
 });
 
 final overridesProvider = StreamProvider.family<List<KeywordOverride>, String>((ref, familyId) {
@@ -82,7 +104,7 @@ final meProvider = Provider<Member?>((ref) {
 final permsProvider = Provider<Perms>((ref) {
   final session = ref.watch(sessionProvider);
   final me = ref.watch(meProvider);
-  return Perms(me?.role ?? Role.member, session?.memberId ?? '');
+  return Perms(me?.role ?? Role.member, session?.memberId ?? '', seesMoney: me?.seesMoney);
 });
 
 final memberNamesProvider = Provider<Map<String, String>>((ref) {

@@ -27,6 +27,9 @@ String formatDate(BuildContext context, DateTime d) {
   return pattern.format(d);
 }
 
+/// Always with the year: "3 Mar 2027".
+String formatLongDate(BuildContext context, DateTime d) => DateFormat.yMMMd(context.localeTag).format(d);
+
 /// "Due today", "Due tomorrow", "3 days overdue", "Due Nov 12".
 String dueLabel(BuildContext context, Entry e, {DateTime? now}) {
   final l = context.l10n;

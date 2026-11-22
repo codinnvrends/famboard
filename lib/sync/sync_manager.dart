@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import '../data/blob_store.dart';
 import '../data/famboard_repository.dart';
 import '../data/key_vault.dart';
 import '../data/record_store.dart';
@@ -120,9 +121,11 @@ class SyncManager {
     required this.settings,
     required this.vault,
     required this.transports,
+    this.blobs,
   });
 
   final RecordStore store;
+  final BlobSource? blobs;
   final FamBoardRepository repo;
   final SettingsStore settings;
   final KeyVault vault;
@@ -480,6 +483,7 @@ class SyncManager {
 
   SyncSession _session() => SyncSession(
         store: store,
+        blobs: blobs,
         identity: _identity,
         memberIdFor: (familyId) async => (await settings.families())
             .where((f) => f.id == familyId)

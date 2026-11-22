@@ -6,6 +6,7 @@ import '../domain/change.dart';
 import '../domain/invite.dart';
 import '../domain/merge.dart';
 import '../domain/models.dart';
+import '../domain/warranty.dart';
 import '../services/categorizer/categorizer.dart';
 import '../services/recurrence.dart';
 import 'key_vault.dart';
@@ -28,6 +29,7 @@ class EntryDraft {
     this.rrule,
     this.leadDays,
     this.proposed = false,
+    this.applianceId,
   });
 
   final String title;
@@ -43,6 +45,9 @@ class EntryDraft {
   final String? rrule;
   final int? leadDays;
   final bool proposed;
+
+  /// Appliance a repair is about.
+  final String? applianceId;
 }
 
 /// Family and entry operations. Everything is a local write; sync carries it
@@ -204,6 +209,15 @@ class FamBoardRepository {
         fields: {'name': name.trim()},
       ));
 
+  /// Admin switch: whether [memberId] sees bills, expenses and amounts.
+  Future<void> setMemberSeesMoney(String familyId, String memberId, bool value) =>
+      store.write(RecordWrite(
+        familyId: familyId,
+        entity: Entities.member,
+        id: memberId,
+        fields: {'seesMoney': value},
+      ));
+
   /// Marks a member removed; their devices are refused at the next sync.
   Future<void> removeMember(String familyId, String memberId) => store.write(RecordWrite(
         familyId: familyId,
@@ -263,6 +277,7 @@ class FamBoardRepository {
           'rrule': rrule,
           'seriesId': rrule == null ? null : entryId,
           'leadDays': draft.leadDays,
+          if (draft.applianceId != null) 'applianceId': draft.applianceId,
           'createdBy': memberId,
           'createdAt': _now().toIso8601String(),
           'updatedBy': memberId,
@@ -575,6 +590,138 @@ class FamBoardRepository {
       for (final i in items.where((i) => i.checked))
         RecordWrite(familyId: familyId, entity: Entities.listItem, id: i.id, fields: {'checked': false}),
     ]);
+  }
+
+  // Warranties ---------------------------------------------------------------
+
+  Stream<List<Appliance>> watchAppliances(String familyId) => store
+      .watch(familyId, Entities.appliance)
+      .map((l) => l.map(Appliance.fromRecord).toList());
+
+  Future<List<Appliance>> appliances(String familyId) async =>
+      (await store.list(familyId, Entities.appliance)).map(Appliance.fromRecord).toList();
+
+  Future<String> addAppliance({
+    required String familyId,
+    required String memberId,
+    required ApplianceDraft draft,
+    bool includePrice = true,
+  }) async {
+    final id = newId();
+    await store.write(RecordWrite(
+      familyId: familyId,
+      entity: Entities.appliance,
+      id: id,
+      fields: {
+        ...draft.toFields(includePrice: includePrice),
+        'createdBy': memberId,
+        'createdAt': _now().toIso8601String(),
+      },
+    ));
+    return id;
+  }
+
+  /// Writes only the fields that changed, so two people editing different
+  /// fields at once both keep their edits.
+  Future<void> updateAppliance({
+    required Appliance before,
+    required ApplianceDraft draft,
+    required String memberId,
+    bool includePrice = true,
+  }) async {
+    final old = ApplianceDraft.of(before).toFields(includePrice: includePrice);
+    final changed = <String, Object?>{};
+    draft.toFields(includePrice: includePrice).forEach((k, v) {
+      if (!_sameValue(old[k], v)) changed[k] = v;
+    });
+    if (changed.isEmpty) return;
+    await store.write(RecordWrite(
+      familyId: before.familyId,
+      entity: Entities.appliance,
+      id: before.id,
+      fields: {...changed, 'updatedBy': memberId},
+    ));
+  }
+
+  /// Deletes an appliance and its service history. Repairs that pointed at
+  /// it keep their text but lose the link.
+  Future<void> deleteAppliance(Appliance a) async {
+    final visits = (await store.list(a.familyId, Entities.serviceVisit))
+        .where((r) => r.fields['applianceId'] == a.id);
+    await store.writeAll([
+      RecordWrite(
+        familyId: a.familyId,
+        entity: Entities.appliance,
+        id: a.id,
+        fields: {RecordState.deletedField: true},
+      ),
+      for (final v in visits)
+        RecordWrite(
+          familyId: a.familyId,
+          entity: Entities.serviceVisit,
+          id: v.id,
+          fields: {RecordState.deletedField: true},
+        ),
+    ]);
+  }
+
+  Stream<List<ServiceVisit>> watchServiceVisits(String familyId) => store
+      .watch(familyId, Entities.serviceVisit)
+      .map((l) => l.map(ServiceVisit.fromRecord).toList()..sort((a, b) => b.date.compareTo(a.date)));
+
+  Future<String> saveServiceVisit({
+    required String familyId,
+    required String memberId,
+    required String applianceId,
+    String? id,
+    required DateTime date,
+    required String issue,
+    String? technician,
+    double? cost,
+    bool covered = false,
+    String? note,
+    bool includeCost = true,
+  }) async {
+    final visitId = id ?? newId();
+    String? t(String? s) => s == null || s.trim().isEmpty ? null : s.trim();
+    await store.write(RecordWrite(
+      familyId: familyId,
+      entity: Entities.serviceVisit,
+      id: visitId,
+      fields: {
+        'applianceId': applianceId,
+        'date': DateTime(date.year, date.month, date.day).toIso8601String(),
+        'issue': issue.trim(),
+        'technician': t(technician),
+        if (includeCost) 'cost': cost,
+        'covered': covered,
+        'note': t(note),
+        if (id == null) 'createdBy': memberId,
+        if (id == null) 'createdAt': _now().toIso8601String(),
+      },
+    ));
+    return visitId;
+  }
+
+  Future<void> deleteServiceVisit(String familyId, String visitId) =>
+      store.delete(familyId, Entities.serviceVisit, visitId);
+
+  static bool _sameValue(Object? a, Object? b) {
+    if (a is Map && b is Map) {
+      if (a.length != b.length) return false;
+      for (final e in a.entries) {
+        if (!b.containsKey(e.key) || b[e.key] != e.value) return false;
+      }
+      return true;
+    }
+    if (a is List && b is List) {
+      if (a.length != b.length) return false;
+      for (var i = 0; i < a.length; i++) {
+        if (a[i] != b[i]) return false;
+      }
+      return true;
+    }
+    return a == b;
   }
 
   // Helpers -------------------------------------------------------------------

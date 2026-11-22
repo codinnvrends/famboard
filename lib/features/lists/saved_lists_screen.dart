@@ -140,7 +140,7 @@ class _ListCard extends ConsumerWidget {
     final sub = [
       l.listItemCount(items.length),
       if (done > 0) l.listBoughtCount(done),
-      if (list.billTotal != null) formatMoney(list.billTotal!),
+      if (list.billTotal != null && ref.watch(permsProvider).canSeeMoney) formatMoney(list.billTotal!),
     ].join(' · ');
     return Card(
       margin: EdgeInsets.zero,
@@ -208,7 +208,7 @@ class _SavedListScreenState extends ConsumerState<SavedListScreen> {
       );
     }
     final repo = ref.read(servicesProvider).repo;
-    final showPrices = list.fromBill || items.any((i) => i.amount != null);
+    final showPrices = ref.watch(permsProvider).canSeeMoney && (list.fromBill || items.any((i) => i.amount != null));
     final remaining = items.where((i) => !i.checked).toList();
     final total = items.fold<double>(0, (s, i) => s + (i.amount ?? 0));
     final sub = [
@@ -225,7 +225,13 @@ class _SavedListScreenState extends ConsumerState<SavedListScreen> {
           IconButton(
             tooltip: l.listShareTitle,
             icon: const Icon(Icons.share_outlined),
-            onPressed: items.isEmpty ? null : () => showShareList(context, list, items),
+            onPressed: items.isEmpty
+                ? null
+                : () => showShareList(
+                      context,
+                      list,
+                      showPrices ? items : [for (final i in items) i.withoutPrices()],
+                    ),
           ),
           if (canEdit)
             PopupMenuButton<String>(

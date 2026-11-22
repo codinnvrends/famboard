@@ -27,9 +27,17 @@ No internet? No problem. FamBoard syncs directly between your family's phones ov
 • Fix any line, then save it as a list for next month
 • Share lists on WhatsApp, or as a PDF or spreadsheet
 
+★ EVERY WARRANTY IN ONE PLACE
+• Photograph the bill and the warranty card; FamBoard reads the brand, model, serial number, purchase date and warranty period on your phone
+• Check the details, fix anything it got wrong, and the photos sync to the family over Wi‑Fi
+• Reminders 30 and 7 days before a warranty, extended warranty or AMC runs out
+• Keep service visits, call the service centre with one tap, and link repairs to the appliance
+• Everyone can see warranties; admins decide what can be changed
+
 ★ PRIVATE BY DESIGN
 • Your family's data stays on your family's phones
 • Phone-to-phone sync is end-to-end encrypted
+• Admins choose who in the family can see bills and money
 • No ads, no tracking, no sign-up
 • Encrypted backups you control
 

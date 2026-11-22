@@ -741,5 +741,240 @@
   "listShareCsv": "Spreadsheet (CSV)",
   "listSaveToPhone": "Save to phone",
   "listSaved": "Saved to your phone",
-  "scanCameraUnavailable": "The camera scanner isn't ready on this phone yet (it needs internet once). Choose a photo instead."
+  "scanCameraUnavailable": "The camera scanner isn't ready on this phone yet (it needs internet once). Choose a photo instead.",
+  "navWarranties": "Warranties",
+  "canSeeMoney": "Can see bills & money",
+  "seesMoneyShort": "Sees bills",
+  "noMoneyShort": "No bills",
+  "moneyAllowed": "{name} can now see bills and money",
+  "@moneyAllowed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "moneyHidden": "Bills and money are now hidden from {name}",
+  "@moneyHidden": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "billHiddenFromYou": "Bills are only shown to people an admin has allowed. It will be saved for them.",
+  "clear": "Clear",
+  "applianceNone": "None",
+  "repairAppliance": "Appliance",
+  "fromPhoto": "From photo",
+  "photoNotSyncedYet": "Arrives on Wi‑Fi sync",
+  "removePhoto": "Remove photo",
+  "coverUnknown": "Warranty end not known",
+  "coverExpiredOn": "Expired {date}",
+  "@coverExpiredOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "coverEndsToday": "Ends today",
+  "coverEndsInDays": "{days, plural, =1{Ends tomorrow} other{Ends in {days} days}}",
+  "@coverEndsInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "coverTill": "Covered till {date}",
+  "@coverTill": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "coverExtended": "Extended warranty",
+  "coverAmc": "AMC",
+  "monthsShort": "{n} months",
+  "@monthsShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "yearsShort": "{n, plural, =1{1 year} other{{n} years}}",
+  "@yearsShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "notifWarrantyEnds": "{name}: warranty ends in {days} days",
+  "@notifWarrantyEnds": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "notifExtraEnds": "{name}: extended warranty / AMC ends in {days} days",
+  "@notifExtraEnds": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "warrantiesEmpty": "Keep every warranty in one place",
+  "warrantiesEmptyBody": "Snap the bill and warranty card of your fridge, AC, TV or phone. FamBoard reads the details and reminds the family before the warranty runs out.",
+  "warrantiesEmptyViewer": "Warranties your family adds will show here.",
+  "warrantyAdd": "Add warranty",
+  "warrantyAddBody": "Photograph the bill and the warranty card. FamBoard reads them on this phone; you check the details before saving.",
+  "warrantyScanCamera": "Scan with camera",
+  "warrantyScanCameraBody": "Bill, warranty card, box sticker. Several pages are fine",
+  "warrantyScanGallery": "Choose photos",
+  "warrantyScanGalleryBody": "Photos or screenshots already on the phone",
+  "warrantyManual": "Type it in",
+  "warrantyReading": "{count, plural, =1{Reading the photo…} other{Reading {count} photos…}}",
+  "@warrantyReading": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "warrantyNew": "New warranty",
+  "warrantyEdit": "Edit warranty",
+  "warrantyOcrFilled": "{count, plural, =1{Filled 1 detail from the photos} other{Filled {count} details from the photos}}",
+  "@warrantyOcrFilled": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "warrantyOcrCheck": "Check them against the paper before saving.",
+  "warrantyOcrNothing": "Couldn't read details from the photos. Fill them in below; the photos are kept.",
+  "warrantyOwnEditUntil": "You can change this until {time} today",
+  "@warrantyOwnEditUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "warrantyOnlyAdminsAfter": "After that, only admins can edit or delete it.",
+  "warrantyAfterSaveNote": "After saving you have 24 hours to fix mistakes. Then only admins can edit or delete it.",
+  "warrantyAdminsOnly": "Only admins can edit or delete this.",
+  "warrantyEditLocked": "Only admins can change this now",
+  "warrantyEditLockedBody": "Warranties can be changed by whoever added them for 24 hours, and by admins after that.",
+  "warrantyPhotos": "Bill and warranty card",
+  "warrantyAddPhoto": "Add photo",
+  "warrantyProduct": "Product",
+  "warrantyName": "What is it?",
+  "warrantyNameHint": "e.g. Samsung fridge, bedroom AC",
+  "warrantyNameNeeded": "Give it a name",
+  "warrantyBrand": "Brand",
+  "warrantyModel": "Model",
+  "warrantySerial": "Serial / IMEI",
+  "warrantyPurchase": "Purchase",
+  "warrantyPurchaseDate": "Bought on",
+  "warrantyStore": "Shop",
+  "warrantyPrice": "Price",
+  "warrantyInvoice": "Invoice no.",
+  "warrantyCover": "Warranty",
+  "warrantyMonths": "Warranty length (months)",
+  "warrantyEndsOn": "Warranty ends on",
+  "warrantyEndsComputed": "Worked out from the purchase date. Tap to set a different date",
+  "warrantyHasExtra": "Extended warranty or AMC",
+  "warrantyExtraProvider": "Provided by",
+  "warrantyExtraEnds": "Covered till",
+  "warrantyExtraCost": "Cost",
+  "warrantyExtraCostIs": "Cost {amount}",
+  "@warrantyExtraCostIs": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "warrantyService": "Service contacts",
+  "warrantyHelpline": "Brand helpline",
+  "warrantyServiceCentre": "Service centre",
+  "warrantyServiceCentrePhone": "Service centre phone",
+  "warrantyNoteHint": "Anything else, e.g. where the paper bill is kept",
+  "warrantySearchHint": "Search name, brand, model, serial",
+  "warrantyFilterAll": "All",
+  "warrantyFilterSoon": "Ending soon",
+  "warrantyFilterExpired": "Expired",
+  "warrantyNoMatch": "Nothing matches.",
+  "warrantyGone": "This warranty was deleted",
+  "warrantyMaker": "Maker's warranty",
+  "warrantyAddEndHint": "Add the purchase date and warranty length to get reminders.",
+  "warrantyDetails": "Details",
+  "warrantyAddedBy": "Added by",
+  "warrantyRepairs": "Repairs",
+  "warrantyReportRepair": "Report repair",
+  "warrantyRepairNote": "Under warranty: {status}",
+  "@warrantyRepairNote": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "warrantyNoRepairs": "No repairs reported.",
+  "warrantyHistory": "Service history",
+  "warrantyAddVisit": "Add visit",
+  "warrantyNoVisits": "No service visits yet.",
+  "warrantyDeleteTitle": "Delete warranty?",
+  "warrantyDeleteBody": "{name}, its photos and service history will be removed from every family phone.",
+  "@warrantyDeleteBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "warrantyDeleted": "{name} deleted",
+  "@warrantyDeleted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "visitEdit": "Service visit",
+  "visitIssue": "What was done?",
+  "visitIssueHint": "e.g. Gas refill, cooling problem fixed",
+  "visitDate": "Date",
+  "visitTechnician": "Technician / company",
+  "visitCost": "Cost",
+  "visitCoveredQuestion": "Free under warranty / AMC",
+  "visitCovered": "Under warranty",
+  "visitDelete": "Delete this visit?",
+  "photoKindBill": "Bill",
+  "photoKindCard": "Warranty card",
+  "photoKindOther": "Other",
+  "photoKindChange": "Change label",
+  "warrantyMoreFilled": "{count, plural, =1{Filled 1 more detail from the new photo} other{Filled {count} more details from the new photos}}",
+  "warrantyNothingNew": "Photo added. Nothing new to fill in.",
+  "@warrantyMoreFilled": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoKindCardShort": "Card"
 }

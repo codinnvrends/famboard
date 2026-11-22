@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cryptography/cryptography.dart';
 import 'package:intl/intl.dart';
 
+import '../data/blob_store.dart';
 import '../data/famboard_repository.dart';
 import '../data/key_vault.dart';
 import '../data/record_store.dart';
@@ -29,9 +30,11 @@ class BackupService {
     required this.repo,
     required this.settings,
     required this.vault,
+    this.blobs,
   });
 
   final RecordStore store;
+  final BlobStore? blobs;
   final FamBoardRepository repo;
   final SettingsStore settings;
   final KeyVault vault;
@@ -79,6 +82,9 @@ class BackupService {
       'family': family.map((r) => {'id': r.id, ...r.fields}).firstOrNull,
       'members': members.map((r) => {'id': r.id, ...r.fields}).toList(),
       'entries': entries.map((r) => {'id': r.id, ...r.fields}).toList(),
+      'appliances': (await store.list(familyId, Entities.appliance)).map((r) => {'id': r.id, ...r.fields}).toList(),
+      'serviceVisits':
+          (await store.list(familyId, Entities.serviceVisit)).map((r) => {'id': r.id, ...r.fields}).toList(),
     });
   }
 
@@ -125,6 +131,11 @@ class BackupService {
       'family': local.toJson(),
       'key': base64Encode(key),
       'changes': changes.map((c) => c.toWire()).toList(),
+      // Warranty photos. Older versions ignore this key when restoring.
+      if (blobs != null)
+        'blobs': {
+          for (final e in (await blobs!.all(familyId)).entries) e.key: base64Encode(e.value),
+        },
     }));
 
     final salt = _random(16);
@@ -176,6 +187,14 @@ class BackupService {
         .toList();
     for (var i = 0; i < changes.length; i += 1000) {
       await store.applyRemote(changes.sublist(i, min(i + 1000, changes.length)));
+    }
+    final photos = payload['blobs'];
+    if (photos is Map && blobs != null) {
+      for (final e in photos.entries) {
+        if (e.key is String && e.value is String) {
+          await blobs!.putVerified(family.id, e.key as String, base64Decode(e.value as String));
+        }
+      }
     }
     await settings.upsertFamily(family);
     await settings.set(SettingsStore.kActiveFamily, family.id);

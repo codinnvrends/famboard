@@ -6,6 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import '../core/ids.dart';
+import '../data/blob_store.dart';
 import '../data/db/connection.dart';
 import '../data/db/database.dart';
 import '../data/famboard_repository.dart';
@@ -20,6 +21,7 @@ import '../services/notifications.dart';
 import '../services/share_intake.dart';
 import '../services/text_extractor.dart';
 import '../services/voice.dart';
+import '../services/warranty/warranty_scanner.dart';
 import '../sync/lan_transport.dart';
 import '../sync/nearby_transport.dart';
 import '../sync/sync_health.dart';
@@ -42,6 +44,7 @@ class AppServices {
     required this.families,
     required this.deviceId,
     required this.health,
+    required this.blobs,
   });
 
   final AppDatabase db;
@@ -57,10 +60,12 @@ class AppServices {
   final FamiliesNotifier families;
   final String deviceId;
   final SyncHealthMonitor health;
+  final BlobStore blobs;
   final Categorizer categorizer = Categorizer();
   final TextExtractor extractor = TextExtractor();
   final SmsBillParser smsParser = SmsBillParser();
   late final BillScanner billScanner = BillScanner(parser: ReceiptParser(categorizer: categorizer));
+  late final WarrantyScanner warrantyScanner = WarrantyScanner(bills: billScanner);
 
   static Future<AppServices> create() async {
     final vault = SecureKeyVault();
@@ -101,12 +106,14 @@ class AppServices {
     }
     final store = await RecordStore.open(db, deviceId);
     final repo = FamBoardRepository(store: store, settings: settings, vault: vault);
+    final blobs = BlobStore(db, store);
     final nearbyEnabled = await settings.get(SettingsStore.kNearby) != 'false';
     final sync = SyncManager(
       store: store,
       repo: repo,
       settings: settings,
       vault: vault,
+      blobs: blobs,
       transports: [
         for (final t in transports)
           if (t.name != 'nearby' || nearbyEnabled) t,
@@ -127,7 +134,8 @@ class AppServices {
       notifications: notifications,
       voice: VoiceInput(),
       share: share,
-      backup: BackupService(store: store, repo: repo, settings: settings, vault: vault),
+      backup: BackupService(store: store, repo: repo, settings: settings, vault: vault, blobs: blobs),
+      blobs: blobs,
       families: families,
       deviceId: deviceId,
       health: SyncHealthMonitor(
