@@ -1299,7 +1299,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get repairAppliance => 'उपकरण';
 
   @override
-  String get fromPhoto => 'फ़ोटो से, कृपया जाँचें';
+  String get fromPhoto => 'फ़ोटो से';
 
   @override
   String get photoNotSyncedYet => 'Wi‑Fi सिंक पर आएगी';

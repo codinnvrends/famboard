@@ -1299,7 +1299,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get repairAppliance => 'Appliance';
 
   @override
-  String get fromPhoto => 'From photo, please check';
+  String get fromPhoto => 'From photo';
 
   @override
   String get photoNotSyncedYet => 'Arrives on Wi‑Fi sync';

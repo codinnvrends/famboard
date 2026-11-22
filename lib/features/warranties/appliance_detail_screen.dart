@@ -170,7 +170,7 @@ class ApplianceDetailScreen extends ConsumerWidget {
           ],
           SectionHeader(
             l.warrantyRepairs,
-            count: repairs.where((e) => e.isOpen).length,
+            count: repairs.where((e) => e.isOpen).isEmpty ? null : repairs.where((e) => e.isOpen).length,
             trailing: perms.canAddEntries
                 ? TextButton.icon(
                     icon: const Icon(Icons.build_outlined, size: 18),

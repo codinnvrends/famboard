@@ -2267,7 +2267,7 @@ abstract class AppLocalizations {
   /// No description provided for @fromPhoto.
   ///
   /// In en, this message translates to:
-  /// **'From photo, please check'**
+  /// **'From photo'**
   String get fromPhoto;
 
   /// No description provided for @photoNotSyncedYet.

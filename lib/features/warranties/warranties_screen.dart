@@ -8,7 +8,6 @@ import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
 import 'cover_status.dart';
 import 'photos.dart';
-import 'warranty_add_flow.dart';
 
 enum _Filter { all, soon, expired }
 
@@ -39,13 +38,6 @@ class _WarrantiesScreenState extends ConsumerState<WarrantiesScreen> {
         icon: Icons.verified_user_outlined,
         title: l.warrantiesEmpty,
         body: perms.canAddAppliance ? l.warrantiesEmptyBody : l.warrantiesEmptyViewer,
-        action: perms.canAddAppliance
-            ? FilledButton.icon(
-                icon: const Icon(Icons.document_scanner_outlined),
-                label: Text(l.warrantyAdd),
-                onPressed: () => startApplianceAdd(context, ref),
-              )
-            : null,
       );
     }
 

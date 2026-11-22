@@ -254,6 +254,7 @@ class _ApplianceFormScreenState extends ConsumerState<ApplianceFormScreen> {
     InputDecoration deco(String label, {String? key, String? hint, Widget? prefix}) => InputDecoration(
           labelText: label,
           helperText: key == null ? hint : (_hint(key) ?? hint),
+          helperMaxLines: 2,
           prefixIcon: prefix,
         );
 
@@ -525,6 +526,7 @@ class _DateField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           helperText: hint,
+          helperMaxLines: 2,
           prefixIcon: const Icon(Icons.event_outlined, size: 20),
           suffixIcon: value != null && onClear != null
               ? IconButton(icon: const Icon(Icons.clear, size: 18), onPressed: onClear, tooltip: context.l10n.clear)
