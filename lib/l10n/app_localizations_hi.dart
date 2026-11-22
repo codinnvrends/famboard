@@ -1639,4 +1639,33 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get visitDelete => 'यह विज़िट हटाएँ?';
+
+  @override
+  String get photoKindBill => 'बिल';
+
+  @override
+  String get photoKindCard => 'वारंटी कार्ड';
+
+  @override
+  String get photoKindOther => 'अन्य';
+
+  @override
+  String get photoKindChange => 'लेबल बदलें';
+
+  @override
+  String warrantyMoreFilled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'नई फ़ोटो से $count और जानकारियाँ भरीं',
+      one: 'नई फ़ोटो से 1 और जानकारी भरी',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get warrantyNothingNew => 'फ़ोटो जुड़ गई। भरने को कुछ नया नहीं मिला।';
+
+  @override
+  String get photoKindCardShort => 'कार्ड';
 }

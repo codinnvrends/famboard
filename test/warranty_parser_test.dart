@@ -1,3 +1,4 @@
+import 'package:famboard/domain/warranty.dart';
 import 'package:famboard/services/receipt/ocr_types.dart';
 import 'package:famboard/services/warranty/warranty_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -112,5 +113,23 @@ void main() {
       OcrFragment('Next line', 20, 140, 120, 160),
     ]);
     expect(WarrantyParser.readingLines(page), ['Model No: AB-123', 'Next line']);
+  });
+
+  test('each photo is labelled bill or warranty card from its wording', () {
+    expect(
+      WarrantyParser.classify(_page(['TAX INVOICE', 'GSTIN 27AAACI1234', 'Qty Rate Amount', 'Grand Total 27,990'])),
+      PhotoKind.bill,
+    );
+    expect(
+      WarrantyParser.classify(_page(['WARRANTY CARD', 'Date of purchase ____', 'Dealer stamp & signature', 'Terms and conditions'])),
+      PhotoKind.card,
+    );
+    expect(WarrantyParser.classify(_page(['Samsung', 'RT28C3053S8'])), PhotoKind.other);
+  });
+
+  test('photos added later fill only what is still empty', () {
+    const g = WarrantyGuess(brand: 'LG', model: 'PS-Q19YNZE', price: 41990, warrantyMonths: 24, serial: 'ABC123');
+    final fills = g.fillsFor({'brand': 'LG Electronics', 'model': '', 'price': '40000', 'months': ' '});
+    expect(fills, {'model': 'PS-Q19YNZE', 'months': '24', 'serial': 'ABC123'});
   });
 }

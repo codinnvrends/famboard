@@ -1640,4 +1640,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get visitDelete => 'Delete this visit?';
+
+  @override
+  String get photoKindBill => 'Bill';
+
+  @override
+  String get photoKindCard => 'Warranty card';
+
+  @override
+  String get photoKindOther => 'Other';
+
+  @override
+  String get photoKindChange => 'Change label';
+
+  @override
+  String warrantyMoreFilled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Filled $count more details from the new photos',
+      one: 'Filled 1 more detail from the new photo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get warrantyNothingNew => 'Photo added. Nothing new to fill in.';
+
+  @override
+  String get photoKindCardShort => 'Card';
 }

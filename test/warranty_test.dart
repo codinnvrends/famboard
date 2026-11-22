@@ -206,6 +206,38 @@ void main() {
       expect(fields, {'warrantyMonths', 'updatedBy'});
     });
 
+    test('photo labels are saved per photo and only changes are written', () async {
+      final id = await repo.addAppliance(
+        familyId: 'fam',
+        memberId: 'me',
+        draft: const ApplianceDraft(
+          name: 'AC',
+          photos: ['p1', 'p2', 'p3'],
+          photoKinds: {'p1': PhotoKind.bill, 'p2': PhotoKind.card, 'gone': PhotoKind.bill},
+        ),
+      );
+      final a = (await repo.appliances('fam')).single;
+      expect(a.id, id);
+      expect(a.photoKinds, {'p1': PhotoKind.bill, 'p2': PhotoKind.card});
+
+      final before = (await store.allChanges('fam')).length;
+      await repo.updateAppliance(before: a, draft: ApplianceDraft.of(a), memberId: 'me');
+      expect((await store.allChanges('fam')).length, before);
+
+      await repo.updateAppliance(
+        before: a,
+        draft: const ApplianceDraft(
+          name: 'AC',
+          photos: ['p1', 'p2', 'p3'],
+          photoKinds: {'p1': PhotoKind.bill, 'p2': PhotoKind.card, 'p3': PhotoKind.card},
+        ),
+        memberId: 'me',
+      );
+      final fields = (await store.allChanges('fam')).skip(before).map((c) => c.field).toSet();
+      expect(fields, {'photoKinds', 'updatedBy'});
+      expect((await repo.appliances('fam')).single.photoKinds['p3'], PhotoKind.card);
+    });
+
     test('someone who cannot see money never overwrites the price', () async {
       await repo.addAppliance(
         familyId: 'fam', memberId: 'me', draft: const ApplianceDraft(name: 'Mixer', price: 3000),

@@ -707,6 +707,13 @@ class FamBoardRepository {
       store.delete(familyId, Entities.serviceVisit, visitId);
 
   static bool _sameValue(Object? a, Object? b) {
+    if (a is Map && b is Map) {
+      if (a.length != b.length) return false;
+      for (final e in a.entries) {
+        if (!b.containsKey(e.key) || b[e.key] != e.value) return false;
+      }
+      return true;
+    }
     if (a is List && b is List) {
       if (a.length != b.length) return false;
       for (var i = 0; i < a.length; i++) {

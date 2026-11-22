@@ -4,17 +4,23 @@ import 'package:flutter/foundation.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image/image.dart' as img;
 
+import '../../domain/warranty.dart';
 import '../receipt/bill_scanner.dart';
 import '../receipt/ocr_types.dart';
 import 'warranty_parser.dart';
 
 /// Photos of a bill or warranty card, read on the phone.
 class WarrantyScan {
-  const WarrantyScan(this.guess, this.photos);
+  const WarrantyScan(this.guess, this.photos, {this.kinds = const []});
   final WarrantyGuess guess;
 
   /// Compressed JPEGs, ready to store and sync.
   final List<Uint8List> photos;
+
+  /// What each photo looks like (bill, warranty card), same order.
+  final List<PhotoKind> kinds;
+
+  PhotoKind kindAt(int i) => i < kinds.length ? kinds[i] : PhotoKind.other;
 }
 
 /// Reads warranty paperwork with ML Kit (offline) and shrinks the photos so
@@ -33,20 +39,23 @@ class WarrantyScanner {
     final recognizer = TextRecognizer(script: TextRecognitionScript.latin);
     try {
       final pages = <OcrPage>[];
+      final photos = <Uint8List>[];
+      final kinds = <PhotoKind>[];
       for (final path in paths) {
+        OcrPage? page;
         try {
           final text = await recognizer.processImage(InputImage.fromFilePath(path));
-          pages.add(BillScanner.toPage(text));
+          page = BillScanner.toPage(text);
+          pages.add(page);
         } catch (e) {
           debugPrint('OCR failed for $path: $e');
         }
-      }
-      final photos = <Uint8List>[];
-      for (final path in paths) {
         final small = await compressFile(path);
-        if (small != null) photos.add(small);
+        if (small == null) continue;
+        photos.add(small);
+        kinds.add(page == null ? PhotoKind.other : WarrantyParser.classify(page));
       }
-      return WarrantyScan(parser.parse(pages), photos);
+      return WarrantyScan(parser.parse(pages), photos, kinds: kinds);
     } finally {
       await recognizer.close();
     }

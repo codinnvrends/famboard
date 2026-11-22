@@ -34,6 +34,25 @@ enum ExtraCoverKind {
       ExtraCoverKind.values.firstWhere((k) => k.code == code, orElse: () => ExtraCoverKind.extended);
 }
 
+/// What a photo shows, so the right paper is quick to find.
+enum PhotoKind {
+  bill('bill'),
+  card('card'),
+  other('other');
+
+  const PhotoKind(this.code);
+  final String code;
+
+  static PhotoKind fromCode(Object? code) =>
+      PhotoKind.values.firstWhere((k) => k.code == code, orElse: () => PhotoKind.other);
+}
+
+Map<String, PhotoKind> _kinds(Object? v) => {
+      if (v is Map)
+        for (final e in v.entries)
+          if (e.key is String) e.key as String: PhotoKind.fromCode(e.value),
+    };
+
 /// Where a cover period stands today.
 enum CoverState { active, expiringSoon, expired, unknown }
 
@@ -80,6 +99,7 @@ class Appliance {
     this.serviceCentrePhone,
     this.note,
     this.photos = const [],
+    this.photoKinds = const {},
     this.createdBy,
     this.createdAt,
     required this.updatedAt,
@@ -115,6 +135,9 @@ class Appliance {
 
   /// Photo ids (content hashes) of the bill, warranty card and so on.
   final List<String> photos;
+
+  /// Label per photo id; photos without one count as [PhotoKind.other].
+  final Map<String, PhotoKind> photoKinds;
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime updatedAt;
@@ -181,6 +204,7 @@ class Appliance {
         for (final p in (f['photos'] as List?) ?? const [])
           if (p is String && p.isNotEmpty) p,
       ],
+      photoKinds: _kinds(f['photoKinds']),
       createdBy: _str(f['createdBy']),
       createdAt: _date(f['createdAt']),
       updatedAt: _clockTime(r.updatedClock),
@@ -211,6 +235,7 @@ class ApplianceDraft {
     this.serviceCentrePhone,
     this.note,
     this.photos = const [],
+    this.photoKinds = const {},
   });
 
   final String name;
@@ -232,6 +257,7 @@ class ApplianceDraft {
   final String? serviceCentrePhone;
   final String? note;
   final List<String> photos;
+  final Map<String, PhotoKind> photoKinds;
 
   factory ApplianceDraft.of(Appliance a) => ApplianceDraft(
         name: a.name,
@@ -253,6 +279,7 @@ class ApplianceDraft {
         serviceCentrePhone: a.serviceCentrePhone,
         note: a.note,
         photos: a.photos,
+        photoKinds: a.photoKinds,
       );
 
   static String _day(DateTime d) => DateTime(d.year, d.month, d.day).toIso8601String();
@@ -280,6 +307,11 @@ class ApplianceDraft {
         'serviceCentrePhone': _t(serviceCentrePhone),
         'note': _t(note),
         'photos': photos,
+        // Only labels for photos still on the item, "other" left out.
+        'photoKinds': {
+          for (final id in photos)
+            if ((photoKinds[id] ?? PhotoKind.other) != PhotoKind.other) id: photoKinds[id]!.code,
+        },
       };
 }
 

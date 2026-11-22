@@ -5,17 +5,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
+import '../../domain/warranty.dart';
 import '../../ui/l10n_ext.dart';
 
 /// A photo on the warranty page: either already stored (an id) or just
 /// taken and not saved yet (bytes).
 class PhotoRef {
-  const PhotoRef.stored(String this.id) : bytes = null;
-  const PhotoRef.fresh(Uint8List this.bytes) : id = null;
+  const PhotoRef.stored(String this.id, {this.kind = PhotoKind.other}) : bytes = null;
+  const PhotoRef.fresh(Uint8List this.bytes, {this.kind = PhotoKind.other}) : id = null;
+  const PhotoRef._(this.id, this.bytes, this.kind);
 
   final String? id;
   final Uint8List? bytes;
+
+  /// Bill, warranty card or other.
+  final PhotoKind kind;
+
+  PhotoRef withKind(PhotoKind k) => PhotoRef._(id, bytes, k);
 }
+
+/// [short] fits a small thumbnail ("Card" instead of "Warranty card").
+String photoKindLabel(BuildContext context, PhotoKind k, {bool short = false}) => switch (k) {
+      PhotoKind.bill => context.l10n.photoKindBill,
+      PhotoKind.card => short ? context.l10n.photoKindCardShort : context.l10n.photoKindCard,
+      PhotoKind.other => context.l10n.photoKindOther,
+    };
 
 /// Loads a stored photo; shows a "syncing" placeholder until it arrives
 /// from another phone, then swaps it in.
@@ -107,12 +121,22 @@ Widget photoWidget(PhotoRef p, {BoxFit fit = BoxFit.cover}) => p.id != null
 
 /// A row of thumbnails. Tapping one opens the full-screen viewer.
 class PhotoStrip extends StatelessWidget {
-  const PhotoStrip({super.key, required this.photos, this.onRemove, this.trailing, this.height = 96});
+  const PhotoStrip({
+    super.key,
+    required this.photos,
+    this.onRemove,
+    this.onKind,
+    this.trailing,
+    this.height = 96,
+  });
 
   final List<PhotoRef> photos;
 
   /// Shows a remove button on each thumbnail (forms only).
   final void Function(int index)? onRemove;
+
+  /// Lets the label be changed (forms only).
+  final void Function(int index, PhotoKind kind)? onKind;
 
   /// Extra tile after the photos, e.g. "Add photo".
   final Widget? trailing;
@@ -143,6 +167,15 @@ class PhotoStrip extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Positioned(
+                    left: 4,
+                    bottom: 4,
+                    child: _KindBadge(
+                      kind: p.kind,
+                      short: height < 120,
+                      onChanged: onKind == null ? null : (k) => onKind!(i, k),
+                    ),
+                  ),
                   if (onRemove != null)
                     Positioned(
                       top: 2,
@@ -166,6 +199,42 @@ class PhotoStrip extends StatelessWidget {
           ?trailing,
         ],
       ),
+    );
+  }
+}
+
+/// The label on a thumbnail; a menu to change it when [onChanged] is set.
+class _KindBadge extends StatelessWidget {
+  const _KindBadge({required this.kind, this.onChanged, this.short = false});
+
+  final PhotoKind kind;
+  final bool short;
+  final ValueChanged<PhotoKind>? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = photoKindLabel(context, kind, short: short);
+    final chip = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(8)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600)),
+          if (onChanged != null) const Icon(Icons.arrow_drop_down, size: 14, color: Colors.white),
+        ],
+      ),
+    );
+    if (onChanged == null) return chip;
+    return PopupMenuButton<PhotoKind>(
+      tooltip: context.l10n.photoKindChange,
+      initialValue: kind,
+      onSelected: onChanged,
+      itemBuilder: (_) => [
+        for (final k in PhotoKind.values)
+          PopupMenuItem(value: k, child: Text(photoKindLabel(context, k))),
+      ],
+      child: chip,
     );
   }
 }
@@ -205,7 +274,7 @@ class _PhotoViewerState extends State<_PhotoViewer> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
-        title: Text('${_page + 1} / ${widget.photos.length}'),
+        title: Text('${photoKindLabel(context, widget.photos[_page].kind)} · ${_page + 1} / ${widget.photos.length}'),
       ),
       body: PageView(
         controller: _controller,

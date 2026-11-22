@@ -2821,6 +2821,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete this visit?'**
   String get visitDelete;
+
+  /// No description provided for @photoKindBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill'**
+  String get photoKindBill;
+
+  /// No description provided for @photoKindCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty card'**
+  String get photoKindCard;
+
+  /// No description provided for @photoKindOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get photoKindOther;
+
+  /// No description provided for @photoKindChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change label'**
+  String get photoKindChange;
+
+  /// No description provided for @warrantyMoreFilled.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Filled 1 more detail from the new photo} other{Filled {count} more details from the new photos}}'**
+  String warrantyMoreFilled(int count);
+
+  /// No description provided for @warrantyNothingNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo added. Nothing new to fill in.'**
+  String get warrantyNothingNew;
+
+  /// No description provided for @photoKindCardShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Card'**
+  String get photoKindCardShort;
 }
 
 class _AppLocalizationsDelegate

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
 import '../../domain/warranty.dart';
+import '../../services/warranty/warranty_parser.dart';
 import '../../services/warranty/warranty_scanner.dart';
 import '../../ui/format.dart';
 import '../../ui/l10n_ext.dart';
@@ -65,35 +66,48 @@ class _ApplianceFormScreenState extends ConsumerState<ApplianceFormScreen> {
     super.initState();
     final scan = widget.scan;
     if (scan != null) {
-      _photos.addAll(scan.photos.map(PhotoRef.fresh));
-      final g = scan.guess;
-      void fill(String key, TextEditingController c, String? v) {
-        if (v == null || v.isEmpty) return;
-        c.text = v;
-        _auto.add(key);
-      }
-
-      fill('name', _name, g.name);
-      fill('brand', _brand, g.brand);
-      fill('model', _model, g.model);
-      fill('serial', _serial, g.serial);
-      fill('store', _store, g.store);
-      fill('invoice', _invoice, g.invoiceNo);
-      fill('helpline', _helpline, g.helpline);
-      if (g.price != null) fill('price', _price, _num(g.price!));
-      if (g.warrantyMonths != null) fill('months', _months, '${g.warrantyMonths}');
-      if (g.purchaseDate != null) {
-        _purchaseDate = g.purchaseDate;
-        _auto.add('date');
-      }
-      if (g.extendedMonths != null && _purchaseDate != null) {
-        _hasExtra = true;
-        final base = g.warrantyMonths ?? 0;
-        _extraEnds = addMonths(_purchaseDate!, base + g.extendedMonths!).subtract(const Duration(days: 1));
-        _auto.add('extra');
-      }
+      _photos.addAll([for (final (i, b) in scan.photos.indexed) PhotoRef.fresh(b, kind: scan.kindAt(i))]);
+      _applyGuess(scan.guess);
     }
     _loaded = !_editing;
+  }
+
+  late final Map<String, TextEditingController> _byKey = {
+    'name': _name,
+    'brand': _brand,
+    'model': _model,
+    'serial': _serial,
+    'store': _store,
+    'invoice': _invoice,
+    'helpline': _helpline,
+    'price': _price,
+    'months': _months,
+  };
+
+  /// Fills fields OCR found that are still empty; never replaces what is
+  /// already there. Returns how many fields it filled.
+  int _applyGuess(WarrantyGuess g) {
+    var filled = 0;
+    final current = {for (final e in _byKey.entries) e.key: e.value.text};
+    for (final e in g.fillsFor(current).entries) {
+      if (e.key == 'price' && !ref.read(permsProvider).canSeeMoney) continue;
+      _byKey[e.key]!.text = e.value;
+      _auto.add(e.key);
+      filled++;
+    }
+    if (g.purchaseDate != null && _purchaseDate == null) {
+      _purchaseDate = g.purchaseDate;
+      _auto.add('date');
+      filled++;
+    }
+    if (g.extendedMonths != null && _purchaseDate != null && !_hasExtra) {
+      _hasExtra = true;
+      final base = int.tryParse(_months.text.trim()) ?? g.warrantyMonths ?? 0;
+      _extraEnds = addMonths(_purchaseDate!, base + g.extendedMonths!).subtract(const Duration(days: 1));
+      _auto.add('extra');
+      filled++;
+    }
+    return filled;
   }
 
   void _loadExisting(Appliance a) {
@@ -119,7 +133,7 @@ class _ApplianceFormScreenState extends ConsumerState<ApplianceFormScreen> {
     _hasExtra = a.hasExtra;
     _photos
       ..clear()
-      ..addAll(a.photos.map(PhotoRef.stored));
+      ..addAll([for (final id in a.photos) PhotoRef.stored(id, kind: a.photoKinds[id] ?? PhotoKind.other)]);
     _loaded = true;
   }
 
@@ -164,7 +178,12 @@ class _ApplianceFormScreenState extends ConsumerState<ApplianceFormScreen> {
     if (paths.isEmpty || !mounted) return;
     final more = await readMorePhotos(context, scanner, paths);
     if (more == null || !mounted) return;
-    setState(() => _photos.addAll(more.photos.map(PhotoRef.fresh)));
+    late int filled;
+    setState(() {
+      _photos.addAll([for (final (i, b) in more.photos.indexed) PhotoRef.fresh(b, kind: more.kindAt(i))]);
+      filled = _applyGuess(more.guess);
+    });
+    showSnack(context, filled > 0 ? context.l10n.warrantyMoreFilled(filled) : context.l10n.warrantyNothingNew);
   }
 
   Future<void> _save() async {
@@ -175,10 +194,13 @@ class _ApplianceFormScreenState extends ConsumerState<ApplianceFormScreen> {
     final perms = ref.read(permsProvider);
     setState(() => _saving = true);
     try {
-      final ids = <String>[
-        for (final p in _photos)
-          p.id ?? await services.blobs.put(session.familyId, p.bytes!),
-      ];
+      final ids = <String>[];
+      final kinds = <String, PhotoKind>{};
+      for (final p in _photos) {
+        final id = p.id ?? await services.blobs.put(session.familyId, p.bytes!);
+        ids.add(id);
+        kinds[id] = p.kind;
+      }
       final draft = ApplianceDraft(
         name: _name.text,
         brand: _brand.text,
@@ -199,6 +221,7 @@ class _ApplianceFormScreenState extends ConsumerState<ApplianceFormScreen> {
         serviceCentrePhone: _centrePhone.text,
         note: _note.text,
         photos: ids,
+        photoKinds: kinds,
       );
       final existing = _existing;
       if (existing != null) {
@@ -298,6 +321,7 @@ class _ApplianceFormScreenState extends ConsumerState<ApplianceFormScreen> {
             PhotoStrip(
               photos: _photos,
               onRemove: (i) => setState(() => _photos.removeAt(i)),
+              onKind: (i, k) => setState(() => _photos[i] = _photos[i].withKind(k)),
               trailing: _AddPhotoTile(
                 onCamera: ref.read(servicesProvider).billScanner.canUseCameraScanner
                     ? () => _addPhotos(camera: true)

@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
 import '../../services/receipt/bill_scanner.dart';
-import '../../services/warranty/warranty_parser.dart';
 import '../../services/warranty/warranty_scanner.dart';
 import '../../ui/l10n_ext.dart';
 import '../../ui/widgets.dart';
@@ -119,11 +118,7 @@ Future<T?> _withProgress<T>(BuildContext context, String message, Future<T> Func
   }
 }
 
-/// Compresses extra photos added on the form (no OCR).
+/// Reads photos added on the form later (e.g. the warranty card turned up
+/// after the bill), so their details can fill what is still empty.
 Future<WarrantyScan?> readMorePhotos(BuildContext context, WarrantyScanner scanner, List<String> paths) =>
-    _withProgress(context, context.l10n.warrantyReading(paths.length), () async {
-      final photos = [
-        for (final p in paths) ?await WarrantyScanner.compressFile(p),
-      ];
-      return WarrantyScan(const WarrantyGuess(), photos);
-    });
+    _withProgress(context, context.l10n.warrantyReading(paths.length), () => scanner.read(paths));

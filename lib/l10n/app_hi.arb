@@ -453,5 +453,12 @@
   "visitCost": "खर्च",
   "visitCoveredQuestion": "वारंटी / AMC में मुफ़्त",
   "visitCovered": "वारंटी में",
-  "visitDelete": "यह विज़िट हटाएँ?"
+  "visitDelete": "यह विज़िट हटाएँ?",
+  "photoKindBill": "बिल",
+  "photoKindCard": "वारंटी कार्ड",
+  "photoKindOther": "अन्य",
+  "photoKindChange": "लेबल बदलें",
+  "warrantyMoreFilled": "{count, plural, =1{नई फ़ोटो से 1 और जानकारी भरी} other{नई फ़ोटो से {count} और जानकारियाँ भरीं}}",
+  "warrantyNothingNew": "फ़ोटो जुड़ गई। भरने को कुछ नया नहीं मिला।",
+  "photoKindCardShort": "कार्ड"
 }

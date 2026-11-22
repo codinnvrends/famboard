@@ -72,7 +72,11 @@ class ApplianceDetailScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 48),
         children: [
-          if (a.photos.isNotEmpty) PhotoStrip(photos: a.photos.map(PhotoRef.stored).toList(), height: 140),
+          if (a.photos.isNotEmpty)
+            PhotoStrip(
+              photos: [for (final id in a.photos) PhotoRef.stored(id, kind: a.photoKinds[id] ?? PhotoKind.other)],
+              height: 140,
+            ),
           const SizedBox(height: 12),
           Card(
             child: Padding(

@@ -1,3 +1,4 @@
+import '../../domain/warranty.dart';
 import '../receipt/ocr_types.dart';
 import '../receipt/receipt_parser.dart';
 
@@ -31,6 +32,26 @@ class WarrantyGuess {
   /// Extended warranty on top of the maker's, if the paper mentions one.
   final int? extendedMonths;
   final String? helpline;
+
+  /// Text fields by form key (dates and numbers as typed in the form).
+  Map<String, String> get textFields => {
+        'name': ?name,
+        'brand': ?brand,
+        'model': ?model,
+        'serial': ?serial,
+        'invoice': ?invoiceNo,
+        'store': ?store,
+        'helpline': ?helpline,
+        if (price != null) 'price': price! == price!.roundToDouble() ? '${price!.toInt()}' : price!.toStringAsFixed(2),
+        if (warrantyMonths != null) 'months': '$warrantyMonths',
+      };
+
+  /// The guesses that may fill a form whose fields are [current]: only
+  /// empty fields are filled, so nothing the person typed is replaced.
+  Map<String, String> fillsFor(Map<String, String> current) => {
+        for (final e in textFields.entries)
+          if ((current[e.key] ?? '').trim().isEmpty) e.key: e.value,
+      };
 
   /// How many fields were found (0 = nothing useful).
   int get found => [
@@ -193,6 +214,24 @@ class WarrantyParser {
       extendedMonths: extended,
       helpline: helpline,
     );
+  }
+
+  static final _cardSignals = RegExp(
+    r'warranty\s*(?:card|certificate|registration|period|terms)|guarantee\s*card|date\s*of\s*purchase|dealer.{0,10}(?:stamp|sign)|terms\s*(?:and|&)\s*conditions|not\s*covered|this\s*warranty',
+    caseSensitive: false,
+  );
+  static final _billSignals = RegExp(
+    r'tax\s*invoice|invoice\s*(?:no|number|date)|bill\s*(?:no|date)|receipt|gstin|grand\s*total|net\s*amount|cgst|sgst|igst|hsn|\bqty\b|amount\s*paid',
+    caseSensitive: false,
+  );
+
+  /// Bill, warranty card or other, from the wording on one photo.
+  static PhotoKind classify(OcrPage page) {
+    final text = readingLines(page).join('\n');
+    final card = _cardSignals.allMatches(text).length;
+    final bill = _billSignals.allMatches(text).length;
+    if (card == 0 && bill == 0) return PhotoKind.other;
+    return card > bill ? PhotoKind.card : PhotoKind.bill;
   }
 
   /// OCR fragments grouped into left-to-right lines, top to bottom.
